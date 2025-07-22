@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tortoise Detailed Records</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+  <!-- Sidebar -->
+  <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="homepage.html">
+      <div class="sidebar-brand-icon rotate-n-15">
+        <i class="fas fa-turtle"></i>
+      </div>
+      <div class="sidebar-brand-text mx-3">MANAGER</div>
+    </a>
+    <hr class="sidebar-divider my-0">
+    <li class="nav-item">
+      <a class="nav-link" href="homepage.html">
+        <i class="fas fa-fw fa-home"></i>
+        <span>Home</span>
+      </a>
+    </li>
+    <li class="nav-item active">
+      <a class="nav-link" href="records_M.html">
+        <i class="fas fa-fw fa-list"></i>
+        <span>Tortoise Records</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="assignTasks.html">
+        <i class="fas fa-fw fa-tasks"></i>
+        <span>Assign Task</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="inventory_M.html">
+        <i class="fas fa-fw fa-boxes"></i>
+        <span>Inventory</span>
+      </a>
+    </li>
+  </ul>
+
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+
+      <!-- Topbar -->
+      <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <h1 class="h4 text-gray-800">Tortoise Detailed Records</h1>
+      </nav>
+
+      <!-- Main Content -->
+      <div class="container-fluid">
+        <!-- Search Bar -->
+        <div class="row mb-3">
+          <div class="col-md-6 mx-auto">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search by name, species, or health status...">
+          </div>
+        </div>
+
+        <!-- Tortoise Table Card -->
+        <div class="card shadow mb-4">
+          <div class="card-header py-3 bg-primary text-white">
+            <h6 class="m-0 font-weight-bold">Registered Tortoises</h6>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Tortoise ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Species</th>
+                    <th scope="col">Health Status</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>001</td>
+                    <td>Toto</td>
+                    <td>5 yrs</td>
+                    <td>Indian Star</td>
+                    <td><span class="badge badge-success">Healthy</span></td>
+                    <td><button class="btn btn-sm btn-primary">View Details</button></td>
+                  </tr>
+                  <tr>
+                    <td>002</td>
+                    <td>Luna</td>
+                    <td>3 yrs</td>
+                    <td>Sulcata</td>
+                    <td><span class="badge badge-warning">Under Observation</span></td>
+                    <td><button class="btn btn-sm btn-primary">View Details</button></td>
+                  </tr>
+                  <tr>
+                    <td>003</td>
+                    <td>Max</td>
+                    <td>7 yrs</td>
+                    <td>Red-Footed</td>
+                    <td><span class="badge badge-danger">Needs Immediate Care</span></td>
+                    <td><button class="btn btn-sm btn-primary">View Details</button></td>
+                  </tr>
+                  <tr>
+                    <td>004</td>
+                    <td>Daisy</td>
+                    <td>2 yrs</td>
+                    <td>Leopard</td>
+                    <td><span class="badge badge-success">Healthy</span></td>
+                    <td><button class="btn btn-sm btn-primary">View Details</button></td>
+                  </tr>
+                  <tr>
+                    <td>005</td>
+                    <td>Rocky</td>
+                    <td>4 yrs</td>
+                    <td>Marginated</td>
+                    <td><span class="badge badge-warning">Under Treatment</span></td>
+                    <td><button class="btn btn-sm btn-primary">View Details</button></td>
+                  </tr>
+                  <tr>
+                    <td>006</td>
+                    <td>Olive</td>
+                    <td>6 yrs</td>
+                    <td>Greek Tortoise</td>
+                    <td><span class="badge badge-success">Healthy</span></td>
+                    <td><button class="btn btn-sm btn-primary">View Details</button></td>
+                  </tr>
+                  <tr>
+                    <td>007</td>
+                    <td>Simba</td>
+                    <td>8 yrs</td>
+                    <td>Aldabra Giant</td>
+                    <td><span class="badge badge-danger">Needs Immediate Care</span></td>
+                    <td><button class="btn btn-sm btn-primary">View Details</button></td>
+                  </tr>
+                  <tr>
+                    <td>008</td>
+                    <td>Milo</td>
+                    <td>2 yrs</td>
+                    <td>Indian Star</td>
+                    <td><span class="badge badge-success">Healthy</span></td>
+                    <td><button class="btn btn-sm btn-primary">View Details</button></td>
+                  </tr>
+                  <tr>
+                    <td>009</td>
+                    <td>Rosa</td>
+                    <td>1 yr</td>
+                    <td>Leopard</td>
+                    <td><span class="badge badge-warning">Under Observation</span></td>
+                    <td><button class="btn btn-sm btn-primary">View Details</button></td>
+                  </tr>
+                  <tr>
+                    <td>010</td>
+                    <td>Bella</td>
+                    <td>9 yrs</td>
+                    <td>Red-Footed</td>
+                    <td><span class="badge badge-success">Healthy</span></td>
+                    <td><button class="btn btn-sm btn-primary">View Details</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div> <!-- /.container-fluid -->
+    </div> <!-- /.content -->
+  </div> <!-- /.content-wrapper -->
+</div> <!-- /#wrapper -->
+
+<!-- Scripts -->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>
+<script>
+  $(function() {
+    $('#searchInput').on('input', function() {
+      var value = $(this).val().toLowerCase();
+      $('table tbody tr').filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+      });
+    });
+  });
+</script>
+</body>
+</html>

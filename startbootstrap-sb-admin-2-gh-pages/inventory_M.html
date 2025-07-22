@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Inventory List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+<body id="page-top">
+
+<div id="wrapper">
+
+  <!-- Sidebar -->
+  <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="homepage.html">
+      <div class="sidebar-brand-icon rotate-n-15">
+        <i class="fas fa-archive"></i>
+      </div>
+      <div class="sidebar-brand-text mx-3">MANAGER</div>
+    </a>
+
+    <hr class="sidebar-divider my-0">
+
+    <li class="nav-item">
+      <a class="nav-link" href="homepage.html">
+        <i class="fas fa-fw fa-home"></i>
+        <span>Home</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="records_M.html">
+        <i class="fas fa-fw fa-list"></i>
+        <span>Tortoise Records</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="assignTasks.html">
+        <i class="fas fa-fw fa-tasks"></i>
+        <span>Assign Task</span>
+      </a>
+    </li>
+    <li class="nav-item active">
+      <a class="nav-link" href="inventory_M.html">
+        <i class="fas fa-fw fa-boxes"></i>
+        <span>Inventory</span>
+      </a>
+    </li>
+  </ul>
+
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+      <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <h1 class="h4 text-gray-800">Inventory List</h1>
+      </nav>
+
+      <div class="container-fluid">
+        <!-- Search and Actions Bar -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="col-md-4 px-0">
+            <input type="text" class="form-control" id="searchInput" placeholder="Search products or status...">
+          </div>
+        </div>
+        <!-- Card -->
+        <div class="card shadow mb-4 col-md-10 mx-auto">
+          <div class="card-header py-3 bg-gradient-success text-white">
+            <h6 class="m-0 font-weight-bold">Current Inventory Status</h6>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered" id="inventoryTable">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Product Name</th>
+                    <th>Current Quantity</th>
+                    <th>Minimum Required</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Inventory rows will be inserted by JS -->
+                </tbody>
+              </table>
+            </div>
+            <div class="alert alert-info mt-3">
+              <i class="fas fa-info-circle"></i> Products highlighted in <span style="color: #e74a3b; font-weight: bold;">red</span> need immediate restocking. <span style="color: #f6c23e; font-weight: bold;">Yellow</span> means low stock.
+            </div>
+          </div>
+        </div>
+      </div> <!-- /.container-fluid -->
+    </div> <!-- /.content -->
+  </div> <!-- /.content-wrapper -->
+</div> <!-- /#wrapper -->
+
+<!-- Scripts -->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>
+<script>
+  // Sample inventory data
+  const inventory = [
+    { name: 'Tortoise Food', quantity: 8, min: 15 },
+    { name: 'Water Filters', quantity: 3, min: 5 },
+    { name: 'Heat Lamps', quantity: 12, min: 10 },
+    { name: 'Bedding Material', quantity: 2, min: 8 },
+    { name: 'Medical Supplies', quantity: 15, min: 10 },
+    { name: 'Cleaning Solution', quantity: 5, min: 5 },
+    { name: 'Calcium Supplements', quantity: 1, min: 5 }
+  ];
+
+  function getStatus(qty, min) {
+    if (qty <= min / 2) return {text: 'Restock Needed', color: '#e74a3b'};
+    if (qty < min) return {text: 'Low', color: '#f6c23e'};
+    return {text: 'OK', color: '#1cc88a'};
+  }
+
+  function renderTable(filter = '') {
+    const tbody = $('#inventoryTable tbody');
+    tbody.empty();
+    inventory.forEach(item => {
+      const status = getStatus(item.quantity, item.min);
+      const searchString = `${item.name} ${status.text}`.toLowerCase();
+      if (filter && !searchString.includes(filter.toLowerCase())) return;
+      const row = `<tr style="background-color: ${status.color === '#e74a3b' ? '#f8d7da' : status.color === '#f6c23e' ? '#fff3cd' : ''};">
+        <td>${item.name}</td>
+        <td>${item.quantity}</td>
+        <td>${item.min}</td>
+        <td style="color: ${status.color}; font-weight: bold;">${status.text}</td>
+        <td>
+          <button class="btn btn-sm btn-warning mr-1" title="Restock"><i class="fas fa-truck-loading"></i> Restock</button>
+          <button class="btn btn-sm btn-info" title="Edit"><i class="fas fa-edit"></i> Edit</button>
+        </td>
+      </tr>`;
+      tbody.append(row);
+    });
+  }
+
+  $(function() {
+    renderTable();
+    $('#searchInput').on('input', function() {
+      renderTable(this.value);
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Assign Task</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+<body id="page-top">
+
+<div id="wrapper">
+
+  <!-- Sidebar -->
+  <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="homepage.html">
+      <div class="sidebar-brand-icon rotate-n-15">
+        <i class="fas fa-archive"></i>
+      </div>
+      <div class="sidebar-brand-text mx-3">MANAGER</div>
+    </a>
+
+    <hr class="sidebar-divider my-0">
+
+    <li class="nav-item">
+      <a class="nav-link" href="homepage.html">
+        <i class="fas fa-fw fa-home"></i>
+        <span>Home</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="records_M.html">
+        <i class="fas fa-fw fa-list"></i>
+        <span>Tortoise Records</span>
+      </a>
+    </li>
+    <li class="nav-item active">
+      <a class="nav-link" href="assignTasks.html">
+        <i class="fas fa-fw fa-tasks"></i>
+        <span>Assign Task</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="inventory_M.html">
+        <i class="fas fa-fw fa-boxes"></i>
+        <span>Inventory</span>
+      </a>
+    </li>
+  </ul>
+
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+      <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <h1 class="h4 text-gray-800">Assign Task to Staff</h1>
+      </nav>
+
+      <div class="container-fluid">
+        <!-- Card -->
+        <div class="card shadow mb-4 col-md-6 mx-auto">
+          <div class="card-header py-3 bg-gradient-success text-white">
+            <h6 class="m-0 font-weight-bold">Task Assignment Form</h6>
+          </div>
+          <div class="card-body">
+            <form>
+              <div class="form-group">
+                <label for="staffRole">Staff Role</label>
+                <select class="form-control" id="staffRole">
+                  <option>-- Select Role --</option>
+                  <option>Veterinarian</option>
+                  <option>Tortoise Caretaker</option>
+                  <option>Breeding Specialist</option>
+                  <option>Environment Monitor</option>
+                  <option>Inventory Manager</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="taskDescription">Task Description</label>
+                <textarea class="form-control" id="taskDescription" rows="3" placeholder="Describe the task..." maxlength="250"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="priority">Priority</label>
+                <select class="form-control" id="priority">
+                  <option value="">-- Select Priority --</option>
+                  <option>Low</option>
+                  <option>Medium</option>
+                  <option>High</option>
+                  <option>Critical</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="dueDate">Due Date</label>
+                <input type="date" class="form-control" id="dueDate">
+              </div>
+
+              <div class="form-group">
+                <label for="fileUpload">Attach File (Optional)</label>
+                <input type="file" class="form-control-file" id="fileUpload">
+              </div>
+
+              <button type="submit" class="btn btn-success btn-block">
+                <i class="fas fa-paper-plane"></i> Assign Task
+              </button>
+
+              <div class="alert alert-success mt-3 d-none" id="successMessage">
+                ✅ Task assigned successfully!
+              </div>
+            </form>
+          </div>
+        </div>
+      </div> <!-- /.container-fluid -->
+    </div> <!-- /.content -->
+  </div> <!-- /.content-wrapper -->
+</div> <!-- /#wrapper -->
+
+<!-- Scripts -->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>
+
+<script>
+  // Show success alert (static simulation)
+  document.querySelector('form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    document.getElementById("successMessage").classList.remove("d-none");
+  });
+</script>
+
+</body>
+</html>
