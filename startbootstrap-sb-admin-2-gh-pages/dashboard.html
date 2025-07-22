@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Tortoise Conservation Management System Dashboard">
+    <meta name="author" content="">
+    <title>Tortoise Conservation - Vet Dashboard</title>
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.html">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-turtle"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">Tortoise Conservation</div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item active">
+                <a class="nav-link" href="dashboard.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">Vet Tools</div>
+            <li class="nav-item">
+                <a class="nav-link" href="health-records.html">
+                    <i class="fas fa-fw fa-notes-medical"></i>
+                    <span>Health Records</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#tortoise-records-section">
+                    <i class="fas fa-fw fa-list"></i>
+                    <span>View Tortoise List</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#alerts-section">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i>
+                    <span>Alerts</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#tasks-section">
+                    <i class="fas fa-fw fa-tasks"></i>
+                    <span>Tasks</span></a>
+            </li>
+            <hr class="sidebar-divider d-none d-md-block">
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <!-- End of Sidebar -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <h4 class="ml-3 mt-2 text-success font-weight-bold d-inline-block">Veterinarian Dashboard</h4>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Dr. Atika Humayra</span>
+                                <i class="fas fa-user-nurse fa-2x text-success img-profile rounded-circle"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Profile</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>Settings</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+                <div class="container-fluid">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Welcome, Dr. Atika Humayra</h1>
+                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Add Health Record</a>
+                    </div>
+                    <!-- Statistic Cards -->
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Tortoises</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">128</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-turtle fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Health Checks (This Month)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">42</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-stethoscope fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Needing Attention</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">5</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-exclamation-circle fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-danger shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Active Alerts</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">2</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-bell fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Charts Row -->
+                    <div class="row">
+                        <div class="col-xl-8 col-lg-7">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-success">Health Checks Over Time</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="myAreaChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-success">Tortoise Health Status</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-pie pt-4 pb-2">
+                                        <canvas id="myPieChart"></canvas>
+                                    </div>
+                                    <div class="mt-4 text-center small">
+                                        <span class="mr-2"><i class="fas fa-circle text-success"></i> Healthy</span>
+                                        <span class="mr-2"><i class="fas fa-circle text-warning"></i> Under Observation</span>
+                                        <span class="mr-2"><i class="fas fa-circle text-danger"></i> Critical</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Recent Activity -->
+                    <div class="row">
+                        <div class="col-12 mb-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-success">Recent Activity</h6>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Health check completed for <strong>Tortoise #23</strong> - Healthy</li>
+                                        <li class="list-group-item">Alert: <strong>Tortoise #45</strong> needs immediate attention</li>
+                                        <li class="list-group-item">Medication administered to <strong>Tortoise #12</strong></li>
+                                        <li class="list-group-item">Routine check scheduled for <strong>Tortoise #67</strong></li>
+                                        <li class="list-group-item">Weight recorded for <strong>Tortoise #89</strong></li>
+                                        <li class="list-group-item">Shell injury treated for <strong>Tortoise #10</strong></li>
+                                        <li class="list-group-item">Diet updated for <strong>Tortoise #45</strong></li>
+                                        <li class="list-group-item">Enclosure cleaned for <strong>Tortoise #12</strong></li>
+                                        <li class="list-group-item">Follow-up scheduled for <strong>Tortoise #23</strong></li>
+                                        <li class="list-group-item">Temperature anomaly detected in <strong>Tortoise #67</strong>'s habitat</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Health Records, Tortoise Records, Alerts, and Tasks -->
+                    <h3 class="h5 text-gray-800 mt-4 mb-3">Records Overview</h3>
+                    <div class="row" id="health-records-section">
+                        <div class="col-md-6 mb-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-success">Health Records</h6>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Tortoise ID</th>
+                                                <th>Status</th>
+                                                <th>Notes</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>2024-06-01</td>
+                                                <td>#23</td>
+                                                <td><span class="badge badge-success">Healthy</span></td>
+                                                <td>Routine check, all normal.</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024-06-01</td>
+                                                <td>#45</td>
+                                                <td><span class="badge badge-danger">Critical</span></td>
+                                                <td>Respiratory issue detected.</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024-05-30</td>
+                                                <td>#12</td>
+                                                <td><span class="badge badge-warning">Under Observation</span></td>
+                                                <td>Medication administered.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4" id="tortoise-records-section">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-success">Tortoise Records</h6>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Name</th>
+                                                <th>Species</th>
+                                                <th>Age</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>#23</td>
+                                                <td>Speedy</td>
+                                                <td>Leopard Tortoise</td>
+                                                <td>12</td>
+                                            </tr>
+                                            <tr>
+                                                <td>#45</td>
+                                                <td>Shelly</td>
+                                                <td>Galápagos Tortoise</td>
+                                                <td>54</td>
+                                            </tr>
+                                            <tr>
+                                                <td>#12</td>
+                                                <td>Rocky</td>
+                                                <td>Aldabra Giant</td>
+                                                <td>30</td>
+                                            </tr>
+                                            <tr>
+                                                <td>#10</td>
+                                                <td>Dola</td>
+                                                <td>Aldabra Small</td>
+                                                <td>19</td>
+                                            </tr>
+                                            <tr>
+                                                <td>#89</td>
+                                                <td>Alen</td>
+                                                <td>Leopard Tortoise</td>
+                                                <td>56</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="h5 text-gray-800 mt-4 mb-3">Alerts & Tasks</h3>
+                    <div class="row" id="alerts-section">
+                        <div class="col-md-6 mb-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-success">Alerts</h6>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><i class="fas fa-exclamation-circle text-danger mr-2"></i>Tortoise #45: Immediate medical attention required!</li>
+                                        <li class="list-group-item"><i class="fas fa-exclamation-triangle text-warning mr-2"></i>Tortoise #12: Monitor medication response.</li>
+                                        <li class="list-group-item"><i class="fas fa-info-circle text-info mr-2"></i>Tortoise #67: Routine check scheduled tomorrow.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4" id="tasks-section">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-success">Tasks</h6>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><span class="badge badge-primary mr-2">Upcoming</span>Health check for Tortoise #67 - 2024-06-02</li>
+                                        <li class="list-group-item"><span class="badge badge-success mr-2">Today</span>Administer vitamins to Tortoise #23</li>
+                                        <li class="list-group-item"><span class="badge badge-warning mr-2">Upcoming</span>Prepare enclosure for new arrival</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Tortoise Conservation 2024</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-success" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
+    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script>
+</body>
+</html>
