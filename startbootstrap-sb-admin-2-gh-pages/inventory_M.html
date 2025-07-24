@@ -61,6 +61,7 @@
           <div class="col-md-4 px-0">
             <input type="text" class="form-control" id="searchInput" placeholder="Search products or status...">
           </div>
+          <button class="btn btn-success ml-2" id="addItemBtn"><i class="fas fa-plus"></i> Add Item</button>
         </div>
         <!-- Card -->
         <div class="card shadow mb-4 col-md-10 mx-auto">
@@ -83,6 +84,37 @@
                   <!-- Inventory rows will be inserted by JS -->
                 </tbody>
               </table>
+            </div>
+            <!-- Add/Edit Modal -->
+            <div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="itemModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="itemModalLabel">Add/Edit Item</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="itemForm">
+                      <div class="form-group">
+                        <label for="itemName">Product Name</label>
+                        <input type="text" class="form-control" id="itemName" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="itemQty">Current Quantity</label>
+                        <input type="number" class="form-control" id="itemQty" min="0" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="itemMin">Minimum Required</label>
+                        <input type="number" class="form-control" id="itemMin" min="1" required>
+                      </div>
+                      <input type="hidden" id="editIndex">
+                      <button type="submit" class="btn btn-success">Save</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="alert alert-info mt-3">
               <i class="fas fa-info-circle"></i> Products highlighted in <span style="color: #e74a3b; font-weight: bold;">red</span> need immediate restocking. <span style="color: #f6c23e; font-weight: bold;">Yellow</span> means low stock.
@@ -119,7 +151,7 @@
   function renderTable(filter = '') {
     const tbody = $('#inventoryTable tbody');
     tbody.empty();
-    inventory.forEach(item => {
+    inventory.forEach((item, idx) => {
       const status = getStatus(item.quantity, item.min);
       const searchString = `${item.name} ${status.text}`.toLowerCase();
       if (filter && !searchString.includes(filter.toLowerCase())) return;
@@ -129,8 +161,8 @@
         <td>${item.min}</td>
         <td style="color: ${status.color}; font-weight: bold;">${status.text}</td>
         <td>
-          <button class="btn btn-sm btn-warning mr-1" title="Restock"><i class="fas fa-truck-loading"></i> Restock</button>
-          <button class="btn btn-sm btn-info" title="Edit"><i class="fas fa-edit"></i> Edit</button>
+          <button class="btn btn-sm btn-info mr-1 edit-btn" data-index="${idx}" title="Edit"><i class="fas fa-edit"></i> Edit</button>
+          <button class="btn btn-sm btn-danger delete-btn" data-index="${idx}" title="Delete"><i class="fas fa-trash"></i> Delete</button>
         </td>
       </tr>`;
       tbody.append(row);
@@ -141,6 +173,51 @@
     renderTable();
     $('#searchInput').on('input', function() {
       renderTable(this.value);
+    });
+
+    // Add Item
+    $('#addItemBtn').click(function() {
+      $('#itemModalLabel').text('Add Item');
+      $('#itemForm')[0].reset();
+      $('#editIndex').val('');
+      $('#itemModal').modal('show');
+    });
+
+    // Edit Item
+    $(document).on('click', '.edit-btn', function() {
+      const idx = $(this).data('index');
+      const item = inventory[idx];
+      $('#itemModalLabel').text('Edit Item');
+      $('#itemName').val(item.name);
+      $('#itemQty').val(item.quantity);
+      $('#itemMin').val(item.min);
+      $('#editIndex').val(idx);
+      $('#itemModal').modal('show');
+    });
+
+    // Delete Item
+    $(document).on('click', '.delete-btn', function() {
+      const idx = $(this).data('index');
+      if (confirm('Are you sure you want to delete this item?')) {
+        inventory.splice(idx, 1);
+        renderTable($('#searchInput').val());
+      }
+    });
+
+    // Save (Add/Edit) Item
+    $('#itemForm').submit(function(e) {
+      e.preventDefault();
+      const name = $('#itemName').val();
+      const quantity = parseInt($('#itemQty').val(), 10);
+      const min = parseInt($('#itemMin').val(), 10);
+      const idx = $('#editIndex').val();
+      if (idx === '') {
+        inventory.push({ name, quantity, min });
+      } else {
+        inventory[idx] = { name, quantity, min };
+      }
+      $('#itemModal').modal('hide');
+      renderTable($('#searchInput').val());
     });
   });
 </script>
