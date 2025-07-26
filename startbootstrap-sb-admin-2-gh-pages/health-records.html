@@ -15,15 +15,15 @@
     <div id="wrapper">
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="vetdashboard.html">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-turtle"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Tortoise Conservation</div>
+                <div class="sidebar-brand-text mx-3">TCMSS</div>
             </a>
             <hr class="sidebar-divider my-0">
             <li class="nav-item">
-                <a class="nav-link" href="dashboard.html">
+                <a class="nav-link" href="vetdashboard.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -35,17 +35,17 @@
                     <span>Health Records</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="dashboard.html#tortoise-records-section">
+                <a class="nav-link" href="tortoise-list.html">
                     <i class="fas fa-fw fa-list"></i>
                     <span>View Tortoise List</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="dashboard.html#alerts-section">
+                <a class="nav-link" href="vetdashboard.html#alerts-section">
                     <i class="fas fa-fw fa-exclamation-triangle"></i>
                     <span>Alerts</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="dashboard.html#tasks-section">
+                <a class="nav-link" href="vetdashboard.html#tasks-section">
                     <i class="fas fa-fw fa-tasks"></i>
                     <span>Tasks</span></a>
             </li>
@@ -66,8 +66,8 @@
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Dr. Jane Goodall</span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Dr. Atika Humayra</span>
+                                <i class="fas fa-user-nurse fa-2x text-success img-profile rounded-circle"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Profile</a>
@@ -100,24 +100,106 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>2024-06-01</td>
-                                            <td>#23</td>
-                                            <td><span class="badge badge-success">Healthy</span></td>
-                                            <td>Routine check, all normal.</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2024-06-01</td>
-                                            <td>#45</td>
-                                            <td><span class="badge badge-danger">Critical</span></td>
-                                            <td>Respiratory issue detected.</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2024-05-30</td>
-                                            <td>#12</td>
-                                            <td><span class="badge badge-warning">Under Observation</span></td>
-                                            <td>Medication administered.</td>
-                                        </tr>
+                                        <tr><td>2024-06-01</td><td>T001</td><td><span class="badge badge-danger">Sick</span></td><td>Showing signs of respiratory infection. Medication prescribed.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T002</td><td><span class="badge badge-warning">Recovering</span></td><td>Recovering well after recent shell injury.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T003</td><td><span class="badge badge-success">Healthy</span></td><td>Routine check, all normal.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T004</td><td><span class="badge badge-danger">Critical</span></td><td>Critical condition: requires immediate medical attention.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T005</td><td><span class="badge badge-success">Healthy</span></td><td>Weight and appetite normal.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T006</td><td><span class="badge badge-danger">Sick</span></td><td>Observed lethargy and loss of appetite.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T007</td><td><span class="badge badge-warning">Recovering</span></td><td>Responding to treatment for minor infection.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T008</td><td><span class="badge badge-success">Healthy</span></td><td>Active and feeding well.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T009</td><td><span class="badge badge-danger">Critical</span></td><td>Severe dehydration detected, IV fluids administered.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T010</td><td><span class="badge badge-success">Healthy</span></td><td>Excellent shell condition, no issues found.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T011</td><td><span class="badge badge-danger">Sick</span></td><td>Minor eye infection, ointment applied.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T012</td><td><span class="badge badge-warning">Recovering</span></td><td>Improving after vitamin supplementation.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T013</td><td><span class="badge badge-danger">Critical</span></td><td>Critical: severe trauma, under observation.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T014</td><td><span class="badge badge-success">Healthy</span></td><td>Normal activity and feeding observed.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T015</td><td><span class="badge badge-danger">Sick</span></td><td>Signs of mild infection, antibiotics started.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T016</td><td><span class="badge badge-warning">Recovering</span></td><td>Recovering after shell repair procedure.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T017</td><td><span class="badge badge-success">Healthy</span></td><td>Normal activity and feeding observed.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T018</td><td><span class="badge badge-danger">Critical</span></td><td>Critical: severe infection, isolated for treatment.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T019</td><td><span class="badge badge-success">Healthy</span></td><td>Weight and appetite normal.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T020</td><td><span class="badge badge-danger">Sick</span></td><td>Observed lethargy and loss of appetite.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T021</td><td><span class="badge badge-warning">Recovering</span></td><td>Responding to treatment for minor infection.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T022</td><td><span class="badge badge-success">Healthy</span></td><td>Active and feeding well.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T023</td><td><span class="badge badge-danger">Critical</span></td><td>Severe dehydration detected, IV fluids administered.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T024</td><td><span class="badge badge-success">Healthy</span></td><td>Excellent shell condition, no issues found.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T025</td><td><span class="badge badge-danger">Sick</span></td><td>Minor eye infection, ointment applied.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T026</td><td><span class="badge badge-warning">Recovering</span></td><td>Improving after vitamin supplementation.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T027</td><td><span class="badge badge-danger">Critical</span></td><td>Critical: severe trauma, under observation.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T028</td><td><span class="badge badge-success">Healthy</span></td><td>Normal activity and feeding observed.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T029</td><td><span class="badge badge-danger">Sick</span></td><td>Signs of mild infection, antibiotics started.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T030</td><td><span class="badge badge-warning">Recovering</span></td><td>Recovering after shell repair procedure.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T031</td><td><span class="badge badge-success">Healthy</span></td><td>Normal activity and feeding observed.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T032</td><td><span class="badge badge-danger">Critical</span></td><td>Critical: severe infection, isolated for treatment.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T033</td><td><span class="badge badge-success">Healthy</span></td><td>Weight and appetite normal.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T034</td><td><span class="badge badge-danger">Sick</span></td><td>Observed lethargy and loss of appetite.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T035</td><td><span class="badge badge-warning">Recovering</span></td><td>Responding to treatment for minor infection.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T036</td><td><span class="badge badge-success">Healthy</span></td><td>Active and feeding well.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T037</td><td><span class="badge badge-danger">Critical</span></td><td>Severe dehydration detected, IV fluids administered.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T038</td><td><span class="badge badge-success">Healthy</span></td><td>Excellent shell condition, no issues found.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T039</td><td><span class="badge badge-danger">Sick</span></td><td>Minor eye infection, ointment applied.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T040</td><td><span class="badge badge-warning">Recovering</span></td><td>Improving after vitamin supplementation.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T041</td><td><span class="badge badge-danger">Critical</span></td><td>Critical: severe trauma, under observation.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T042</td><td><span class="badge badge-success">Healthy</span></td><td>Normal activity and feeding observed.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T043</td><td><span class="badge badge-danger">Sick</span></td><td>Signs of mild infection, antibiotics started.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T044</td><td><span class="badge badge-warning">Recovering</span></td><td>Recovering after shell repair procedure.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T045</td><td><span class="badge badge-success">Healthy</span></td><td>Normal activity and feeding observed.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T046</td><td><span class="badge badge-danger">Critical</span></td><td>Critical: severe infection, isolated for treatment.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T047</td><td><span class="badge badge-success">Healthy</span></td><td>Weight and appetite normal.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T048</td><td><span class="badge badge-danger">Sick</span></td><td>Observed lethargy and loss of appetite.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T049</td><td><span class="badge badge-warning">Recovering</span></td><td>Responding to treatment for minor infection.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T050</td><td><span class="badge badge-success">Healthy</span></td><td>Active and feeding well.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T051</td><td><span class="badge badge-danger">Critical</span></td><td>Severe dehydration detected, IV fluids administered.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T052</td><td><span class="badge badge-success">Healthy</span></td><td>Excellent shell condition, no issues found.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T053</td><td><span class="badge badge-danger">Sick</span></td><td>Minor eye infection, ointment applied.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T054</td><td><span class="badge badge-warning">Recovering</span></td><td>Improving after vitamin supplementation.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T055</td><td><span class="badge badge-danger">Critical</span></td><td>Critical: severe trauma, under observation.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T056</td><td><span class="badge badge-success">Healthy</span></td><td>Normal activity and feeding observed.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T057</td><td><span class="badge badge-danger">Sick</span></td><td>Signs of mild infection, antibiotics started.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T058</td><td><span class="badge badge-warning">Recovering</span></td><td>Recovering after shell repair procedure.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T059</td><td><span class="badge badge-success">Healthy</span></td><td>Normal activity and feeding observed.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T060</td><td><span class="badge badge-danger">Critical</span></td><td>Critical: severe infection, isolated for treatment.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T061</td><td><span class="badge badge-success">Healthy</span></td><td>Weight and appetite normal.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T062</td><td><span class="badge badge-danger">Sick</span></td><td>Observed lethargy and loss of appetite.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T063</td><td><span class="badge badge-warning">Recovering</span></td><td>Responding to treatment for minor infection.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T064</td><td><span class="badge badge-success">Healthy</span></td><td>Active and feeding well.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T065</td><td><span class="badge badge-danger">Critical</span></td><td>Severe dehydration detected, IV fluids administered.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T066</td><td><span class="badge badge-success">Healthy</span></td><td>Excellent shell condition, no issues found.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T067</td><td><span class="badge badge-danger">Sick</span></td><td>Minor eye infection, ointment applied.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T068</td><td><span class="badge badge-warning">Recovering</span></td><td>Improving after vitamin supplementation.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T069</td><td><span class="badge badge-danger">Critical</span></td><td>Critical: severe trauma, under observation.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T070</td><td><span class="badge badge-success">Healthy</span></td><td>Normal activity and feeding observed.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T071</td><td><span class="badge badge-danger">Sick</span></td><td>Signs of mild infection, antibiotics started.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T072</td><td><span class="badge badge-warning">Recovering</span></td><td>Recovering after shell repair procedure.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T073</td><td><span class="badge badge-success">Healthy</span></td><td>Normal activity and feeding observed.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T074</td><td><span class="badge badge-danger">Critical</span></td><td>Critical: severe infection, isolated for treatment.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T075</td><td><span class="badge badge-success">Healthy</span></td><td>Weight and appetite normal.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T076</td><td><span class="badge badge-danger">Sick</span></td><td>Observed lethargy and loss of appetite.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T077</td><td><span class="badge badge-warning">Recovering</span></td><td>Responding to treatment for minor infection.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T078</td><td><span class="badge badge-success">Healthy</span></td><td>Active and feeding well.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T079</td><td><span class="badge badge-danger">Critical</span></td><td>Severe dehydration detected, IV fluids administered.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T080</td><td><span class="badge badge-success">Healthy</span></td><td>Excellent shell condition, no issues found.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T081</td><td><span class="badge badge-danger">Sick</span></td><td>Minor eye infection, ointment applied.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T082</td><td><span class="badge badge-warning">Recovering</span></td><td>Improving after vitamin supplementation.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T083</td><td><span class="badge badge-danger">Critical</span></td><td>Critical: severe trauma, under observation.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T084</td><td><span class="badge badge-success">Healthy</span></td><td>Normal activity and feeding observed.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T085</td><td><span class="badge badge-danger">Sick</span></td><td>Signs of mild infection, antibiotics started.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T086</td><td><span class="badge badge-warning">Recovering</span></td><td>Recovering after shell repair procedure.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T087</td><td><span class="badge badge-success">Healthy</span></td><td>Normal activity and feeding observed.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T088</td><td><span class="badge badge-danger">Critical</span></td><td>Critical: severe infection, isolated for treatment.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T089</td><td><span class="badge badge-success">Healthy</span></td><td>Weight and appetite normal.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T090</td><td><span class="badge badge-danger">Sick</span></td><td>Observed lethargy and loss of appetite.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T091</td><td><span class="badge badge-warning">Recovering</span></td><td>Responding to treatment for minor infection.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T092</td><td><span class="badge badge-success">Healthy</span></td><td>Active and feeding well.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T093</td><td><span class="badge badge-danger">Critical</span></td><td>Severe dehydration detected, IV fluids administered.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T094</td><td><span class="badge badge-success">Healthy</span></td><td>Excellent shell condition, no issues found.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T095</td><td><span class="badge badge-danger">Sick</span></td><td>Minor eye infection, ointment applied.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T096</td><td><span class="badge badge-warning">Recovering</span></td><td>Improving after vitamin supplementation.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T097</td><td><span class="badge badge-danger">Critical</span></td><td>Critical: severe trauma, under observation.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T098</td><td><span class="badge badge-success">Healthy</span></td><td>Normal activity and feeding observed.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T099</td><td><span class="badge badge-danger">Sick</span></td><td>Signs of mild infection, antibiotics started.</td></tr>
+                                        <tr><td>2024-06-01</td><td>T100</td><td><span class="badge badge-warning">Recovering</span></td><td>Recovering after shell repair procedure.</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -130,7 +212,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Tortoise Conservation 2024</span>
+                        <span>Copyright &copy; Tortoise Conservation 2025</span>
                     </div>
                 </div>
             </footer>

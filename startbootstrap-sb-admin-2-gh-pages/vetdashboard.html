@@ -15,15 +15,15 @@
     <div id="wrapper">
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="vetdashboard.html">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-turtle"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Tortoise Conservation</div>
+                <div class="sidebar-brand-text mx-3">TCMSS</div>
             </a>
             <hr class="sidebar-divider my-0">
             <li class="nav-item active">
-                <a class="nav-link" href="dashboard.html">
+                <a class="nav-link" href="vetdashboard.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -35,7 +35,7 @@
                     <span>Health Records</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#tortoise-records-section">
+                <a class="nav-link" href="tortoise-list.html">
                     <i class="fas fa-fw fa-list"></i>
                     <span>View Tortoise List</span></a>
             </li>
@@ -92,7 +92,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Tortoises</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">128</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-turtle fa-2x text-gray-300"></i>
@@ -209,90 +209,95 @@
                         <div class="col-md-6 mb-4">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-success">Health Records</h6>
+                                    <h6 class="m-0 font-weight-bold text-success">Health Status Summary</h6>
                                 </div>
-                                <div class="card-body">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Tortoise ID</th>
-                                                <th>Status</th>
-                                                <th>Notes</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>2024-06-01</td>
-                                                <td>#23</td>
-                                                <td><span class="badge badge-success">Healthy</span></td>
-                                                <td>Routine check, all normal.</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2024-06-01</td>
-                                                <td>#45</td>
-                                                <td><span class="badge badge-danger">Critical</span></td>
-                                                <td>Respiratory issue detected.</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2024-05-30</td>
-                                                <td>#12</td>
-                                                <td><span class="badge badge-warning">Under Observation</span></td>
-                                                <td>Medication administered.</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="card-body" style="min-height: 450px;">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="text-center">
+                                                <div class="h2 text-success font-weight-bold">50</div>
+                                                <div class="text-muted">Healthy Tortoises</div>
+                                                <span class="badge badge-success">50%</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="text-center">
+                                                <div class="h2 text-warning font-weight-bold">20</div>
+                                                <div class="text-muted">Recovering Tortoises</div>
+                                                <span class="badge badge-warning">20%</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="text-center">
+                                                <div class="h2 text-danger font-weight-bold">20</div>
+                                                <div class="text-muted">Sick Tortoises</div>
+                                                <span class="badge badge-danger">20%</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="text-center">
+                                                <div class="h2 text-danger font-weight-bold">10</div>
+                                                <div class="text-muted">Critical Tortoises</div>
+                                                <span class="badge badge-danger">10%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="text-center">
+                                        <h6 class="text-gray-600">Total Tortoises: 100</h6>
+                                        <p class="text-muted small">Based on latest health records data</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6 mb-4" id="tortoise-records-section">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-success">Tortoise Records</h6>
+                                    <h6 class="m-0 font-weight-bold text-success">Species Distribution</h6>
                                 </div>
-                                <div class="card-body">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Name</th>
-                                                <th>Species</th>
-                                                <th>Age</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>#23</td>
-                                                <td>Speedy</td>
-                                                <td>Leopard Tortoise</td>
-                                                <td>12</td>
-                                            </tr>
-                                            <tr>
-                                                <td>#45</td>
-                                                <td>Shelly</td>
-                                                <td>Galápagos Tortoise</td>
-                                                <td>54</td>
-                                            </tr>
-                                            <tr>
-                                                <td>#12</td>
-                                                <td>Rocky</td>
-                                                <td>Aldabra Giant</td>
-                                                <td>30</td>
-                                            </tr>
-                                            <tr>
-                                                <td>#10</td>
-                                                <td>Dola</td>
-                                                <td>Aldabra Small</td>
-                                                <td>19</td>
-                                            </tr>
-                                            <tr>
-                                                <td>#89</td>
-                                                <td>Alen</td>
-                                                <td>Leopard Tortoise</td>
-                                                <td>56</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="card-body" style="min-height: 420px;">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="text-center">
+                                                <div class="h3 text-primary font-weight-bold">20</div>
+                                                <div class="text-muted">Galapagos Tortoises</div>
+                                                <span class="badge badge-primary">20%</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="text-center">
+                                                <div class="h3 text-info font-weight-bold">20</div>
+                                                <div class="text-muted">Aldabra Tortoises</div>
+                                                <span class="badge badge-info">20%</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="text-center">
+                                                <div class="h3 text-success font-weight-bold">20</div>
+                                                <div class="text-muted">Sulcata Tortoises</div>
+                                                <span class="badge badge-success">20%</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="text-center">
+                                                <div class="h3 text-warning font-weight-bold">20</div>
+                                                <div class="text-muted">Leopard Tortoises</div>
+                                                <span class="badge badge-warning">20%</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="text-center">
+                                                <div class="h3 text-secondary font-weight-bold">20</div>
+                                                <div class="text-muted">Hermann Tortoises</div>
+                                                <span class="badge badge-secondary">20%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="text-center">
+                                        <h6 class="text-gray-600">Total Species: 5</h6>
+                                        <p class="text-muted small">Even distribution across species</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

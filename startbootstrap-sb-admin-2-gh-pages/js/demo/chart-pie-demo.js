@@ -7,11 +7,11 @@ var ctx = document.getElementById("myPieChart");
 var myPieChart = new Chart(ctx, {
   type: 'doughnut',
   data: {
-    labels: ["Healthy", "Under Observation", "Critical"],
+    labels: ["Healthy", "Sick", "Recovering", "Critical"],
     datasets: [{
-      data: [110, 15, 3],
-      backgroundColor: ['#1cc88a', '#f6c23e', '#e74a3b'],
-      hoverBackgroundColor: ['#17a673', '#dda20a', '#be2617'],
+      data: [50, 20, 20, 10],
+      backgroundColor: ['#1cc88a', '#f6c23e', '#36b9cc', '#e74a3b'],
+      hoverBackgroundColor: ['#17a673', '#dda20a', '#2c9faf', '#be2617'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
     }],
   },

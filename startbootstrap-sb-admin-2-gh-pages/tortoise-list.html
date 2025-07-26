@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Tortoise Conservation Management System - Tortoise List">
+    <meta name="author" content="">
+    <title>Tortoise Conservation - Tortoise List</title>
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <style>
+        .status-healthy { color: #28a745; }
+        .status-sick { color: #dc3545; }
+        .status-recovering { color: #ffc107; }
+        .status-critical { color: #dc3545; font-weight: bold; }
+        .btn-sm { margin: 2px; }
+        .table-responsive { max-height: 600px; overflow-y: auto; }
+    </style>
+</head>
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-turtle"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">TCMSS</div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item">
+                <a class="nav-link" href="vetdashboard.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">Management</div>
+            <li class="nav-item active">
+                <a class="nav-link" href="tortoise-list.html">
+                    <i class="fas fa-list"></i>
+                    <span>Tortoise List</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="health-records.html">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>Health Records</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="feeding.html">
+                    <i class="fas fa-utensils"></i>
+                    <span>Feeding Schedule</span></a>
+            </li>
+            <hr class="sidebar-divider d-none d-md-block">
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <!-- End of Sidebar -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <h4 class="ml-3 mt-2 text-success font-weight-bold d-inline-block">Tortoise List Management</h4>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">User 01</span>
+                                <i class="fas fa-user fa-2x text-success img-profile rounded-circle"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Profile</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>Settings</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+                <div class="container-fluid">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Tortoise Registry</h1>
+                        <div>
+                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#addTortoiseModal">
+                                <i class="fas fa-plus fa-sm text-white-50"></i> Add New Tortoise
+                            </button>
+                            <button class="btn btn-info btn-sm ml-2">
+                                <i class="fas fa-download fa-sm text-white-50"></i> Export Data
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Search and Filter Section -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Search & Filter</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" id="searchInput" placeholder="Search by ID or Name...">
+                                </div>
+                                <div class="col-md-2">
+                                    <select class="form-control" id="speciesFilter">
+                                        <option value="">All Species</option>
+                                        <option value="Galapagos">Galapagos</option>
+                                        <option value="Aldabra">Aldabra</option>
+                                        <option value="Sulcata">Sulcata</option>
+                                        <option value="Leopard">Leopard</option>
+                                        <option value="Hermann">Hermann</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <select class="form-control" id="healthFilter">
+                                        <option value="">All Health Status</option>
+                                        <option value="Healthy">Healthy</option>
+                                        <option value="Sick">Sick</option>
+                                        <option value="Recovering">Recovering</option>
+                                        <option value="Critical">Critical</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-primary btn-sm" onclick="filterTable()">
+                                        <i class="fas fa-search"></i> Filter
+                                    </button>
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="text-muted">Showing <span id="recordCount">100</span> of 100 tortoises</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tortoise List Table -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-turtle"></i> Tortoise Registry</h6>
+                            <div class="dropdown">
+                                <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-cog"></i> Actions
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#"><i class="fas fa-download"></i> Export to CSV</a>
+                                    <a class="dropdown-item" href="#"><i class="fas fa-print"></i> Print Report</a>
+                                    <a class="dropdown-item" href="#"><i class="fas fa-chart-bar"></i> Generate Report</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover" id="tortoiseTable">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Species</th>
+                                            <th>Age (Years)</th>
+                                            <th>Health Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tortoiseTableBody">
+                                        <!-- Tortoise data will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Tortoise Modal -->
+    <div class="modal fade" id="addTortoiseModal" tabindex="-1" role="dialog" aria-labelledby="addTortoiseModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTortoiseModalLabel">Add New Tortoise</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addTortoiseForm">
+                        <div class="form-group">
+                            <label for="tortoiseName">Name</label>
+                            <input type="text" class="form-control" id="tortoiseName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tortoiseSpecies">Species</label>
+                            <select class="form-control" id="tortoiseSpecies" required>
+                                <option value="">Select Species</option>
+                                <option value="Galapagos">Galapagos</option>
+                                <option value="Aldabra">Aldabra</option>
+                                <option value="Sulcata">Sulcata</option>
+                                <option value="Leopard">Leopard</option>
+                                <option value="Hermann">Hermann</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tortoiseAge">Age (Years)</label>
+                            <input type="number" class="form-control" id="tortoiseAge" min="0" max="200" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tortoiseHealth">Health Status</label>
+                            <select class="form-control" id="tortoiseHealth" required>
+                                <option value="">Select Health Status</option>
+                                <option value="Healthy">Healthy</option>
+                                <option value="Sick">Sick</option>
+                                <option value="Recovering">Recovering</option>
+                                <option value="Critical">Critical</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" onclick="addTortoise()">Add Tortoise</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Tortoise Modal -->
+    <div class="modal fade" id="editTortoiseModal" tabindex="-1" role="dialog" aria-labelledby="editTortoiseModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editTortoiseModalLabel">Edit Tortoise</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editTortoiseForm">
+                        <input type="hidden" id="editTortoiseId">
+                        <div class="form-group">
+                            <label for="editTortoiseName">Name</label>
+                            <input type="text" class="form-control" id="editTortoiseName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editTortoiseSpecies">Species</label>
+                            <select class="form-control" id="editTortoiseSpecies" required>
+                                <option value="">Select Species</option>
+                                <option value="Galapagos">Galapagos</option>
+                                <option value="Aldabra">Aldabra</option>
+                                <option value="Sulcata">Sulcata</option>
+                                <option value="Leopard">Leopard</option>
+                                <option value="Hermann">Hermann</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editTortoiseAge">Age (Years)</label>
+                            <input type="number" class="form-control" id="editTortoiseAge" min="0" max="200" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editTortoiseHealth">Health Status</label>
+                            <select class="form-control" id="editTortoiseHealth" required>
+                                <option value="">Select Health Status</option>
+                                <option value="Healthy">Healthy</option>
+                                <option value="Sick">Sick</option>
+                                <option value="Recovering">Recovering</option>
+                                <option value="Critical">Critical</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="updateTortoise()">Update Tortoise</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteTortoiseModal" tabindex="-1" role="dialog" aria-labelledby="deleteTortoiseModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteTortoiseModalLabel">Confirm Delete</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete tortoise <span id="deleteTortoiseName"></span>?</p>
+                    <p class="text-danger">This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteTortoise()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.js"></script>
+    <!-- DataTables -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+        // Sample tortoise data - 100 tortoises
+        let tortoises = [];
+        const species = ['Galapagos', 'Aldabra', 'Sulcata', 'Leopard', 'Hermann'];
+        const healthStatuses = ['Healthy', 'Sick', 'Recovering', 'Critical'];
+        const names = [
+            'Tommy', 'Luna', 'Rocky', 'Stella', 'Shelly', 'Franklin', 'Crush', 'Squirt',
+            'Donatello', 'Leonardo', 'Michelangelo', 'Raphael', 'Yertle', 'Myrtle', 'Speedy',
+            'Tank', 'Tiny', 'Biggie', 'Little', 'Spike', 'Spot', 'Dot', 'Dash', 'Flash',
+            'Thunder', 'Lightning', 'Storm', 'Rain', 'Sunny', 'Cloud', 'Star', 'Moon',
+            'Comet', 'Meteor', 'Nova', 'Cosmos', 'Galaxy', 'Nebula', 'Orion', 'Atlas',
+            'Zeus', 'Hera', 'Apollo', 'Artemis', 'Athena', 'Hermes', 'Dionysus', 'Poseidon',
+            'Hades', 'Demeter', 'Hestia', 'Aphrodite', 'Ares', 'Hephaestus', 'Persephone',
+            'Hecate', 'Iris', 'Nike', 'Tyche', 'Nemesis', 'Themis', 'Dike', 'Eunomia',
+            'Eirene', 'Harmonia', 'Hebe', 'Iris', 'Leto', 'Maia', 'Metis', 'Mnemosyne',
+            'Phoebe', 'Rhea', 'Selene', 'Theia', 'Themis', 'Tethys', 'Thalia', 'Urania',
+            'Calliope', 'Clio', 'Erato', 'Euterpe', 'Melpomene', 'Polyhymnia', 'Terpsichore',
+            'Thalia', 'Urania', 'Calypso', 'Circe', 'Medea', 'Penelope', 'Helen', 'Andromeda',
+            'Cassandra', 'Clytemnestra', 'Electra', 'Iphigenia', 'Antigone', 'Ismene', 'Jocasta'
+        ];
+
+        // Generate 100 tortoises
+        function generateTortoises() {
+            for (let i = 1; i <= 100; i++) {
+                const tortoise = {
+                    id: `T${String(i).padStart(3, '0')}`,
+                    name: names[i % names.length] + (Math.floor(i / names.length) + 1),
+                    species: species[Math.floor(Math.random() * species.length)],
+                    age: Math.floor(Math.random() * 150) + 1,
+                    healthStatus: healthStatuses[Math.floor(Math.random() * healthStatuses.length)]
+                };
+                tortoises.push(tortoise);
+            }
+        }
+
+        // Populate table
+        function populateTable(data = tortoises) {
+            const tbody = document.getElementById('tortoiseTableBody');
+            tbody.innerHTML = '';
+            
+            data.forEach(tortoise => {
+                const row = document.createElement('tr');
+                const healthClass = getHealthClass(tortoise.healthStatus);
+                
+                row.innerHTML = `
+                    <td><strong>${tortoise.id}</strong></td>
+                    <td>${tortoise.name}</td>
+                    <td>${tortoise.species}</td>
+                    <td>${tortoise.age}</td>
+                    <td><span class="${healthClass}">${tortoise.healthStatus}</span></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick="editTortoise('${tortoise.id}')">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="confirmDelete('${tortoise.id}', '${tortoise.name}')">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+            
+            document.getElementById('recordCount').textContent = data.length;
+        }
+
+        // Get health status CSS class
+        function getHealthClass(status) {
+            switch(status) {
+                case 'Healthy': return 'status-healthy';
+                case 'Sick': return 'status-sick';
+                case 'Recovering': return 'status-recovering';
+                case 'Critical': return 'status-critical';
+                default: return '';
+            }
+        }
+
+        // Filter table
+        function filterTable() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const speciesFilter = document.getElementById('speciesFilter').value;
+            const healthFilter = document.getElementById('healthFilter').value;
+            
+            const filteredData = tortoises.filter(tortoise => {
+                const matchesSearch = tortoise.id.toLowerCase().includes(searchTerm) || 
+                                    tortoise.name.toLowerCase().includes(searchTerm);
+                const matchesSpecies = !speciesFilter || tortoise.species === speciesFilter;
+                const matchesHealth = !healthFilter || tortoise.healthStatus === healthFilter;
+                
+                return matchesSearch && matchesSpecies && matchesHealth;
+            });
+            
+            populateTable(filteredData);
+        }
+
+        // Add new tortoise
+        function addTortoise() {
+            const name = document.getElementById('tortoiseName').value;
+            const species = document.getElementById('tortoiseSpecies').value;
+            const age = parseInt(document.getElementById('tortoiseAge').value);
+            const healthStatus = document.getElementById('tortoiseHealth').value;
+            
+            if (!name || !species || !age || !healthStatus) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            const newId = `T${String(tortoises.length + 1).padStart(3, '0')}`;
+            const newTortoise = {
+                id: newId,
+                name: name,
+                species: species,
+                age: age,
+                healthStatus: healthStatus
+            };
+            
+            tortoises.push(newTortoise);
+            populateTable();
+            $('#addTortoiseModal').modal('hide');
+            document.getElementById('addTortoiseForm').reset();
+        }
+
+        // Edit tortoise
+        function editTortoise(id) {
+            const tortoise = tortoises.find(t => t.id === id);
+            if (!tortoise) return;
+            
+            document.getElementById('editTortoiseId').value = tortoise.id;
+            document.getElementById('editTortoiseName').value = tortoise.name;
+            document.getElementById('editTortoiseSpecies').value = tortoise.species;
+            document.getElementById('editTortoiseAge').value = tortoise.age;
+            document.getElementById('editTortoiseHealth').value = tortoise.healthStatus;
+            
+            $('#editTortoiseModal').modal('show');
+        }
+
+        // Update tortoise
+        function updateTortoise() {
+            const id = document.getElementById('editTortoiseId').value;
+            const name = document.getElementById('editTortoiseName').value;
+            const species = document.getElementById('editTortoiseSpecies').value;
+            const age = parseInt(document.getElementById('editTortoiseAge').value);
+            const healthStatus = document.getElementById('editTortoiseHealth').value;
+            
+            if (!name || !species || !age || !healthStatus) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            const tortoiseIndex = tortoises.findIndex(t => t.id === id);
+            if (tortoiseIndex !== -1) {
+                tortoises[tortoiseIndex] = {
+                    id: id,
+                    name: name,
+                    species: species,
+                    age: age,
+                    healthStatus: healthStatus
+                };
+                populateTable();
+                $('#editTortoiseModal').modal('hide');
+            }
+        }
+
+        // Confirm delete
+        function confirmDelete(id, name) {
+            document.getElementById('deleteTortoiseName').textContent = name;
+            document.getElementById('deleteTortoiseModal').setAttribute('data-tortoise-id', id);
+            $('#deleteTortoiseModal').modal('show');
+        }
+
+        // Delete tortoise
+        function deleteTortoise() {
+            const id = document.getElementById('deleteTortoiseModal').getAttribute('data-tortoise-id');
+            const tortoiseIndex = tortoises.findIndex(t => t.id === id);
+            
+            if (tortoiseIndex !== -1) {
+                tortoises.splice(tortoiseIndex, 1);
+                populateTable();
+                $('#deleteTortoiseModal').modal('hide');
+            }
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', filterTable);
+        document.getElementById('speciesFilter').addEventListener('change', filterTable);
+        document.getElementById('healthFilter').addEventListener('change', filterTable);
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            generateTortoises();
+            populateTable();
+        });
+    </script>
+</body>
+</html> 
