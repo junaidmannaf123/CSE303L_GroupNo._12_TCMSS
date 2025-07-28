@@ -40,14 +40,14 @@
                     <span>View Tortoise List</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="vetdashboard.html#alerts-section">
+                <a class="nav-link" href="vet_alerts.html">
                     <i class="fas fa-fw fa-exclamation-triangle"></i>
                     <span>Alerts</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="vetdashboard.html#tasks-section">
+                <a class="nav-link" href="assigned_tasks.html">
                     <i class="fas fa-fw fa-tasks"></i>
-                    <span>Tasks</span></a>
+                    <span>Assigned Tasks</span></a>
             </li>
             <hr class="sidebar-divider d-none d-md-block">
             <div class="text-center d-none d-md-inline">
@@ -82,11 +82,81 @@
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Health Records</h1>
-                        <a href="#" class="btn btn-success btn-sm shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Add New Record</a>
+                        <a href="#" class="btn btn-success btn-sm shadow-sm" data-toggle="modal" data-target="#addHealthRecordModal"><i class="fas fa-plus fa-sm text-white-50"></i> Add New Record</a>
                     </div>
+                    <!-- Filter Section -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-success">
+                                <i class="fas fa-filter mr-2"></i>Filter Records
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <form id="filterForm">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="filterTortoiseId" class="font-weight-bold text-gray-800">Tortoise ID</label>
+                                            <input type="text" class="form-control" id="filterTortoiseId" placeholder="Enter tortoise ID">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="filterStatus" class="font-weight-bold text-gray-800">Health Status</label>
+                                            <select class="form-control" id="filterStatus">
+                                                <option value="">All Status</option>
+                                                <option value="healthy">Healthy</option>
+                                                <option value="sick">Sick</option>
+                                                <option value="recovering">Recovering</option>
+                                                <option value="critical">Critical</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="filterDateFrom" class="font-weight-bold text-gray-800">Date From</label>
+                                            <input type="date" class="form-control" id="filterDateFrom">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="filterDateTo" class="font-weight-bold text-gray-800">Date To</label>
+                                            <input type="date" class="form-control" id="filterDateTo">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="filterNotes" class="font-weight-bold text-gray-800">Search in Notes</label>
+                                            <input type="text" class="form-control" id="filterNotes" placeholder="Search in notes...">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold text-gray-800">Actions</label>
+                                            <div class="d-flex">
+                                                <button type="button" class="btn btn-success mr-2" onclick="applyFilter()">
+                                                    <i class="fas fa-search mr-1"></i>Apply Filter
+                                                </button>
+                                                <button type="button" class="btn btn-secondary" onclick="clearFilter()">
+                                                    <i class="fas fa-times mr-1"></i>Clear Filter
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- End Filter Section -->
+                    
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6 class="m-0 font-weight-bold text-success">All Health Records</h6>
+                            <div class="text-muted">
+                                <span id="recordCount">Showing 100 records</span>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -99,7 +169,7 @@
                                             <th>Notes</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="healthRecordsTableBody">
                                         <tr><td>2024-06-01</td><td>T001</td><td><span class="badge badge-danger">Sick</span></td><td>Showing signs of respiratory infection. Medication prescribed.</td></tr>
                                         <tr><td>2024-06-01</td><td>T002</td><td><span class="badge badge-warning">Recovering</span></td><td>Recovering well after recent shell injury.</td></tr>
                                         <tr><td>2024-06-01</td><td>T003</td><td><span class="badge badge-success">Healthy</span></td><td>Routine check, all normal.</td></tr>
@@ -221,6 +291,106 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+    <!-- Add Health Record Modal -->
+    <div class="modal fade" id="addHealthRecordModal" tabindex="-1" role="dialog" aria-labelledby="addHealthRecordModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-success" id="addHealthRecordModalLabel">
+                        <i class="fas fa-plus-circle mr-2"></i>Add New Health Record
+                    </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addHealthRecordForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tortoiseId" class="font-weight-bold text-gray-800">Tortoise ID *</label>
+                                    <input type="text" class="form-control" id="tortoiseId" name="tortoiseId" required placeholder="Enter tortoise ID">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="recordDate" class="font-weight-bold text-gray-800">Record Date *</label>
+                                    <input type="date" class="form-control" id="recordDate" name="recordDate" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="healthStatus" class="font-weight-bold text-gray-800">Health Status *</label>
+                                    <select class="form-control" id="healthStatus" name="healthStatus" required>
+                                        <option value="">Select status</option>
+                                        <option value="healthy">Healthy</option>
+                                        <option value="sick">Sick</option>
+                                        <option value="recovering">Recovering</option>
+                                        <option value="critical">Critical</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="weight" class="font-weight-bold text-gray-800">Weight (kg)</label>
+                                    <input type="number" class="form-control" id="weight" name="weight" step="0.1" placeholder="Enter weight">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="temperature" class="font-weight-bold text-gray-800">Temperature (°C)</label>
+                                    <input type="number" class="form-control" id="temperature" name="temperature" step="0.1" placeholder="Enter temperature">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="heartRate" class="font-weight-bold text-gray-800">Heart Rate (bpm)</label>
+                                    <input type="number" class="form-control" id="heartRate" name="heartRate" placeholder="Enter heart rate">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="symptoms" class="font-weight-bold text-gray-800">Symptoms/Observations</label>
+                            <textarea class="form-control" id="symptoms" name="symptoms" rows="3" placeholder="Describe any symptoms or observations"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="treatment" class="font-weight-bold text-gray-800">Treatment/Medication</label>
+                            <textarea class="form-control" id="treatment" name="treatment" rows="3" placeholder="Describe any treatment or medication administered"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="notes" class="font-weight-bold text-gray-800">Additional Notes</label>
+                            <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="Any additional notes or comments"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="veterinarian" class="font-weight-bold text-gray-800">Veterinarian</label>
+                                    <input type="text" class="form-control" id="veterinarian" name="veterinarian" value="Dr. Atika Humayra" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="nextCheckup" class="font-weight-bold text-gray-800">Next Checkup Date</label>
+                                    <input type="date" class="form-control" id="nextCheckup" name="nextCheckup">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-success" type="button" onclick="saveHealthRecord()">
+                        <i class="fas fa-save mr-1"></i>Save Record
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Add Health Record Modal -->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -242,5 +412,183 @@
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="js/sb-admin-2.min.js"></script>
+    
+    <!-- Health Record Modal JavaScript -->
+    <script>
+        // Set default date to today
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('recordDate').value = today;
+        });
+
+        function saveHealthRecord() {
+            // Get form data
+            const form = document.getElementById('addHealthRecordForm');
+            const formData = new FormData(form);
+            
+            // Validate required fields
+            const tortoiseId = formData.get('tortoiseId');
+            const recordDate = formData.get('recordDate');
+            const healthStatus = formData.get('healthStatus');
+            
+            if (!tortoiseId || !recordDate || !healthStatus) {
+                alert('Please fill in all required fields (marked with *)');
+                return;
+            }
+            
+            // Create health record object
+            const healthRecord = {
+                tortoiseId: tortoiseId,
+                recordDate: recordDate,
+                healthStatus: healthStatus,
+                weight: formData.get('weight'),
+                temperature: formData.get('temperature'),
+                heartRate: formData.get('heartRate'),
+                symptoms: formData.get('symptoms'),
+                treatment: formData.get('treatment'),
+                notes: formData.get('notes'),
+                veterinarian: formData.get('veterinarian'),
+                nextCheckup: formData.get('nextCheckup')
+            };
+            
+            // Here you would typically send the data to your backend
+            // For now, we'll just show a success message
+            console.log('Health Record Data:', healthRecord);
+            
+            // Show success message
+            alert('Health record saved successfully!');
+            
+            // Reset form
+            form.reset();
+            document.getElementById('recordDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('veterinarian').value = 'Dr. Atika Humayra';
+            
+            // Close modal
+            $('#addHealthRecordModal').modal('hide');
+            
+            // Optionally refresh the page to show the new record
+            // location.reload();
+        }
+        
+        // Clear form when modal is closed
+        $('#addHealthRecordModal').on('hidden.bs.modal', function () {
+            document.getElementById('addHealthRecordForm').reset();
+            document.getElementById('recordDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('veterinarian').value = 'Dr. Atika Humayra';
+        });
+
+        // Filter functionality
+        let allRecords = [];
+        
+        // Store all records on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableBody = document.getElementById('healthRecordsTableBody');
+            const rows = tableBody.getElementsByTagName('tr');
+            
+            // Store all records
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                const cells = row.getElementsByTagName('td');
+                if (cells.length >= 4) {
+                    allRecords.push({
+                        date: cells[0].textContent,
+                        tortoiseId: cells[1].textContent,
+                        status: cells[2].textContent,
+                        notes: cells[3].textContent,
+                        element: row
+                    });
+                }
+            }
+        });
+
+        function applyFilter() {
+            const tortoiseId = document.getElementById('filterTortoiseId').value.toLowerCase();
+            const status = document.getElementById('filterStatus').value.toLowerCase();
+            const dateFrom = document.getElementById('filterDateFrom').value;
+            const dateTo = document.getElementById('filterDateTo').value;
+            const notes = document.getElementById('filterNotes').value.toLowerCase();
+            
+            const tableBody = document.getElementById('healthRecordsTableBody');
+            let visibleCount = 0;
+            
+            // Clear current table
+            tableBody.innerHTML = '';
+            
+            // Filter and display records
+            allRecords.forEach(record => {
+                let showRecord = true;
+                
+                // Filter by Tortoise ID
+                if (tortoiseId && !record.tortoiseId.toLowerCase().includes(tortoiseId)) {
+                    showRecord = false;
+                }
+                
+                // Filter by Status
+                if (status && !record.status.toLowerCase().includes(status)) {
+                    showRecord = false;
+                }
+                
+                // Filter by Date Range
+                if (dateFrom && record.date < dateFrom) {
+                    showRecord = false;
+                }
+                if (dateTo && record.date > dateTo) {
+                    showRecord = false;
+                }
+                
+                // Filter by Notes
+                if (notes && !record.notes.toLowerCase().includes(notes)) {
+                    showRecord = false;
+                }
+                
+                // Show/hide record
+                if (showRecord) {
+                    tableBody.appendChild(record.element.cloneNode(true));
+                    visibleCount++;
+                }
+            });
+            
+            // Update record count
+            document.getElementById('recordCount').textContent = `Showing ${visibleCount} records`;
+            
+            // Show message if no records found
+            if (visibleCount === 0) {
+                tableBody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">No records found matching the filter criteria</td></tr>';
+            }
+        }
+
+        function clearFilter() {
+            // Clear filter form
+            document.getElementById('filterForm').reset();
+            
+            // Show all records
+            const tableBody = document.getElementById('healthRecordsTableBody');
+            tableBody.innerHTML = '';
+            
+            allRecords.forEach(record => {
+                tableBody.appendChild(record.element.cloneNode(true));
+            });
+            
+            // Update record count
+            document.getElementById('recordCount').textContent = `Showing ${allRecords.length} records`;
+        }
+
+        // Add enter key support for filter inputs
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterInputs = ['filterTortoiseId', 'filterStatus', 'filterDateFrom', 'filterDateTo', 'filterNotes'];
+            
+            filterInputs.forEach(inputId => {
+                const input = document.getElementById(inputId);
+                if (input) {
+                    input.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            applyFilter();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html> 

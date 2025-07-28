@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Tortoise Conservation Management System - Veterinary Alerts">
+    <meta name="author" content="">
+    <title>Veterinary Alerts - Tortoise Conservation</title>
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+        .alert-critical { border-left: 4px solid #dc3545; }
+        .alert-urgent { border-left: 4px solid #fd7e14; }
+        .alert-warning { border-left: 4px solid #ffc107; }
+        .alert-info { border-left: 4px solid #17a2b8; }
+        .alert-resolved { border-left: 4px solid #28a745; opacity: 0.7; }
+        .alert-time { font-size: 0.8em; color: #6c757d; }
+        .alert-priority { font-weight: bold; }
+        .priority-critical { color: #dc3545; }
+        .priority-urgent { color: #fd7e14; }
+        .priority-warning { color: #ffc107; }
+        .priority-info { color: #17a2b8; }
+        .priority-resolved { color: #28a745; }
+    </style>
+</head>
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="vetdashboard.html">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-turtle"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">TCMSS</div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item">
+                <a class="nav-link" href="vetdashboard.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">Vet Tools</div>
+            <li class="nav-item">
+                <a class="nav-link" href="health-records.html">
+                    <i class="fas fa-fw fa-notes-medical"></i>
+                    <span>Health Records</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="tortoise-list.html">
+                    <i class="fas fa-fw fa-list"></i>
+                    <span>View Tortoise List</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="vet_alerts.html">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i>
+                    <span>Alerts</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="assigned_tasks.html">
+                    <i class="fas fa-fw fa-tasks"></i>
+                    <span>Assigned Tasks</span></a>
+            </li>
+            <hr class="sidebar-divider d-none d-md-block">
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <!-- End of Sidebar -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <h4 class="ml-3 mt-2 text-success font-weight-bold d-inline-block">Veterinary Alerts</h4>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Dr. Atika Humayra</span>
+                                <i class="fas fa-user-nurse fa-2x text-success img-profile rounded-circle"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Profile</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>Settings</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+                <div class="container-fluid">
+                    <!-- Alert Statistics -->
+                    <div class="row mb-4">
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-danger shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Critical Alerts</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="critical-count">3</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-exclamation-circle fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Urgent Alerts</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="urgent-count">5</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Active Alerts</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="active-count">12</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-bell fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Resolved Today</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="resolved-count">8</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filter Controls -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Filter Alerts</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <select class="form-control" id="priorityFilter">
+                                        <option value="">All Priorities</option>
+                                        <option value="critical">Critical</option>
+                                        <option value="urgent">Urgent</option>
+                                        <option value="warning">Warning</option>
+                                        <option value="info">Info</option>
+                                        <option value="resolved">Resolved</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control" id="statusFilter">
+                                        <option value="">All Status</option>
+                                        <option value="active">Active</option>
+                                        <option value="resolved">Resolved</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" id="searchAlerts" placeholder="Search alerts...">
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-primary" onclick="filterAlerts()">
+                                        <i class="fas fa-filter"></i> Filter
+                                    </button>
+                                    <button class="btn btn-secondary ml-2" onclick="clearFilters()">
+                                        <i class="fas fa-times"></i> Clear
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alerts List -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Veterinary Alerts</h6>
+                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#addAlertModal">
+                                <i class="fas fa-plus fa-sm text-white-50"></i> Add Alert
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div id="alertsContainer">
+                                <!-- Alerts will be dynamically inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Tortoise Conservation 2024</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Add Alert Modal -->
+    <div class="modal fade" id="addAlertModal" tabindex="-1" role="dialog" aria-labelledby="addAlertModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addAlertModalLabel">Add New Alert</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addAlertForm">
+                        <div class="form-group">
+                            <label for="alertTitle">Alert Title</label>
+                            <input type="text" class="form-control" id="alertTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="alertDescription">Description</label>
+                            <textarea class="form-control" id="alertDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="alertPriority">Priority</label>
+                            <select class="form-control" id="alertPriority" required>
+                                <option value="">Select Priority</option>
+                                <option value="critical">Critical</option>
+                                <option value="urgent">Urgent</option>
+                                <option value="warning">Warning</option>
+                                <option value="info">Info</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="alertTortoise">Related Tortoise (Optional)</label>
+                            <input type="text" class="form-control" id="alertTortoise" placeholder="Tortoise ID or Name">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" onclick="addAlert()">Add Alert</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-success" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <script>
+        // Sample alerts data
+        let alerts = [
+            {
+                id: 1,
+                title: "Critical: Tortoise T001 showing severe respiratory distress",
+                description: "Tortoise T001 is exhibiting labored breathing and reduced activity. Immediate veterinary attention required.",
+                priority: "critical",
+                status: "active",
+                tortoise: "T001",
+                timestamp: "2024-06-10T09:30:00",
+                assignedTo: "Dr. Atika Humayra"
+            },
+            {
+                id: 2,
+                title: "Urgent: Temperature anomaly detected in Enclosure A",
+                description: "Temperature readings in Enclosure A are 5°C above normal range. Check heating system immediately.",
+                priority: "urgent",
+                status: "active",
+                tortoise: "Multiple",
+                timestamp: "2024-06-10T08:15:00",
+                assignedTo: "Maintenance Team"
+            },
+            {
+                id: 3,
+                title: "Warning: Tortoise T045 missed scheduled feeding",
+                description: "Tortoise T045 did not consume its scheduled meal. Monitor appetite and behavior.",
+                priority: "warning",
+                status: "active",
+                tortoise: "T045",
+                timestamp: "2024-06-10T07:45:00",
+                assignedTo: "Care Team"
+            },
+            {
+                id: 4,
+                title: "Info: Routine health check completed for Tortoise T023",
+                description: "Annual health check completed. All parameters within normal range.",
+                priority: "info",
+                status: "resolved",
+                tortoise: "T023",
+                timestamp: "2024-06-10T06:30:00",
+                assignedTo: "Dr. Atika Humayra"
+            },
+            {
+                id: 5,
+                title: "Critical: Shell injury detected on Tortoise T012",
+                description: "Deep crack observed on the carapace of Tortoise T012. Requires immediate treatment.",
+                priority: "critical",
+                status: "active",
+                tortoise: "T012",
+                timestamp: "2024-06-10T05:20:00",
+                assignedTo: "Dr. Atika Humayra"
+            }
+        ];
+
+        function formatTimestamp(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleString();
+        }
+
+        function getPriorityClass(priority) {
+            switch(priority) {
+                case 'critical': return 'alert-critical priority-critical';
+                case 'urgent': return 'alert-urgent priority-urgent';
+                case 'warning': return 'alert-warning priority-warning';
+                case 'info': return 'alert-info priority-info';
+                case 'resolved': return 'alert-resolved priority-resolved';
+                default: return '';
+            }
+        }
+
+        function getPriorityIcon(priority) {
+            switch(priority) {
+                case 'critical': return 'fas fa-exclamation-circle';
+                case 'urgent': return 'fas fa-exclamation-triangle';
+                case 'warning': return 'fas fa-exclamation-triangle';
+                case 'info': return 'fas fa-info-circle';
+                case 'resolved': return 'fas fa-check-circle';
+                default: return 'fas fa-bell';
+            }
+        }
+
+        function renderAlerts(filteredAlerts = alerts) {
+            const container = document.getElementById('alertsContainer');
+            container.innerHTML = '';
+
+            if (filteredAlerts.length === 0) {
+                container.innerHTML = '<div class="text-center text-muted py-4">No alerts found matching the criteria.</div>';
+                return;
+            }
+
+            filteredAlerts.forEach(alert => {
+                const alertElement = document.createElement('div');
+                alertElement.className = `alert ${getPriorityClass(alert.priority)} mb-3`;
+                alertElement.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="${getPriorityIcon(alert.priority)} mr-2"></i>
+                                <h6 class="alert-priority mb-0">${alert.title}</h6>
+                                <span class="badge badge-${alert.priority === 'critical' ? 'danger' : alert.priority === 'urgent' ? 'warning' : alert.priority === 'warning' ? 'warning' : alert.priority === 'info' ? 'info' : 'success'} ml-2">${alert.priority.toUpperCase()}</span>
+                                ${alert.status === 'resolved' ? '<span class="badge badge-success ml-2">RESOLVED</span>' : ''}
+                            </div>
+                            <p class="mb-2">${alert.description}</p>
+                            <div class="alert-time">
+                                <strong>Tortoise:</strong> ${alert.tortoise} | 
+                                <strong>Assigned to:</strong> ${alert.assignedTo} | 
+                                <strong>Time:</strong> ${formatTimestamp(alert.timestamp)}
+                            </div>
+                        </div>
+                        <div class="ml-3">
+                            ${alert.status === 'active' ? 
+                                `<button class="btn btn-sm btn-success" onclick="resolveAlert(${alert.id})">
+                                    <i class="fas fa-check"></i> Resolve
+                                </button>` : 
+                                `<button class="btn btn-sm btn-secondary" disabled>
+                                    <i class="fas fa-check"></i> Resolved
+                                </button>`
+                            }
+                        </div>
+                    </div>
+                `;
+                container.appendChild(alertElement);
+            });
+
+            updateStatistics();
+        }
+
+        function updateStatistics() {
+            const critical = alerts.filter(a => a.priority === 'critical' && a.status === 'active').length;
+            const urgent = alerts.filter(a => a.priority === 'urgent' && a.status === 'active').length;
+            const active = alerts.filter(a => a.status === 'active').length;
+            const resolved = alerts.filter(a => a.status === 'resolved').length;
+
+            document.getElementById('critical-count').textContent = critical;
+            document.getElementById('urgent-count').textContent = urgent;
+            document.getElementById('active-count').textContent = active;
+            document.getElementById('resolved-count').textContent = resolved;
+        }
+
+        function filterAlerts() {
+            const priorityFilter = document.getElementById('priorityFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const searchTerm = document.getElementById('searchAlerts').value.toLowerCase();
+
+            const filtered = alerts.filter(alert => {
+                const matchesPriority = !priorityFilter || alert.priority === priorityFilter;
+                const matchesStatus = !statusFilter || alert.status === statusFilter;
+                const matchesSearch = !searchTerm || 
+                    alert.title.toLowerCase().includes(searchTerm) ||
+                    alert.description.toLowerCase().includes(searchTerm) ||
+                    alert.tortoise.toLowerCase().includes(searchTerm);
+
+                return matchesPriority && matchesStatus && matchesSearch;
+            });
+
+            renderAlerts(filtered);
+        }
+
+        function clearFilters() {
+            document.getElementById('priorityFilter').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('searchAlerts').value = '';
+            renderAlerts();
+        }
+
+        function resolveAlert(id) {
+            const alert = alerts.find(a => a.id === id);
+            if (alert) {
+                alert.status = 'resolved';
+                renderAlerts();
+            }
+        }
+
+        function addAlert() {
+            const title = document.getElementById('alertTitle').value;
+            const description = document.getElementById('alertDescription').value;
+            const priority = document.getElementById('alertPriority').value;
+            const tortoise = document.getElementById('alertTortoise').value;
+
+            if (!title || !description || !priority) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            const newAlert = {
+                id: alerts.length + 1,
+                title: title,
+                description: description,
+                priority: priority,
+                status: 'active',
+                tortoise: tortoise || 'N/A',
+                timestamp: new Date().toISOString(),
+                assignedTo: 'Dr. Atika Humayra'
+            };
+
+            alerts.unshift(newAlert);
+            renderAlerts();
+            $('#addAlertModal').modal('hide');
+            document.getElementById('addAlertForm').reset();
+        }
+
+        // Event listeners
+        document.getElementById('searchAlerts').addEventListener('input', filterAlerts);
+        document.getElementById('priorityFilter').addEventListener('change', filterAlerts);
+        document.getElementById('statusFilter').addEventListener('change', filterAlerts);
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderAlerts();
+        });
+    </script>
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
+</body>
+</html> 

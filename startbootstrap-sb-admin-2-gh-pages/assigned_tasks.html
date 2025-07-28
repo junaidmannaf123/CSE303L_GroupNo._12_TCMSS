@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Tortoise Conservation Management System Assigned Tasks">
+    <meta name="author" content="">
+    <title>Assigned Tasks - Tortoise Veterinarian</title>
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="vetdashboard.html">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-turtle"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">TCMSS</div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item">
+                <a class="nav-link" href="vetdashboard.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">Vet Tools</div>
+            <li class="nav-item">
+                <a class="nav-link" href="health-records.html">
+                    <i class="fas fa-fw fa-notes-medical"></i>
+                    <span>Health Records</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="tortoise-list.html">
+                    <i class="fas fa-fw fa-list"></i>
+                    <span>View Tortoise List</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="vet_alerts.html">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i>
+                    <span>Alerts</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="assigned_tasks.html">
+                    <i class="fas fa-fw fa-tasks"></i>
+                    <span>Assigned Tasks</span></a>
+            </li>
+            <hr class="sidebar-divider d-none d-md-block">
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <!-- End of Sidebar -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <h4 class="ml-3 mt-2 text-success font-weight-bold d-inline-block">Assigned Tasks</h4>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Dr. Atika Humayra</span>
+                                <i class="fas fa-user-nurse fa-2x text-success img-profile rounded-circle"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Profile</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>Settings</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-header bg-primary text-white">Upcoming Tasks</div>
+                                <ul class="list-group list-group-flush" id="upcoming-tasks">
+                                    <!-- Upcoming tasks will be inserted here -->
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-header bg-success text-white">Today's Tasks</div>
+                                <ul class="list-group list-group-flush" id="todays-tasks">
+                                    <!-- Today's tasks will be inserted here -->
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-header bg-warning text-white">Due Tomorrow</div>
+                                <ul class="list-group list-group-flush" id="due-tomorrow-tasks">
+                                    <!-- Due tomorrow tasks will be inserted here -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-4">
+                        <div class="card-header">All Assigned Tasks</div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Task</th>
+                                        <th>Assigned Date</th>
+                                        <th>Due Date</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="all-tasks">
+                                    <!-- All tasks will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Tortoise Conservation 2025</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-success" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Example data for demonstration
+        const tasks = [
+            { id: 1, name: "Check Tortoise A's shell", assigned: "2025-06-01", due: "2025-07-29", status: "Not Completed" },
+            { id: 2, name: "Vaccinate Tortoise B", assigned: "2025-06-09", due: "2025-07-28", status: "Not Completed" },
+            { id: 3, name: "Health check for Tortoise C", assigned: "2025-07-28", due: "2025-08-01", status: "Completed" },
+            { id: 4, name: "Clean Tortoise D's enclosure", assigned: "2025-06-08", due: "2025-06-11", status: "Not Completed" },
+            { id: 5, name: "Feed Tortoise E", assigned: "2025-06-10", due: "2025-06-12", status: "Not Completed" }
+        ];
+
+        // Helper functions
+        function formatDate(dateStr) {
+            const d = new Date(dateStr);
+            return d.toLocaleDateString();
+        }
+        function isToday(dateStr) {
+            const today = new Date();
+            const d = new Date(dateStr);
+            return d.getFullYear() === today.getFullYear() && d.getMonth() === today.getMonth() && d.getDate() === today.getDate();
+        }
+        function isTomorrow(dateStr) {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            const d = new Date(dateStr);
+            return d.getFullYear() === tomorrow.getFullYear() && d.getMonth() === tomorrow.getMonth() && d.getDate() === tomorrow.getDate();
+        }
+        function isUpcoming(dateStr) {
+            const today = new Date();
+            const d = new Date(dateStr);
+            // Upcoming means after today and not tomorrow
+            return d > today && !isTomorrow(dateStr);
+        }
+
+        // Render functions
+        function renderTasks() {
+            const upcoming = document.getElementById('upcoming-tasks');
+            const todayList = document.getElementById('todays-tasks');
+            const tomorrow = document.getElementById('due-tomorrow-tasks');
+            const all = document.getElementById('all-tasks');
+            upcoming.innerHTML = '';
+            todayList.innerHTML = '';
+            tomorrow.innerHTML = '';
+            all.innerHTML = '';
+            let hasUpcoming = false, hasToday = false, hasTomorrow = false;
+            tasks.forEach(task => {
+                // Upcoming
+                if (isUpcoming(task.due)) {
+                    hasUpcoming = true;
+                    upcoming.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center">${task.name}<span class="badge badge-info">${formatDate(task.due)}</span></li>`;
+                }
+                // Today
+                if (isToday(task.due)) {
+                    hasToday = true;
+                    todayList.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center">${task.name}<span class="badge badge-success">${formatDate(task.due)}</span></li>`;
+                }
+                // Tomorrow
+                if (isTomorrow(task.due)) {
+                    hasTomorrow = true;
+                    tomorrow.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center">${task.name}<span class="badge badge-warning">${formatDate(task.due)}</span></li>`;
+                }
+                // All tasks table
+                all.innerHTML += `
+                    <tr>
+                        <td>${task.name}</td>
+                        <td>${formatDate(task.assigned)}</td>
+                        <td>${formatDate(task.due)}</td>
+                        <td><span class="badge ${task.status === 'Completed' ? 'badge-success' : 'badge-danger'}">${task.status}</span></td>
+                        <td>
+                            ${task.status === 'Not Completed' ? `<button class="btn btn-sm btn-primary" onclick="markCompleted(${task.id})">Mark as Completed</button>` : '<i class="fas fa-check text-success"></i>'}
+                        </td>
+                    </tr>
+                `;
+            });
+            if (!hasUpcoming) upcoming.innerHTML = '<li class="list-group-item text-muted">No upcoming tasks.</li>';
+            if (!hasToday) todayList.innerHTML = '<li class="list-group-item text-muted">No tasks due today.</li>';
+            if (!hasTomorrow) tomorrow.innerHTML = '<li class="list-group-item text-muted">No tasks due tomorrow.</li>';
+        }
+        function markCompleted(id) {
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                task.status = 'Completed';
+                renderTasks();
+            }
+        }
+        // Initial render
+        renderTasks();
+    </script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
+    <script src="vendor/fontawesome-free/js/all.min.js"></script>
+</body>
+</html> 
