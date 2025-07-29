@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
+  <title>Caretaker Tasks - TCCMS</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tortoise Caretaker Tasks</title>
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -12,128 +11,253 @@
 
 <body id="page-top">
   <div id="wrapper">
+    
     <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="caretaker_dashboard.html">
         <div class="sidebar-brand-text mx-3">🐢TCCMS</div>
       </a>
-
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
         <a class="nav-link" href="caretaker_dashboard.html">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
+          <i class="fas fa-fw fa-tachometer-alt"></i><span>Dashboard</span>
+        </a>
       </li>
-
       <hr class="sidebar-divider">
       <li class="nav-item active">
         <a class="nav-link" href="caretaker_tasks.html">
-          <i class="fas fa-tasks"></i>
-          <span>Tasks</span></a>
+          <i class="fas fa-tasks"></i><span>Tasks</span>
+        </a>
       </li>
-
       <li class="nav-item">
         <a class="nav-link" href="feeding.html">
-          <i class="fas fa-seedling"></i>
-          <span>Feeding Schedule</span></a>
+          <i class="fas fa-seedling"></i><span>Feeding Schedule</span>
+        </a>
       </li>
-
       <li class="nav-item">
         <a class="nav-link" href="health.html">
-          <i class="fas fa-notes-medical"></i>
-          <span>Health Records</span></a>
+          <i class="fas fa-notes-medical"></i><span>Health Records</span>
+        </a>
       </li>
-
       <hr class="sidebar-divider d-none d-md-block">
     </ul>
+    
 
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
+        
+        
         <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 shadow">
+          <h1 class="h4 text-gray-800">Daily Tasks</h1>
           <ul class="navbar-nav ml-auto">
             <div class="topbar-divider d-none d-sm-block"></div>
             <li class="nav-item dropdown no-arrow">
-              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Caretaker</span>
-                <img class="img-profile rounded-circle" src="img/undraw_profile_1.svg" alt="Profile Picture">
+              <a class="nav-link dropdown-toggle" href="#">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Profile</span>
+                <i class="fas fa-user fa-2x text-success img-profile rounded-circle"></i>
               </a>
             </li>
           </ul>
         </nav>
 
+        
+      
         <div class="container-fluid">
-          <h1 class="h3 mb-4 text-success">Daily Tasks</h1>
+          
 
+          
+          <button class="btn btn-success mb-3" id="showTaskForm">
+            <i class="fas fa-plus-circle"></i> Add Task
+          </button>
+
+          
+          <div id="taskForm" class="card shadow mb-4" style="display: none;">
+            <div class="card-header py-3 bg-success text-white">
+              <h6 class="m-0 font-weight-bold">New Task</h6>
+            </div>
+            <div class="card-body">
+              <form id="newTaskForm">
+                <div class="form-group">
+                  <label for="taskName">Task</label>
+                  <input type="text" class="form-control" id="taskName" required>
+                </div>
+                <div class="form-group">
+                  <label for="dueTime">Due Time</label>
+                  <input type="time" class="form-control" id="dueTime" required>
+                </div>
+                <div class="form-group">
+                  <label for="taskStatus">Status</label>
+                  <select class="form-control" id="taskStatus">
+                    <option value="Pending">Pending</option>
+                    <option value="Completed">Completed</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Confirm</button>
+              </form>
+            </div>
+          </div>
+
+          
           <div class="card shadow mb-4">
             <div class="card-header py-3 bg-success">
               <h6 class="m-0 font-weight-bold text-white">Task List</h6>
             </div>
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="taskTable">
                   <thead class="bg-light text-success">
                     <tr>
                       <th>Task</th>
-                      <th>Status</th>
                       <th>Due Time</th>
+                      <th>Status</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td>Check humidity levels</td>
-                      <td><span class="badge badge-success">Completed</span></td>
+                      <td>Clean enclosure</td>                      
                       <td>08:00 AM</td>
+                      <td class="status"><span class="badge badge-warning">Pending</span></td>
+                      <td><button class="btn btn-sm btn-primary mark-done">Mark as Done</button></td>
                     </tr>
                     <tr>
-                      <td>Clean enclosure</td>
-                      <td><span class="badge badge-success">Completed</span></td>
+                      <td>Clean water bowls</td>
                       <td>09:00 AM</td>
+                      <td class="status"><span class="badge badge-warning">Pending</span></td>
+                      <td><button class="btn btn-sm btn-primary mark-done">Mark as Done</button></td>
+                    </tr>
+                    <tr>
+                      <td>Get rid of leftover foods </td>
+                      <td>10:00 AM</td>
+                      <td class="status"><span class="badge badge-warning">Pending</span></td>
+                      <td><button class="btn btn-sm btn-primary mark-done">Mark as Done</button></td>
+                    </tr>
+                    <tr>
+                      <td>Clean tortoise shell gently</td>
+                      <td>10:30 AM</td>
+                      <td class="status"><span class="badge badge-warning">Pending</span></td>
+                      <td><button class="btn btn-sm btn-primary mark-done">Mark as Done</button></td>
                     </tr>
                     <tr>
                       <td>Feed tortoises</td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td>11:00 AM</td>
+                      <td>11:30 AM</td>
+                      <td class="status"><span class="badge badge-warning">Pending</span></td>
+                      <td><button class="btn btn-sm btn-primary mark-done">Mark as Done</button></td>
+                    </tr>
+                    <tr>
+                      <td>Refill fresh water bowls if required</td>
+                      <td>12:30 PM</td>
+                      <td class="status"><span class="badge badge-warning">Pending</span></td>
+                      <td><button class="btn btn-sm btn-primary mark-done">Mark as Done</button></td>
                     </tr>
                     <tr>
                       <td>Record health</td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td>12:00 PM</td>
-                    </tr>
-                    <tr>
-                      <td>Replace water dish</td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td>01:00 PM</td>
+                      <td>1:00 PM</td>
+                      <td class="status"><span class="badge badge-warning">Pending</span></td>
+                      <td><button class="btn btn-sm btn-primary mark-done">Mark as Done</button></td>
                     </tr>
                     <tr>
                       <td>Check basking lamp</td>
-                      <td><span class="badge badge-warning">Pending</span></td>
+                      <td>02:00 PM</td>
+                      <td class="status"><span class="badge badge-warning">Pending</span></td>
+                      <td><button class="btn btn-sm btn-primary mark-done">Mark as Done</button></td>
+                    </tr>
+                    <tr>
+                      <td>Report malfunctioning lights </td>
                       <td>02:30 PM</td>
+                      <td class="status"><span class="badge badge-warning">Pending</span></td>
+                      <td><button class="btn btn-sm btn-primary mark-done">Mark as Done</button></td>
+                    </tr>
+                    <tr>
+                      <td>Clean enclosure before leaving </td>
+                      <td>04:00 PM</td>
+                      <td class="status"><span class="badge badge-warning">Pending</span></td>
+                      <td><button class="btn btn-sm btn-primary mark-done">Mark as Done</button></td>
+                    </tr>
+                    <tr>
+                      <td>Watch for unusual behavior </td>
+                      <td> - </td>
+                      <td> - </td>
+                      <td> - </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto text-center">
-          <span>© 2025 Tortoise Conservation Center</span>
         </div>
-      </footer>
+
+        <footer class="sticky-footer bg-white">
+          <div class="container my-auto text-center">
+            <span>© 2025 Tortoise Conservation Center</span>
+          </div>
+        </footer>
+      </div>
     </div>
   </div>
 
+  
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
 
+ 
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="js/sb-admin-2.min.js"></script>
 
-</body>
 
+  <script>
+    
+    document.getElementById('showTaskForm').addEventListener('click', function () {
+      const form = document.getElementById('taskForm');
+      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    });
+
+    
+    document.getElementById('newTaskForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const taskName = document.getElementById('taskName').value;
+      const dueTime = document.getElementById('dueTime').value;
+      const status = document.getElementById('taskStatus').value;
+
+      const statusBadge = status === 'Completed'
+        ? '<span class="badge badge-success">Completed</span>'
+        : '<span class="badge badge-warning">Pending</span>';
+
+      const newRow = `
+        <tr>
+          <td>${taskName}</td>
+          <td>${statusBadge}</td>
+          <td>${formatTime(dueTime)}</td>
+        </tr>`;
+
+      document.querySelector('#taskTable tbody').insertAdjacentHTML('beforeend', newRow);
+      this.reset();
+      document.getElementById('taskForm').style.display = 'none';
+    });
+
+    
+    function formatTime(time) {
+      const [hour, minute] = time.split(':');
+      let hours = parseInt(hour);
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12 || 12;
+      return `${hours}:${minute} ${ampm}`;
+    }
+
+    document.addEventListener('click', function (e) {
+    if (e.target && e.target.classList.contains('mark-done')) {
+      const row = e.target.closest('tr');
+      const statusCell = row.querySelector('.status');
+      if (statusCell) {
+        statusCell.innerHTML = '<span class="badge badge-success">Completed</span>';
+        e.target.remove(); 
+      }
+    }
+  });
+  </script>
+</body>
 </html>
