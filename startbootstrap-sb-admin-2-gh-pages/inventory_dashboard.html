@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Tortoise Conservation Center Management System - Inventory Manager Dashboard">
+    <meta name="author" content="">
+    <title>TCMSS - Inventory Manager Dashboard</title>
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+<body id="page-top">
+    <!-- Global Search Bar at the Top -->
+    <nav class="navbar navbar-expand navbar-light bg-white topbar static-top shadow mb-2">
+        <form class="form-inline mr-auto w-100">
+            <input class="form-control w-50 mx-auto" id="mainSearchInput" type="search" placeholder="Search inventory items..." aria-label="Search">
+        </form>
+    </nav>
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-boxes"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">Inventory Manager</div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item active">
+                <a class="nav-link" href="#" onclick="showSection('overview')">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Inventory Overview</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">Inventory Management</div>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="showSection('food')">
+                    <i class="fas fa-apple-alt"></i>
+                    <span>Food Items</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="showSection('medicine')">
+                    <i class="fas fa-pills"></i>
+                    <span>Medicine</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="showSection('tools')">
+                    <i class="fas fa-tools"></i>
+                    <span>Tools & Equipment</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="showSection('tasks')">
+                    <i class="fas fa-tasks"></i>
+                    <span>Tasks to Do</span></a>
+            </li>
+            <hr class="sidebar-divider d-none d-md-block">
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <!-- End of Sidebar -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <h4 class="ml-3 mt-2 text-primary font-weight-bold d-inline-block">Inventory Manager Dashboard</h4>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Inventory Manager</span>
+                                <i class="fas fa-user fa-2x text-primary img-profile rounded-circle"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Profile</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>Settings</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="index.html"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+                
+                <!-- Content Sections -->
+                <div class="container-fluid">
+                    <!-- Inventory Overview Section -->
+                    <div id="overview-section" class="content-section">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="h3 mb-0 text-gray-800">Inventory Overview</h1>
+                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="openAddModal('overview')"><i class="fas fa-plus fa-sm text-white-50"></i> Add New Item</a>
+                        </div>
+                        
+                        <!-- Overview Cards -->
+                        <div class="row">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card border-left-primary shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Items</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">156</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-boxes fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">In Stock</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">142</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card border-left-warning shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Low Stock</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">8</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card border-left-danger shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Out of Stock</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">6</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-times-circle fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Charts Row -->
+                        <div class="row mb-4">
+                            <div class="col-lg-6 mb-4">
+                                <div class="card shadow">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Item Category Distribution (Pie)</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="pieChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-4">
+                                <div class="card shadow">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Stock Levels (Bar)</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="barChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Alert Table for Low Stock and Expired Items -->
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 bg-danger text-white">
+                                <h6 class="m-0 font-weight-bold">Alerts: Low Stock & Expired Items</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="alertTable">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Item Name</th>
+                                                <th>Category</th>
+                                                <th>Current Stock</th>
+                                                <th>Minimum Required</th>
+                                                <th>Expiry Date</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Populated by JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        <!-- Recent Activity -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Recent Stock Updates</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="list-group list-group-flush">
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <strong>Tortoise Food Premium</strong><br>
+                                                    <small class="text-muted">Added 50 units</small>
+                                                </div>
+                                                <span class="badge badge-success badge-pill">2 hours ago</span>
+                                            </div>
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <strong>Calcium Supplements</strong><br>
+                                                    <small class="text-muted">Stock alert: Only 3 units left</small>
+                                                </div>
+                                                <span class="badge badge-warning badge-pill">4 hours ago</span>
+                                            </div>
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <strong>Heat Lamps</strong><br>
+                                                    <small class="text-muted">Removed 2 units for maintenance</small>
+                                                </div>
+                                                <span class="badge badge-info badge-pill">1 day ago</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Category Distribution</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between">
+                                                <span>Food Items</span>
+                                                <span class="text-primary font-weight-bold">45%</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary" style="width: 45%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between">
+                                                <span>Medicine</span>
+                                                <span class="text-success font-weight-bold">25%</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" style="width: 25%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between">
+                                                <span>Tools & Equipment</span>
+                                                <span class="text-warning font-weight-bold">20%</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-warning" style="width: 20%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between">
+                                                <span>Others</span>
+                                                <span class="text-info font-weight-bold">10%</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-info" style="width: 10%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Food Items Section -->
+                    <div id="food-section" class="content-section" style="display: none;">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="h3 mb-0 text-gray-800">Food Items Management</h1>
+                            <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="openAddModal('food')">
+                                <i class="fas fa-plus fa-sm text-white-50"></i> Add Food Item
+                            </button>
+                        </div>
+                        
+                        <!-- Alerts Table for Food -->
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 bg-danger text-white">
+                                <h6 class="m-0 font-weight-bold">Alerts: Low Stock & Expired Food Items</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="foodAlertTable">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Item Name</th>
+                                                <th>Current Stock</th>
+                                                <th>Minimum Required</th>
+                                                <th>Expiry Date</th>
+                                                <th>Stock Out Date</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Populated by JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Food Inventory</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="foodTable">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Item Name</th>
+                                                <th>Category</th>
+                                                <th>Current Stock</th>
+                                                <th>Minimum Required</th>
+                                                <th>Stock In Date</th>
+                                                <th>Expiry Date</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Populated by JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Medicine Section -->
+                    <div id="medicine-section" class="content-section" style="display: none;">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="h3 mb-0 text-gray-800">Medicine Inventory</h1>
+                            <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="openAddModal('medicine')">
+                                <i class="fas fa-plus fa-sm text-white-50"></i> Add Medicine
+                            </button>
+                        </div>
+                        
+                        <!-- Alerts Table for Medicine -->
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 bg-danger text-white">
+                                <h6 class="m-0 font-weight-bold">Alerts: Low Stock & Expired Medicine</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="medicineAlertTable">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Item Name</th>
+                                                <th>Current Stock</th>
+                                                <th>Minimum Required</th>
+                                                <th>Expiry Date</th>
+                                                <th>Stock Out Date</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Populated by JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Medical Supplies</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="medicineTable">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Medicine Name</th>
+                                                <th>Current Stock</th>
+                                                <th>Minimum Required</th>
+                                                <th>Expiry Date</th>
+                                                <th>Category</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Antibiotic </td>
+                                                <td>25</td>
+                                                <td>5</td>
+                                                <td>2025-06-30</td>
+                                                <td>Topical</td>
+                                                <td><span class="badge badge-success">In Stock</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info mr-1"><i class="fas fa-edit"></i></button>
+                                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Vitamin</td>
+                                                <td>8</td>
+                                                <td>10</td>
+                                                <td>2024-12-15</td>
+                                                <td>Supplements</td>
+                                                <td><span class="badge badge-warning">Low Stock</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info mr-1"><i class="fas fa-edit"></i></button>
+                                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Dehydration Solution</td>
+                                                <td>0</td>
+                                                <td>5</td>
+                                                <td>2024-09-30</td>
+                                                <td>Emergency</td>
+                                                <td><span class="badge badge-danger">Out of Stock</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info mr-1"><i class="fas fa-edit"></i></button>
+                                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tools & Equipment Section -->
+                    <div id="tools-section" class="content-section" style="display: none;">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="h3 mb-0 text-gray-800">Tools & Equipment</h1>
+                            <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="openAddModal('tools')">
+                                <i class="fas fa-plus fa-sm text-white-50"></i> Add Equipment
+                            </button>
+                        </div>
+                        
+                        <!-- Alerts Table for Tools & Equipment -->
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 bg-danger text-white">
+                                <h6 class="m-0 font-weight-bold">Alerts: Low Stock & Expired Tools/Equipment</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="toolsAlertTable">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Item Name</th>
+                                                <th>Current Stock</th>
+                                                <th>Minimum Required</th>
+                                                <th>Expiry Date</th>
+                                                <th>Stock Out Date</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Populated by JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Equipment Inventory</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="toolsTable">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Equipment Name</th>
+                                                <th>Available Units</th>
+                                                <th>In Use</th>
+                                                <th>Under Maintenance</th>
+                                                <th>Last Service</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Heat Lamps</td>
+                                                <td>15</td>
+                                                <td>8</td>
+                                                <td>2</td>
+                                                <td>2024-10-15</td>
+                                                <td><span class="badge badge-success">Available</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info mr-1"><i class="fas fa-edit"></i></button>
+                                                    <button class="btn btn-sm btn-warning mr-1"><i class="fas fa-tools"></i></button>
+                                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>UVB Lights</td>
+                                                <td>12</td>
+                                                <td>10</td>
+                                                <td>1</td>
+                                                <td>2024-11-01</td>
+                                                <td><span class="badge badge-warning">Limited</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info mr-1"><i class="fas fa-edit"></i></button>
+                                                    <button class="btn btn-sm btn-warning mr-1"><i class="fas fa-tools"></i></button>
+                                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Water Filters</td>
+                                                <td>5</td>
+                                                <td>3</td>
+                                                <td>0</td>
+                                                <td>2024-09-20</td>
+                                                <td><span class="badge badge-success">Available</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info mr-1"><i class="fas fa-edit"></i></button>
+                                                    <button class="btn btn-sm btn-warning mr-1"><i class="fas fa-tools"></i></button>
+                                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tasks Section -->
+                    <div id="tasks-section" class="content-section" style="display: none;">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="h3 mb-0 text-gray-800">Tasks to Do</h1>
+                            <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="openAddModal('tasks')">
+                                <i class="fas fa-plus fa-sm text-white-50"></i> Add Task
+                            </button>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Task List</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="list-group">
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="mb-1">Restock Calcium Supplements</h6>
+                                                    <p class="mb-1 text-muted">Critical: Only 3 units remaining. Need to order 20 units.</p>
+                                                    <small class="text-danger">Due: Today</small>
+                                                </div>
+                                                <div>
+                                                    <span class="badge badge-danger badge-pill">High Priority</span>
+                                                    <button class="btn btn-sm btn-success ml-2"><i class="fas fa-check"></i></button>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="mb-1">Check Equipment Maintenance</h6>
+                                                    <p class="mb-1 text-muted">Schedule maintenance for heat lamps and UVB lights.</p>
+                                                    <small class="text-warning">Due: Tomorrow</small>
+                                                </div>
+                                                <div>
+                                                    <span class="badge badge-warning badge-pill">Medium Priority</span>
+                                                    <button class="btn btn-sm btn-success ml-2"><i class="fas fa-check"></i></button>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="mb-1">Update Inventory Records</h6>
+                                                    <p class="mb-1 text-muted">Review and update all inventory records for monthly report.</p>
+                                                    <small class="text-info">Due: This Week</small>
+                                                </div>
+                                                <div>
+                                                    <span class="badge badge-info badge-pill">Low Priority</span>
+                                                    <button class="btn btn-sm btn-success ml-2"><i class="fas fa-check"></i></button>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="mb-1">Order Fresh Vegetables</h6>
+                                                    <p class="mb-1 text-muted">Stock is running low on fresh vegetables mix.</p>
+                                                    <small class="text-success">Due: Next Week</small>
+                                                </div>
+                                                <div>
+                                                    <span class="badge badge-info badge-pill">Low Priority</span>
+                                                    <button class="btn btn-sm btn-success ml-2"><i class="fas fa-check"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Task Statistics</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between">
+                                                <span>Completed Today</span>
+                                                <span class="text-success font-weight-bold">5</span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between">
+                                                <span>Pending</span>
+                                                <span class="text-warning font-weight-bold">8</span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between">
+                                                <span>Overdue</span>
+                                                <span class="text-danger font-weight-bold">2</span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between">
+                                                <span>Total Tasks</span>
+                                                <span class="text-primary font-weight-bold">15</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Add New Item</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addForm">
+                        <div class="form-group">
+                            <label for="itemName">Item Name</label>
+                            <input type="text" class="form-control" id="itemName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemQuantity">Quantity</label>
+                            <input type="number" class="form-control" id="itemQuantity" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemMin">Minimum Required</label>
+                            <input type="number" class="form-control" id="itemMin" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemExpiry">Expiry Date</label>
+                            <input type="date" class="form-control" id="itemExpiry">
+                        </div>
+                        <div class="form-group">
+                            <label for="itemCategory">Category</label>
+                            <select class="form-control" id="itemCategory">
+                                <option value="food">Food Items</option>
+                                <option value="medicine">Medicine</option>
+                                <option value="tools">Tools & Equipment</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveNewItem()">Save Item</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script>
+        function showSection(section) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            // Remove active class from all nav items
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(section + '-section').style.display = 'block';
+            
+            // Add active class to clicked nav item
+            event.target.closest('.nav-item').classList.add('active');
+        }
+
+        function openAddModal(type) {
+            document.getElementById('addModalLabel').textContent = 'Add New Item';
+            document.getElementById('addForm').reset();
+            $('#addModal').modal('show');
+        }
+
+        function saveItem() {
+            // Add save functionality here
+            $('#addModal').modal('hide');
+            alert('Item saved successfully!');
+        }
+
+        // Example data for charts and alert table (now 10+ items)
+        let inventoryData = [
+            { name: 'Tortoise Food Premium', category: 'Food', quantity: 85, min: 20, expiry: '2024-12-31', stockIn: '2024-06-01', stockOut: '' },
+            { name: 'Fresh Vegetables Mix', category: 'Food', quantity: 12, min: 15, expiry: '2024-11-15', stockIn: '2024-06-02', stockOut: '' },
+            { name: 'Calcium Supplements', category: 'Food', quantity: 3, min: 10, expiry: '2024-10-30', stockIn: '2024-05-20', stockOut: '2024-06-10' },
+            { name: 'Fruit Treats', category: 'Food', quantity: 25, min: 5, expiry: '2024-11-30', stockIn: '2024-06-05', stockOut: '' },
+            { name: 'Antibiotic', category: 'Medicine', quantity: 25, min: 5, expiry: '2025-06-30', stockIn: '2024-05-15', stockOut: '' },
+            { name: 'Vitamin', category: 'Medicine', quantity: 8, min: 10, expiry: '2024-12-15', stockIn: '2024-06-03', stockOut: '2024-06-12' },
+            { name: 'Pain Relief Syrup', category: 'Medicine', quantity: 15, min: 3, expiry: '2025-03-15', stockIn: '2024-06-04', stockOut: '' },
+            { name: 'Dehydration Solution', category: 'Medicine', quantity: 0, min: 5, expiry: '2024-09-30', stockIn: '2024-05-10', stockOut: '2024-06-09' },
+            { name: 'Heat Lamps', category: 'Tools', quantity: 15, min: 10, expiry: '2025-01-01', stockIn: '2024-05-25', stockOut: '' },
+            { name: 'Water Filters', category: 'Tools', quantity: 5, min: 5, expiry: '2024-09-20', stockIn: '2024-06-06', stockOut: '' },
+            { name: 'Temperature Monitors', category: 'Tools', quantity: 8, min: 6, expiry: '2024-10-30', stockIn: '2024-06-07', stockOut: '' },
+            { name: 'Incubators', category: 'Equipment', quantity: 3, min: 2, expiry: '2025-01-10', stockIn: '2024-06-08', stockOut: '' }
+        ];
+
+        function updateCharts() {
+            // Pie Chart
+            const ctxPie = document.getElementById('pieChart').getContext('2d');
+            const categoryCounts = {};
+            inventoryData.forEach(item => {
+                categoryCounts[item.category] = (categoryCounts[item.category] || 0) + 1;
+            });
+            const pieChart = new Chart(ctxPie, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(categoryCounts),
+                    datasets: [{
+                        data: Object.values(categoryCounts),
+                        backgroundColor: ['#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#4e73df', '#858796']
+                    }]
+                },
+                options: { responsive: true }
+            });
+            // Bar Chart
+            const ctxBar = document.getElementById('barChart').getContext('2d');
+            const barChart = new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: inventoryData.map(item => item.name),
+                    datasets: [{
+                        label: 'Stock',
+                        data: inventoryData.map(item => item.quantity),
+                        backgroundColor: '#4e73df'
+                    }]
+                },
+                options: { responsive: true, scales: { y: { beginAtZero: true } } }
+            });
+        }
+
+        function updateAlertTable() {
+            const tbody = document.querySelector('#alertTable tbody');
+            tbody.innerHTML = '';
+            const today = new Date().toISOString().split('T')[0];
+            inventoryData.forEach(item => {
+                let status = '';
+                if (item.quantity < item.min) status = 'Low Stock';
+                if (item.expiry && item.expiry < today) status = 'Expired';
+                if (status) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td>${item.name}</td><td>${item.category}</td><td>${item.quantity}</td><td>${item.min}</td><td>${item.expiry || ''}</td><td><span class="badge badge-danger">${status}</span></td>`;
+                    tbody.appendChild(tr);
+                }
+            });
+        }
+
+        function updateSectionAlertTable(section, category) {
+            let tableId = '';
+            if (section === 'food') tableId = 'foodAlertTable';
+            else if (section === 'medicine') tableId = 'medicineAlertTable';
+            else if (section === 'tools') tableId = 'toolsAlertTable';
+            else if (section === 'equipment') tableId = 'equipmentAlertTable';
+            else return;
+            const tbody = document.querySelector(`#${tableId} tbody`);
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            const today = new Date().toISOString().split('T')[0];
+            inventoryData.forEach(item => {
+                if (item.category.toLowerCase() !== category.toLowerCase()) return;
+                let status = '';
+                if (item.quantity < item.min) status = 'Low Stock';
+                if (item.expiry && item.expiry < today) status = 'Expired';
+                if (status) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td>${item.name}</td><td>${item.quantity}</td><td>${item.min}</td><td>${item.expiry || ''}</td><td>${item.stockOut || ''}</td><td><span class="badge badge-danger">${status}</span></td>`;
+                    tbody.appendChild(tr);
+                }
+            });
+        }
+
+        function renderInventoryTable() {
+            const tbody = document.querySelector('#foodTable tbody');
+            tbody.innerHTML = '';
+            inventoryData.forEach((item, idx) => {
+                let status = '';
+                if (item.quantity < item.min) status = 'Low Stock';
+                else if (item.quantity === 0) status = 'Out of Stock';
+                else status = 'In Stock';
+                if (item.expiry && item.expiry < new Date().toISOString().split('T')[0]) status = 'Expired';
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>${item.category}</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.min}</td>
+                    <td>${item.stockIn || ''}</td>
+                    <td>${item.expiry || ''}</td>
+                    <td><span class="badge badge-${status === 'Low Stock' ? 'warning' : status === 'Out of Stock' ? 'danger' : status === 'Expired' ? 'danger' : 'success'}">${status}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-info mr-1"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Initialize the dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show overview by default
+            showSection('overview');
+            updateCharts();
+            updateAlertTable();
+            renderInventoryTable();
+            // Search functionality (works for all sections)
+            document.getElementById('mainSearchInput').addEventListener('input', function() {
+                const value = this.value.toLowerCase();
+                document.querySelectorAll('#foodTable tbody tr').forEach(row => {
+                    row.style.display = row.textContent.toLowerCase().includes(value) ? '' : 'none';
+                });
+            });
+            // Render alerts for all sections on load (in case user navigates directly)
+            updateSectionAlertTable('food', 'Food');
+            updateSectionAlertTable('medicine', 'Medicine');
+            updateSectionAlertTable('tools', 'Tools');
+            updateSectionAlertTable('equipment', 'Equipment');
+        });
+        function saveNewItem() {
+            const name = document.getElementById('itemName').value;
+            const category = document.getElementById('itemCategory').value;
+            const quantity = parseInt(document.getElementById('itemQuantity').value, 10);
+            const min = parseInt(document.getElementById('itemMin').value, 10);
+            const expiry = document.getElementById('itemExpiry').value;
+            inventoryData.push({ name, category, quantity, min, expiry });
+            if (!Array.from(document.querySelectorAll('#accordionSidebar .nav-link span')).some(span => span.textContent.toLowerCase() === category.toLowerCase())) {
+                const li = document.createElement('li');
+                li.className = 'nav-item';
+                li.innerHTML = `<a class="nav-link" href="#" onclick="showSection('${category.toLowerCase()}')"><i class="fas fa-box"></i> <span>${category}</span></a>`;
+                document.querySelector('#accordionSidebar').appendChild(li);
+            }
+            updateCharts();
+            updateAlertTable();
+            renderInventoryTable();
+            $('#addModal').modal('hide');
+            alert('Item added successfully!');
+        }
+    </script>
+</body>
+</html> 
