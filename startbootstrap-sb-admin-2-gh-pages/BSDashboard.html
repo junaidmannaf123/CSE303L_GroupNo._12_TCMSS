@@ -19,7 +19,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-turtle"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">TCMSS</div>
+                <div class="sidebar-brand-text mx-3"><strong style="font-size: 1.8em;">TCMSS</strong></div>
             </a>
             <hr class="sidebar-divider my-0">
             <li class="nav-item active">
@@ -30,22 +30,22 @@
             <hr class="sidebar-divider">
             <div class="sidebar-heading">Breeding Tools</div>
             <li class="nav-item">
-                <a class="nav-link" href="#mating-pairs-section">
+                <a class="nav-link" href="mating_pair.html">
                     <i class="fas fa-heart"></i>
                     <span>Mating Pairs</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#egg-data-section">
+                <a class="nav-link" href="egg_data.html">
                     <i class="fas fa-egg"></i>
                     <span>Egg Data</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#hatch-tracking-section">
+                <a class="nav-link" href="hatch_tracking.html">
                     <i class="fas fa-baby"></i>
                     <span>Hatch Tracking</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#assigned-tasks-section">
+                <a class="nav-link" href="assigned_tasks_BS.html">
                     <i class="fas fa-tasks"></i>
                     <span>Assigned Tasks</span></a>
             </li>
@@ -80,195 +80,195 @@
                 </nav>
                 <!-- End of Topbar -->
                 <div class="container-fluid">
+                    <!-- Welcome Section -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Welcome, Breeding Specialist</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Welcome, <span class="text-success font-weight-bold">Dr. Sakura Chan Aurpy</span></h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Add Record</a>
                     </div>
-                    <!-- Dashboard Cards -->
-                    <div class="row">
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Active Mating Pairs</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">4</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-heart fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
+                    <!-- Mating Pair Summary Section -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-heart"></i> Mating Pair Summary Status</h6>
+                            <a href="mating_pair.html" class="btn btn-sm btn-primary">View Details</a>
                         </div>
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Egg Batches</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">7</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-egg fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <canvas id="matingPairChart" width="400" height="200"></canvas>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Hatchlings</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">12</div>
+                                <div class="col-lg-4">
+                                    <div class="text-center">
+                                        <div class="mb-3">
+                                            <h4 class="text-success font-weight-bold">4</h4>
+                                            <p class="text-success">Active Pairs</p>
                                         </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-baby fa-2x text-gray-300"></i>
+                                        <div class="mb-3">
+                                            <h4 class="text-warning font-weight-bold">2</h4>
+                                            <p class="text-warning">Pending</p>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Assigned Tasks</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">3</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-tasks fa-2x text-gray-300"></i>
+                                        <div class="mb-3">
+                                            <h4 class="text-danger font-weight-bold">1</h4>
+                                            <p class="text-danger">Unsuccessful</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Mating Pairs Section -->
-                    <div class="card shadow mb-4" id="mating-pairs-section">
+
+                    <!-- Egg Data Summary Section -->
+                    <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-heart"></i> Mating Pairs</h6>
+                            <h6 class="m-0 font-weight-bold text-success"><i class="fas fa-egg"></i> Egg Data Summary</h6>
+                            <a href="egg_data.html" class="btn btn-sm btn-success">View Details</a>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Pair ID</th>
-                                            <th>Male</th>
-                                            <th>Female</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>MP-001</td>
-                                            <td>Tommy</td>
-                                            <td>Luna</td>
-                                            <td><span class="badge badge-success">Active</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>MP-002</td>
-                                            <td>Rocky</td>
-                                            <td>Stella</td>
-                                            <td><span class="badge badge-warning">Pending</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="text-center mb-3">
+                                        <h5 class="text-success">Recent Batches</h5>
+                                        <div class="progress mb-2" style="height: 25px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 85%">85%</div>
+                                        </div>
+                                        <small class="text-muted">Success Rate</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="text-center mb-3">
+                                        <h5 class="text-info">Total Eggs</h5>
+                                        <div class="progress mb-2" style="height: 25px;">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 78%">127 Eggs</div>
+                                        </div>
+                                        <small class="text-muted">Across 15 Batches</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="text-center mb-3">
+                                        <h5 class="text-warning">Fertility Rate</h5>
+                                        <div class="progress mb-2" style="height: 25px;">
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 78.5%">78.5%</div>
+                                        </div>
+                                        <small class="text-muted">Average Fertility</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>Date Laid</th>
+                                                    <th>Total Eggs</th>
+                                                    <th>Fertility</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>2024-06-01</td>
+                                                    <td>8</td>
+                                                    <td><span class="badge badge-success">85%</span></td>
+                                                    <td><span class="badge badge-info">Incubating</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2024-05-28</td>
+                                                    <td>6</td>
+                                                    <td><span class="badge badge-success">83%</span></td>
+                                                    <td><span class="badge badge-info">Incubating</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2024-05-25</td>
+                                                    <td>10</td>
+                                                    <td><span class="badge badge-warning">70%</span></td>
+                                                    <td><span class="badge badge-success">Hatched</span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Egg Data Section -->
-                    <div class="card shadow mb-4" id="egg-data-section">
+
+                    <!-- Hatch Tracking Summary Section -->
+                    <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-success"><i class="fas fa-egg"></i> Egg Data</h6>
+                            <h6 class="m-0 font-weight-bold text-warning"><i class="fas fa-baby"></i> Hatch Tracking Summary</h6>
+                            <a href="hatch_tracking.html" class="btn btn-sm btn-warning">View Details</a>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Egg Batch</th>
-                                            <th>Date Laid</th>
-                                            <th>Eggs</th>
-                                            <th>Fertility</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>EB-101</td>
-                                            <td>2024-04-10</td>
-                                            <td>8</td>
-                                            <td><span class="badge badge-info">75%</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>EB-102</td>
-                                            <td>2024-04-15</td>
-                                            <td>6</td>
-                                            <td><span class="badge badge-info">83%</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <canvas id="hatchTimelineChart" width="400" height="200"></canvas>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="text-center">
+                                        <div class="mb-3">
+                                            <h4 class="text-success font-weight-bold">18</h4>
+                                            <p class="text-success">Total Hatched</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <h4 class="text-info font-weight-bold">6</h4>
+                                            <p class="text-info">Currently Incubating</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <h4 class="text-warning font-weight-bold">3</h4>
+                                            <p class="text-warning">Expected This Week</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Hatch Tracking Section -->
-                    <div class="card shadow mb-4" id="hatch-tracking-section">
+
+                    <!-- Assigned Tasks Summary Section -->
+                    <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-warning"><i class="fas fa-baby"></i> Hatch Tracking</h6>
+                            <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-tasks"></i> Assigned Tasks Summary</h6>
+                            <a href="assigned_tasks.html" class="btn btn-sm btn-info">View Details</a>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Hatch ID</th>
-                                            <th>Egg Batch</th>
-                                            <th>Hatch Date</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>HT-201</td>
-                                            <td>EB-101</td>
-                                            <td>2024-06-01</td>
-                                            <td><span class="badge badge-success">Hatched</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>HT-202</td>
-                                            <td>EB-102</td>
-                                            <td>2024-06-10</td>
-                                            <td><span class="badge badge-secondary">Incubating</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="text-center mb-3">
+                                        <h5 class="text-success">Completed</h5>
+                                        <div class="progress mb-2" style="height: 25px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 67%">8 Tasks</div>
+                                        </div>
+                                        <small class="text-muted">67% Completion Rate</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="text-center mb-3">
+                                        <h5 class="text-warning">Pending</h5>
+                                        <div class="progress mb-2" style="height: 25px;">
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 25%">3 Tasks</div>
+                                        </div>
+                                        <small class="text-muted">25% of Total</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="text-center mb-3">
+                                        <h5 class="text-danger">Due Tomorrow</h5>
+                                        <div class="progress mb-2" style="height: 25px;">
+                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 8%">1 Task</div>
+                                        </div>
+                                        <small class="text-muted">Urgent Priority</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="text-center mb-3">
+                                        <h5 class="text-info">In Progress</h5>
+                                        <div class="progress mb-2" style="height: 25px;">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 25%">3 Tasks</div>
+                                        </div>
+                                        <small class="text-muted">Currently Working</small>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <!-- Assigned Tasks Section -->
-                    <div class="card shadow mb-4" id="assigned-tasks-section">
-                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-tasks"></i> Assigned Tasks</h6>
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-group">
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Inspect incubator temperature
-                                    <span class="badge badge-primary badge-pill">Today</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Record new egg batch data
-                                    <span class="badge badge-warning badge-pill">Due: Tomorrow</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Update hatchling records
-                                    <span class="badge badge-success badge-pill">Completed</span>
-                                </li>
-                            </ul>
+
                         </div>
                     </div>
                 </div>
@@ -280,7 +280,101 @@
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Chart.js -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.js"></script>
+    
+    <!-- Dashboard Charts -->
+    <script>
+        // Mating Pair Status Chart
+        var matingPairCtx = document.getElementById('matingPairChart').getContext('2d');
+        var matingPairChart = new Chart(matingPairCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Active', 'Pending', 'Unsuccessful'],
+                datasets: [{
+                    label: 'Number of Pairs',
+                    data: [4, 2, 1],
+                    backgroundColor: [
+                        'rgba(40, 167, 69, 0.8)',
+                        'rgba(255, 193, 7, 0.8)',
+                        'rgba(220, 53, 69, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(40, 167, 69, 1)',
+                        'rgba(255, 193, 7, 1)',
+                        'rgba(220, 53, 69, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 5,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // Hatch Timeline Chart
+        var hatchTimelineCtx = document.getElementById('hatchTimelineChart').getContext('2d');
+        var hatchTimelineChart = new Chart(hatchTimelineCtx, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8', 'Week 9', 'Week 10', 'Week 11', 'Week 12', 'Week 13'],
+                datasets: [{
+                    label: 'Incubating Eggs',
+                    data: [15, 15, 15, 14, 13, 12, 10, 8, 6, 4, 2, 1, 0],
+                    borderColor: 'rgba(23, 162, 184, 1)',
+                    backgroundColor: 'rgba(23, 162, 184, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }, {
+                    label: 'Hatched',
+                    data: [0, 0, 0, 1, 2, 3, 5, 7, 9, 11, 13, 14, 15],
+                    borderColor: 'rgba(40, 167, 69, 1)',
+                    backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                    borderWidth: 3,
+                    fill: false,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 15,
+                        ticks: {
+                            stepSize: 3
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            usePointStyle: true
+                        }
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
