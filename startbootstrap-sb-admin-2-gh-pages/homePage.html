@@ -108,8 +108,8 @@
                 </div>
               </div>
               <div class="card-body p-4" style="background: rgba(255,255,255,0.95);">
-                <div class="row">
-                  <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="row justify-content-center">
+                  <div class="col-lg-4 col-md-6 mb-4">
                     <div class="dashboard-card" data-href="vetdashboard.html">
                       <div class="card-icon-wrapper bg-primary">
                         <i class="fas fa-user-md"></i>
@@ -121,7 +121,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-3 col-md-6 mb-4">
+                  <div class="col-lg-4 col-md-6 mb-4">
                     <div class="dashboard-card" data-href="caretaker_dashboard.html">
                       <div class="card-icon-wrapper bg-success">
                         <i class="fas fa-user-nurse"></i>
@@ -133,7 +133,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-3 col-md-6 mb-4">
+                  <div class="col-lg-4 col-md-6 mb-4">
                     <div class="dashboard-card" data-href="inventory_dashboard.html">
                       <div class="card-icon-wrapper bg-warning">
                         <i class="fas fa-boxes"></i>
@@ -145,7 +145,9 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-3 col-md-6 mb-4">
+                </div>
+                <div class="row justify-content-center">
+                  <div class="col-lg-4 col-md-6 mb-4">
                     <div class="dashboard-card" data-href="BSDashboard.html">
                       <div class="card-icon-wrapper bg-info">
                         <i class="fas fa-dna"></i>
@@ -157,9 +159,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col-lg-3 col-md-6 mb-4">
+                  <div class="col-lg-4 col-md-6 mb-4">
                     <div class="dashboard-card" data-href="env.html">
                       <div class="card-icon-wrapper bg-secondary">
                         <i class="fas fa-leaf"></i>
@@ -171,8 +171,8 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-3 col-md-6 mb-4">
-                                         <div class="dashboard-card" data-href="enclosure_dashboard.html">
+                  <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="dashboard-card" data-href="enclosure_dashboard.html">
                       <div class="card-icon-wrapper bg-success">
                         <i class="fas fa-home"></i>
                       </div>
@@ -201,6 +201,11 @@
           cursor: pointer;
           overflow: hidden;
           border: 2px solid transparent;
+          height: 280px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
         }
 
         .dashboard-card:hover {
@@ -235,6 +240,7 @@
           transition: all 0.3s ease;
           position: relative;
           z-index: 2;
+          flex-shrink: 0;
         }
 
         .card-icon-wrapper i {
@@ -252,6 +258,7 @@
           margin-bottom: 0.5rem;
           font-size: 1.1rem;
           transition: color 0.3s ease;
+          flex-shrink: 0;
         }
 
         .card-description {
@@ -259,6 +266,7 @@
           font-size: 0.9rem;
           margin-bottom: 0;
           line-height: 1.4;
+          flex-shrink: 0;
         }
 
         .card-overlay {
