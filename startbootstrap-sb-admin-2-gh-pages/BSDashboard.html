@@ -83,7 +83,7 @@
                     <!-- Welcome Section -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Welcome, <span class="text-success font-weight-bold">Dr. Sakura Chan Aurpy</span></h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Add Record</a>
+                        <button class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" data-toggle="modal" data-target="#addRecordModal"><i class="fas fa-plus fa-sm text-white-50"></i> Add Record</button>
                     </div>
 
                     <!-- Mating Pair Summary Section -->
@@ -275,6 +275,191 @@
             </div>
         </div>
     </div>
+
+    <!-- Add Record Modal -->
+    <div class="modal fade" id="addRecordModal" tabindex="-1" role="dialog" aria-labelledby="addRecordModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addRecordModalLabel"><i class="fas fa-plus"></i> Add New Record</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addRecordForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="recordType">Record Type</label>
+                                    <select class="form-control" id="recordType" required>
+                                        <option value="">Select Record Type</option>
+                                        <option value="mating_pair">Mating Pair</option>
+                                        <option value="egg_data">Egg Data</option>
+                                        <option value="hatch_tracking">Hatch Tracking</option>
+                                        <option value="task">Task</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="recordDate">Record Date</label>
+                                    <input type="date" class="form-control" id="recordDate" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Mating Pair Fields -->
+                        <div id="matingPairFields" style="display: none;">
+                            <hr>
+                            <h6 class="text-primary">Mating Pair Information</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="maleTortoise">Male Tortoise ID</label>
+                                        <input type="text" class="form-control" id="maleTortoise" placeholder="e.g., T-001">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="femaleTortoise">Female Tortoise ID</label>
+                                        <input type="text" class="form-control" id="femaleTortoise" placeholder="e.g., T-002">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="pairStatus">Pair Status</label>
+                                <select class="form-control" id="pairStatus">
+                                    <option value="active">Active</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="unsuccessful">Unsuccessful</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Egg Data Fields -->
+                        <div id="eggDataFields" style="display: none;">
+                            <hr>
+                            <h6 class="text-success">Egg Data Information</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="batchID">Batch ID</label>
+                                        <input type="text" class="form-control" id="batchID" placeholder="e.g., EB-010">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="totalEggs">Total Eggs</label>
+                                        <input type="number" class="form-control" id="totalEggs" min="1" placeholder="Number of eggs">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="fertilityRate">Fertility Rate (%)</label>
+                                        <input type="number" class="form-control" id="fertilityRate" min="0" max="100" placeholder="Fertility percentage">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="incubationStatus">Incubation Status</label>
+                                        <select class="form-control" id="incubationStatus">
+                                            <option value="incubating">Incubating</option>
+                                            <option value="hatched">Hatched</option>
+                                            <option value="failed">Failed</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hatch Tracking Fields -->
+                        <div id="hatchTrackingFields" style="display: none;">
+                            <hr>
+                            <h6 class="text-warning">Hatch Tracking Information</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="hatchDate">Hatch Date</label>
+                                        <input type="date" class="form-control" id="hatchDate">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="hatchlingCount">Number of Hatchlings</label>
+                                        <input type="number" class="form-control" id="hatchlingCount" min="0" placeholder="Number of hatchlings">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="hatchNotes">Hatch Notes</label>
+                                <textarea class="form-control" id="hatchNotes" rows="3" placeholder="Additional notes about the hatching process..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Task Fields -->
+                        <div id="taskFields" style="display: none;">
+                            <hr>
+                            <h6 class="text-info">Task Information</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="taskTitle">Task Title</label>
+                                        <input type="text" class="form-control" id="taskTitle" placeholder="Enter task title">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="taskPriority">Priority</label>
+                                        <select class="form-control" id="taskPriority">
+                                            <option value="low">Low</option>
+                                            <option value="medium">Medium</option>
+                                            <option value="high">High</option>
+                                            <option value="urgent">Urgent</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskDescription">Task Description</label>
+                                <textarea class="form-control" id="taskDescription" rows="3" placeholder="Describe the task..."></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="dueDate">Due Date</label>
+                                        <input type="date" class="form-control" id="dueDate">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="taskStatus">Status</label>
+                                        <select class="form-control" id="taskStatus">
+                                            <option value="pending">Pending</option>
+                                            <option value="in-progress">In Progress</option>
+                                            <option value="completed">Completed</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="recordNotes">General Notes</label>
+                            <textarea class="form-control" id="recordNotes" rows="3" placeholder="Additional notes about this record..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" id="saveRecordBtn">Save Record</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -290,11 +475,10 @@
         // Mating Pair Status Chart
         var matingPairCtx = document.getElementById('matingPairChart').getContext('2d');
         var matingPairChart = new Chart(matingPairCtx, {
-            type: 'bar',
+            type: 'pie',
             data: {
                 labels: ['Active', 'Pending', 'Unsuccessful'],
                 datasets: [{
-                    label: 'Number of Pairs',
                     data: [4, 2, 1],
                     backgroundColor: [
                         'rgba(40, 167, 69, 0.8)',
@@ -312,18 +496,13 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 5,
-                        ticks: {
-                            stepSize: 1
-                        }
-                    }
-                },
                 plugins: {
                     legend: {
-                        display: false
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20
+                        }
                     }
                 }
             }
@@ -374,6 +553,102 @@
                     }
                 }
             }
+        });
+
+        // Add Record Modal Functionality
+        $(document).ready(function() {
+            // Set default date to today
+            $('#recordDate').val(new Date().toISOString().split('T')[0]);
+
+            // Show/hide fields based on record type selection
+            $('#recordType').change(function() {
+                var selectedType = $(this).val();
+                
+                // Hide all field sections first
+                $('#matingPairFields, #eggDataFields, #hatchTrackingFields, #taskFields').hide();
+                
+                // Show relevant fields based on selection
+                switch(selectedType) {
+                    case 'mating_pair':
+                        $('#matingPairFields').show();
+                        break;
+                    case 'egg_data':
+                        $('#eggDataFields').show();
+                        break;
+                    case 'hatch_tracking':
+                        $('#hatchTrackingFields').show();
+                        break;
+                    case 'task':
+                        $('#taskFields').show();
+                        break;
+                }
+            });
+
+            // Save Record functionality
+            $('#saveRecordBtn').click(function() {
+                var recordType = $('#recordType').val();
+                var recordDate = $('#recordDate').val();
+                
+                if (!recordType || !recordDate) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+
+                // Collect form data based on record type
+                var formData = {
+                    type: recordType,
+                    date: recordDate,
+                    notes: $('#recordNotes').val()
+                };
+
+                // Add specific data based on record type
+                switch(recordType) {
+                    case 'mating_pair':
+                        formData.maleTortoise = $('#maleTortoise').val();
+                        formData.femaleTortoise = $('#femaleTortoise').val();
+                        formData.pairStatus = $('#pairStatus').val();
+                        break;
+                    case 'egg_data':
+                        formData.batchID = $('#batchID').val();
+                        formData.totalEggs = $('#totalEggs').val();
+                        formData.fertilityRate = $('#fertilityRate').val();
+                        formData.incubationStatus = $('#incubationStatus').val();
+                        break;
+                    case 'hatch_tracking':
+                        formData.hatchDate = $('#hatchDate').val();
+                        formData.hatchlingCount = $('#hatchlingCount').val();
+                        formData.hatchNotes = $('#hatchNotes').val();
+                        break;
+                    case 'task':
+                        formData.taskTitle = $('#taskTitle').val();
+                        formData.taskPriority = $('#taskPriority').val();
+                        formData.taskDescription = $('#taskDescription').val();
+                        formData.dueDate = $('#dueDate').val();
+                        formData.taskStatus = $('#taskStatus').val();
+                        break;
+                }
+
+                // Simulate saving the record
+                console.log('Saving record:', formData);
+                
+                // Show success message
+                alert('Record saved successfully!');
+                
+                // Reset form and close modal
+                $('#addRecordForm')[0].reset();
+                $('#matingPairFields, #eggDataFields, #hatchTrackingFields, #taskFields').hide();
+                $('#addRecordModal').modal('hide');
+                
+                // Optionally refresh the page or update charts
+                // location.reload();
+            });
+
+            // Reset form when modal is closed
+            $('#addRecordModal').on('hidden.bs.modal', function() {
+                $('#addRecordForm')[0].reset();
+                $('#matingPairFields, #eggDataFields, #hatchTrackingFields, #taskFields').hide();
+                $('#recordDate').val(new Date().toISOString().split('T')[0]);
+            });
         });
     </script>
 </body>

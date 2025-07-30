@@ -89,79 +89,13 @@
                         </button>
                     </div>
 
-                    <!-- Statistics Cards -->
-                    <div class="row">
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Tasks</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">12</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-tasks fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Completed</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">8</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-check-circle fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">In Progress</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">3</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-clock fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-danger shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Overdue</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">1</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
 
                     <!-- Task Categories -->
                     <div class="row mb-4">
                         <div class="col-12">
                             <div class="btn-group" role="group" aria-label="Task filters">
                                 <button type="button" class="btn btn-outline-primary active" data-filter="all">All Tasks</button>
-                                <button type="button" class="btn btn-outline-success" data-filter="completed">Completed</button>
-                                <button type="button" class="btn btn-outline-warning" data-filter="in-progress">In Progress</button>
-                                <button type="button" class="btn btn-outline-danger" data-filter="overdue">Overdue</button>
-                                <button type="button" class="btn btn-outline-info" data-filter="pending">Pending</button>
                             </div>
                         </div>
                     </div>
@@ -190,7 +124,6 @@
                                         <tr>
                                             <th>Task ID</th>
                                             <th>Task Title</th>
-                                            <th>Description</th>
                                             <th>Priority</th>
                                             <th>Assigned Date</th>
                                             <th>Due Date</th>
@@ -201,7 +134,6 @@
                                         <tr>
                                             <td><strong>TASK-001</strong></td>
                                             <td>Inspect Incubator Temperature</td>
-                                            <td>Check and record temperature readings for all active incubators</td>
                                             <td><span class="badge badge-danger">High</span></td>
                                             <td>2024-06-01</td>
                                             <td>2024-06-02</td>
@@ -212,7 +144,6 @@
                                         <tr>
                                             <td><strong>TASK-002</strong></td>
                                             <td>Record New Egg Batch Data</td>
-                                            <td>Document new egg batch EB-009 with fertility assessment</td>
                                             <td><span class="badge badge-warning">Medium</span></td>
                                             <td>2024-06-01</td>
                                             <td>2024-06-03</td>
@@ -223,7 +154,6 @@
                                         <tr>
                                             <td><strong>TASK-003</strong></td>
                                             <td>Update Hatchling Records</td>
-                                            <td>Update health records for recently hatched tortoises</td>
                                             <td><span class="badge badge-info">Low</span></td>
                                             <td>2024-05-30</td>
                                             <td>2024-06-05</td>
@@ -234,7 +164,6 @@
                                         <tr>
                                             <td><strong>TASK-004</strong></td>
                                             <td>Monitor Mating Pair Behavior</td>
-                                            <td>Observe and document mating behavior of pair MP-003</td>
                                             <td><span class="badge badge-danger">High</span></td>
                                             <td>2024-05-28</td>
                                             <td>2024-06-01</td>
@@ -245,7 +174,6 @@
                                         <tr>
                                             <td><strong>TASK-005</strong></td>
                                             <td>Prepare Incubation Report</td>
-                                            <td>Compile monthly incubation statistics and success rates</td>
                                             <td><span class="badge badge-warning">Medium</span></td>
                                             <td>2024-06-01</td>
                                             <td>2024-06-07</td>
@@ -256,7 +184,6 @@
                                         <tr>
                                             <td><strong>TASK-006</strong></td>
                                             <td>Clean Incubation Equipment</td>
-                                            <td>Sanitize and maintain all incubation equipment</td>
                                             <td><span class="badge badge-info">Low</span></td>
                                             <td>2024-05-29</td>
                                             <td>2024-06-02</td>
@@ -267,7 +194,6 @@
                                         <tr>
                                             <td><strong>TASK-007</strong></td>
                                             <td>Assess Egg Fertility</td>
-                                            <td>Conduct fertility assessment for batch EB-010</td>
                                             <td><span class="badge badge-warning">Medium</span></td>
                                             <td>2024-06-02</td>
                                             <td>2024-06-04</td>
@@ -278,7 +204,6 @@
                                         <tr>
                                             <td><strong>TASK-008</strong></td>
                                             <td>Update Breeding Database</td>
-                                            <td>Enter all recent breeding activity data into the system</td>
                                             <td><span class="badge badge-info">Low</span></td>
                                             <td>2024-05-31</td>
                                             <td>2024-06-03</td>
@@ -478,7 +403,7 @@
     <script>
         $(document).ready(function() {
             $('#assignedTasksTable').DataTable({
-                "order": [[5, "asc"]], // Sort by due date ascending (now column 5)
+                "order": [[4, "asc"]], // Sort by due date ascending (now column 4)
                 "pageLength": 10,
                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
             });
