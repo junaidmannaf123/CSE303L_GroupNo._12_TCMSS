@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Tortoise Conservation Management System - Maintenance Logs Enclosure">
+    <meta name="author" content="">
+    <title>Tortoise Conservation - Maintenance Logs</title>
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+</head>
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-turtle"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">TCMSS</div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item">
+                <a class="nav-link" href="enclosure_dashboard.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">Enclosure Management</div>
+            <li class="nav-item">
+                <a class="nav-link" href="enclosure_overview.html">
+                    <i class="fas fa-home"></i>
+                    <span>Enclosure Overview</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="enclosure_location_environment.html">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Location & Environment</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="caretaker_assignment_enclosure.html">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Caretaker Assignment</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="tortoise_list_enclosure.html">
+                    <i class="fas fa-list"></i>
+                    <span>Tortoise List</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="alerts_warnings_enclosure.html">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Alerts & Warnings</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="maintenance_logs_enclosure.html">
+                    <i class="fas fa-tools"></i>
+                    <span>Maintenance Logs</span></a>
+            </li>
+            <hr class="sidebar-divider d-none d-md-block">
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <!-- End of Sidebar -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <h4 class="ml-3 mt-2 text-primary font-weight-bold d-inline-block">Maintenance Logs</h4>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Enclosure Manager</span>
+                                <i class="fas fa-user fa-2x text-success img-profile rounded-circle"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Profile</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>Settings</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+                <div class="container-fluid">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Maintenance Logs</h1>
+                        <button class="btn btn-success shadow-sm" data-toggle="modal" data-target="#addMaintenanceModal">
+                            <i class="fas fa-plus fa-sm text-white-50"></i> Add Maintenance Log
+                        </button>
+                    </div>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Maintenance Log Details</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="maintenanceLogsTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Enclosure</th>
+                                            <th>Last Cleaned Date</th>
+                                            <th>Next Scheduled Cleaning</th>
+                                            <th>Repairs Needed</th>
+                                            <th>Repairs Completed</th>
+                                            <th>Pest Control Records</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>ENC-001</td>
+                                            <td>2024-06-08</td>
+                                            <td>2024-06-15</td>
+                                            <td>None</td>
+                                            <td>Filter replaced (2024-06-08)</td>
+                                            <td>Sprayed for ants (2024-06-07)</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary" onclick="viewLog(1)"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-sm btn-warning" onclick="editLog(1)"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>ENC-002</td>
+                                            <td>2024-06-09</td>
+                                            <td>2024-06-16</td>
+                                            <td>Broken UV lamp</td>
+                                            <td>None</td>
+                                            <td>None</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary" onclick="viewLog(2)"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-sm btn-warning" onclick="editLog(2)"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>ENC-003</td>
+                                            <td>2024-06-07</td>
+                                            <td>2024-06-14</td>
+                                            <td>None</td>
+                                            <td>Fence repaired (2024-06-07)</td>
+                                            <td>Checked for rodents (2024-06-07)</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary" onclick="viewLog(3)"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-sm btn-warning" onclick="editLog(3)"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Tortoise Conservation Management System 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Add Maintenance Modal -->
+    <div class="modal fade" id="addMaintenanceModal" tabindex="-1" role="dialog" aria-labelledby="addMaintenanceModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addMaintenanceModalLabel">Add Maintenance Log</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addMaintenanceForm">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="enclosureId">Enclosure</label>
+                                    <input type="text" class="form-control" id="enclosureId" placeholder="e.g., ENC-004" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="lastCleaned">Last Cleaned Date</label>
+                                    <input type="date" class="form-control" id="lastCleaned" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="nextCleaning">Next Scheduled Cleaning</label>
+                                    <input type="date" class="form-control" id="nextCleaning" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="repairsNeeded">Repairs Needed</label>
+                                    <input type="text" class="form-control" id="repairsNeeded" placeholder="e.g., Broken UV lamp">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="repairsCompleted">Repairs Completed</label>
+                                    <input type="text" class="form-control" id="repairsCompleted" placeholder="e.g., Filter replaced (2024-06-08)">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="pestControl">Pest Control Records</label>
+                                    <input type="text" class="form-control" id="pestControl" placeholder="e.g., Sprayed for ants (2024-06-07)">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" onclick="saveMaintenance()">Save Log</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#maintenanceLogsTable').DataTable({
+                "pageLength": 10,
+                "order": [[1, "desc"]],
+                "responsive": true
+            });
+        });
+        function viewLog(id) {
+            alert('Viewing maintenance log for row: ' + id);
+        }
+        function editLog(id) {
+            alert('Editing maintenance log for row: ' + id);
+        }
+        function saveMaintenance() {
+            // Get form values
+            const enclosureId = document.getElementById('enclosureId').value;
+            const lastCleaned = document.getElementById('lastCleaned').value;
+            const nextCleaning = document.getElementById('nextCleaning').value;
+            if (!enclosureId || !lastCleaned || !nextCleaning) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            alert('Maintenance log saved successfully!');
+            $('#addMaintenanceModal').modal('hide');
+            document.getElementById('addMaintenanceForm').reset();
+        }
+    </script>
+</body>
+</html> 

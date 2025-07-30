@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Tortoise Conservation Management System - Tortoise List Inside Enclosure">
+    <meta name="author" content="">
+    <title>Tortoise Conservation - Tortoise List Inside Enclosure</title>
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+</head>
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-turtle"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">TCMSS</div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item">
+                <a class="nav-link" href="enclosure_dashboard.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">Enclosure Management</div>
+            <li class="nav-item">
+                <a class="nav-link" href="enclosure_overview.html">
+                    <i class="fas fa-home"></i>
+                    <span>Enclosure Overview</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="enclosure_location_environment.html">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Location & Environment</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="caretaker_assignment_enclosure.html">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Caretaker Assignment</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="tortoise_list_enclosure.html">
+                    <i class="fas fa-list"></i>
+                    <span>Tortoise List</span></a>
+            </li>
+            <hr class="sidebar-divider d-none d-md-block">
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <!-- End of Sidebar -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <h4 class="ml-3 mt-2 text-success font-weight-bold d-inline-block">Tortoise List Inside Enclosure</h4>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Enclosure Manager</span>
+                                <i class="fas fa-user fa-2x text-success img-profile rounded-circle"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Profile</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>Settings</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+                <div class="container-fluid">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Tortoise List Inside Enclosure</h1>
+                        <button class="btn btn-success shadow-sm" data-toggle="modal" data-target="#addTortoiseModal">
+                            <i class="fas fa-plus fa-sm text-white-50"></i> Add Tortoise
+                        </button>
+                    </div>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Tortoise List</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="tortoiseListTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Tortoise ID</th>
+                                            <th>Name / Tag</th>
+                                            <th>Species</th>
+                                            <th>Gender</th>
+                                            <th>Age</th>
+                                            <th>Health Status</th>
+                                            <th>Date of Arrival</th>
+                                            <th>Feeding Schedule</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>TORT-001</td>
+                                            <td>Alpha</td>
+                                            <td>Indian Star</td>
+                                            <td>Female</td>
+                                            <td>8</td>
+                                            <td><span class="badge badge-success">Healthy</span></td>
+                                            <td>2021-03-15</td>
+                                            <td>08:00, 16:00</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary" onclick="viewTortoise(1)"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-sm btn-warning" onclick="editTortoise(1)"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>TORT-002</td>
+                                            <td>Bravo</td>
+                                            <td>Leopard</td>
+                                            <td>Male</td>
+                                            <td>5</td>
+                                            <td><span class="badge badge-warning">Under Observation</span></td>
+                                            <td>2022-07-10</td>
+                                            <td>09:00, 17:00</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary" onclick="viewTortoise(2)"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-sm btn-warning" onclick="editTortoise(2)"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>TORT-003</td>
+                                            <td>Charlie</td>
+                                            <td>Red-footed</td>
+                                            <td>Female</td>
+                                            <td>3</td>
+                                            <td><span class="badge badge-danger">Needs Attention</span></td>
+                                            <td>2023-01-22</td>
+                                            <td>07:30, 15:30</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary" onclick="viewTortoise(3)"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-sm btn-warning" onclick="editTortoise(3)"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Tortoise Conservation Management System 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Add Tortoise Modal -->
+    <div class="modal fade" id="addTortoiseModal" tabindex="-1" role="dialog" aria-labelledby="addTortoiseModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTortoiseModalLabel">Add Tortoise</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addTortoiseForm">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="tortoiseId">Tortoise ID</label>
+                                    <input type="text" class="form-control" id="tortoiseId" placeholder="e.g., TORT-004" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="tortoiseName">Name / Tag</label>
+                                    <input type="text" class="form-control" id="tortoiseName" placeholder="e.g., Delta" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="species">Species</label>
+                                    <input type="text" class="form-control" id="species" placeholder="e.g., Sulcata" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="gender">Gender</label>
+                                    <select class="form-control" id="gender" required>
+                                        <option value="">Select</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="age">Age</label>
+                                    <input type="number" class="form-control" id="age" placeholder="e.g., 4" required>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="healthStatus">Health Status</label>
+                                    <select class="form-control" id="healthStatus" required>
+                                        <option value="Healthy">Healthy</option>
+                                        <option value="Under Observation">Under Observation</option>
+                                        <option value="Needs Attention">Needs Attention</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="dateOfArrival">Date of Arrival</label>
+                                    <input type="date" class="form-control" id="dateOfArrival" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="feedingSchedule">Feeding Schedule (optional)</label>
+                                    <input type="text" class="form-control" id="feedingSchedule" placeholder="e.g., 08:00, 16:00">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" onclick="saveTortoise()">Save Tortoise</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#tortoiseListTable').DataTable({
+                "pageLength": 10,
+                "order": [[0, "asc"]],
+                "responsive": true
+            });
+        });
+        function viewTortoise(id) {
+            alert('Viewing tortoise info for row: ' + id);
+        }
+        function editTortoise(id) {
+            alert('Editing tortoise info for row: ' + id);
+        }
+        function saveTortoise() {
+            // Get form values
+            const tortoiseId = document.getElementById('tortoiseId').value;
+            const tortoiseName = document.getElementById('tortoiseName').value;
+            const species = document.getElementById('species').value;
+            const gender = document.getElementById('gender').value;
+            const age = document.getElementById('age').value;
+            const healthStatus = document.getElementById('healthStatus').value;
+            const dateOfArrival = document.getElementById('dateOfArrival').value;
+            // Feeding schedule is optional
+            if (!tortoiseId || !tortoiseName || !species || !gender || !age || !healthStatus || !dateOfArrival) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            alert('Tortoise saved successfully!');
+            $('#addTortoiseModal').modal('hide');
+            document.getElementById('addTortoiseForm').reset();
+        }
+    </script>
+</body>
+</html> 

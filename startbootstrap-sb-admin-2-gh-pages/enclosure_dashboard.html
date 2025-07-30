@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Tortoise Conservation Management System - Enclosure Dashboard">
+    <meta name="author" content="">
+    <title>Tortoise Conservation - Enclosure Dashboard</title>
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-turtle"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">TCMSS</div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">Enclosure Management</div>
+            <li class="nav-item">
+                <a class="nav-link" href="enclosure_overview.html">
+                    <i class="fas fa-home"></i>
+                    <span>Enclosure Overview</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#environmental-controls-section">
+                    <i class="fas fa-thermometer-half"></i>
+                    <span>Environmental Controls</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#maintenance-schedule-section">
+                    <i class="fas fa-tools"></i>
+                    <span>Maintenance Schedule</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#security-monitoring-section">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Security Monitoring</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#resource-inventory-section">
+                    <i class="fas fa-boxes"></i>
+                    <span>Resource Inventory</span></a>
+            </li>
+            <hr class="sidebar-divider d-none d-md-block">
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <!-- End of Sidebar -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <h4 class="ml-3 mt-2 text-success font-weight-bold d-inline-block">Enclosure Management Dashboard</h4>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Enclosure Manager</span>
+                                <i class="fas fa-user fa-2x text-success img-profile rounded-circle"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Profile</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>Settings</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+                <div class="container-fluid">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Welcome, Enclosure Manager</h1>
+                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Add Enclosure</a>
+                    </div>
+                    
+                    <!-- Dashboard Cards -->
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Enclosures</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">12</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-home fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Active Enclosures</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">10</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Maintenance Due</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">3</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-tools fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Alerts</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">2</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+                        <!-- Enclosure Overview Section -->
+                        <div class="col-xl-8 col-lg-7" id="enclosure-overview-section">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Enclosure Overview</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                                            <div class="dropdown-header">Dropdown Header:</div>
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="enclosureTable" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Enclosure ID</th>
+                                                    <th>Type</th>
+                                                    <th>Status</th>
+                                                    <th>Temperature</th>
+                                                    <th>Humidity</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>ENC-001</td>
+                                                    <td>Breeding</td>
+                                                    <td><span class="badge badge-success">Active</span></td>
+                                                    <td>28°C</td>
+                                                    <td>75%</td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-primary">View</button>
+                                                        <button class="btn btn-sm btn-warning">Edit</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>ENC-002</td>
+                                                    <td>Nursery</td>
+                                                    <td><span class="badge badge-success">Active</span></td>
+                                                    <td>26°C</td>
+                                                    <td>80%</td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-primary">View</button>
+                                                        <button class="btn btn-sm btn-warning">Edit</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>ENC-003</td>
+                                                    <td>Adult</td>
+                                                    <td><span class="badge badge-warning">Maintenance</span></td>
+                                                    <td>25°C</td>
+                                                    <td>70%</td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-primary">View</button>
+                                                        <button class="btn btn-sm btn-warning">Edit</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Environmental Controls Section -->
+                        <div class="col-xl-4 col-lg-5" id="environmental-controls-section">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Environmental Controls</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="font-weight-bold">Temperature Control</label>
+                                        <div class="d-flex justify-content-between">
+                                            <span>Current: 27°C</span>
+                                            <span>Target: 28°C</span>
+                                        </div>
+                                        <div class="progress mt-2">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 85%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="font-weight-bold">Humidity Control</label>
+                                        <div class="d-flex justify-content-between">
+                                            <span>Current: 75%</span>
+                                            <span>Target: 80%</span>
+                                        </div>
+                                        <div class="progress mt-2">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 75%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="font-weight-bold">Lighting Schedule</label>
+                                        <div class="d-flex justify-content-between">
+                                            <span>Status: Active</span>
+                                            <span>14h/10h</span>
+                                        </div>
+                                        <div class="progress mt-2">
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 60%"></div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary btn-block">Adjust Controls</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Second Row -->
+                    <div class="row">
+                        <!-- Maintenance Schedule Section -->
+                        <div class="col-xl-6 col-lg-6" id="maintenance-schedule-section">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Maintenance Schedule</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="list-group">
+                                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="mb-1">ENC-003 Cleaning</h6>
+                                                <small class="text-muted">Due: Today</small>
+                                            </div>
+                                            <span class="badge badge-warning badge-pill">Urgent</span>
+                                        </div>
+                                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="mb-1">ENC-001 Filter Replacement</h6>
+                                                <small class="text-muted">Due: Tomorrow</small>
+                                            </div>
+                                            <span class="badge badge-info badge-pill">Scheduled</span>
+                                        </div>
+                                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="mb-1">ENC-002 UV Light Check</h6>
+                                                <small class="text-muted">Due: 3 days</small>
+                                            </div>
+                                            <span class="badge badge-secondary badge-pill">Pending</span>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-success btn-block mt-3">Schedule Maintenance</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Security Monitoring Section -->
+                        <div class="col-xl-6 col-lg-6" id="security-monitoring-section">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Security Monitoring</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="text-center mb-3">
+                                                <i class="fas fa-camera fa-3x text-primary"></i>
+                                                <div class="mt-2">
+                                                    <strong>Cameras</strong><br>
+                                                    <span class="text-success">12 Active</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="text-center mb-3">
+                                                <i class="fas fa-door-closed fa-3x text-success"></i>
+                                                <div class="mt-2">
+                                                    <strong>Access Control</strong><br>
+                                                    <span class="text-success">All Secure</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle"></i>
+                                        <strong>Security Status:</strong> All systems operational
+                                    </div>
+                                    <button class="btn btn-primary btn-block">View Security Feed</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Third Row -->
+                    <div class="row">
+                        <!-- Resource Inventory Section -->
+                        <div class="col-xl-12" id="resource-inventory-section">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Resource Inventory</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-3 mb-3">
+                                            <div class="card border-left-primary">
+                                                <div class="card-body">
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col mr-2">
+                                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Food Supply</div>
+                                                            <div class="h5 mb-0 font-weight-bold text-gray-800">85%</div>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <i class="fas fa-seedling fa-2x text-gray-300"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <div class="card border-left-success">
+                                                <div class="card-body">
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col mr-2">
+                                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Water Supply</div>
+                                                            <div class="h5 mb-0 font-weight-bold text-gray-800">92%</div>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <i class="fas fa-tint fa-2x text-gray-300"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <div class="card border-left-warning">
+                                                <div class="card-body">
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col mr-2">
+                                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Cleaning Supplies</div>
+                                                            <div class="h5 mb-0 font-weight-bold text-gray-800">45%</div>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <i class="fas fa-broom fa-2x text-gray-300"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <div class="card border-left-info">
+                                                <div class="card-body">
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col mr-2">
+                                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Medical Supplies</div>
+                                                            <div class="h5 mb-0 font-weight-bold text-gray-800">78%</div>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <i class="fas fa-first-aid fa-2x text-gray-300"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary btn-block">Manage Inventory</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Tortoise Conservation Management System 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+    </div>
+    <!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script>
+        $(document).ready(function() {
+            $('#enclosureTable').DataTable();
+        });
+    </script>
+</body>
+</html> 
