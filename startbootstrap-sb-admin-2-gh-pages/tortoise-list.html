@@ -75,7 +75,7 @@
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">User 01</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Dr. Atika Humaira</span>
                                 <i class="fas fa-user fa-2x text-success img-profile rounded-circle"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -136,7 +136,7 @@
                                     </button>
                                 </div>
                                 <div class="col-md-3">
-                                    <span class="text-muted">Showing <span id="recordCount">100</span> of 100 tortoises</span>
+                                    <span class="text-muted">Showing <span id="recordCount">50</span> of 50 tortoises</span>
                                 </div>
                             </div>
                         </div>
@@ -319,7 +319,7 @@
     <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
     <script>
-        // Sample tortoise data - 100 tortoises
+        // Sample tortoise data - 50 tortoises
         let tortoises = [];
         const species = ['Galapagos', 'Aldabra', 'Sulcata', 'Leopard', 'Hermann'];
         const healthStatuses = ['Healthy', 'Sick', 'Recovering', 'Critical'];
@@ -339,9 +339,9 @@
             'Cassandra', 'Clytemnestra', 'Electra', 'Iphigenia', 'Antigone', 'Ismene', 'Jocasta'
         ];
 
-        // Generate 100 tortoises
+        // Generate 50 tortoises
         function generateTortoises() {
-            for (let i = 1; i <= 100; i++) {
+            for (let i = 1; i <= 50; i++) {
                 const tortoise = {
                     id: `T${String(i).padStart(3, '0')}`,
                     name: names[i % names.length] + (Math.floor(i / names.length) + 1),

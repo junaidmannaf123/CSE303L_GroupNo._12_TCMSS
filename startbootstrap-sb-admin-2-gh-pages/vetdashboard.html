@@ -10,6 +10,35 @@
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+        .clickable-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .clickable-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+        }
+        
+        .clickable-card:hover .text-gray-300 {
+            color: #5a5c69 !important;
+        }
+        
+        a.text-decoration-none:hover {
+            text-decoration: none !important;
+        }
+        
+        /* Ensure text colors remain consistent on hover */
+        .clickable-card:hover .text-success,
+        .clickable-card:hover .text-info,
+        .clickable-card:hover .text-warning,
+        .clickable-card:hover .text-danger,
+        .clickable-card:hover .text-primary,
+        .clickable-card:hover .text-secondary {
+            color: inherit !important;
+        }
+    </style>
 </head>
 <body id="page-top">
     <div id="wrapper">
@@ -86,94 +115,106 @@
                     <!-- Statistic Cards -->
                     <div class="row">
                         <div class="col-xl-2 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Tortoises</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-turtle fa-2x text-gray-300"></i>
+                            <a href="tortoise-list.html" class="text-decoration-none">
+                                <div class="card border-left-success shadow h-100 py-2 clickable-card">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Tortoises</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">50</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-turtle fa-2x text-gray-300"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                         <div class="col-xl-2 col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Health Checks (This Month)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">42</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-stethoscope fa-2x text-gray-300"></i>
+                            <a href="health-records.html" class="text-decoration-none">
+                                <div class="card border-left-info shadow h-100 py-2 clickable-card">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Health Checks (This Month)</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">42</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-stethoscope fa-2x text-gray-300"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                         <div class="col-xl-2 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Needing Attention</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">5</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-exclamation-circle fa-2x text-gray-300"></i>
+                            <a href="vet_alerts.html" class="text-decoration-none">
+                                <div class="card border-left-warning shadow h-100 py-2 clickable-card">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Needing Attention</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">5</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-exclamation-circle fa-2x text-gray-300"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                         <div class="col-xl-2 col-md-6 mb-4">
-                            <div class="card border-left-danger shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Total Alerts</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">8</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-bell fa-2x text-gray-300"></i>
+                            <a href="vet_alerts.html" class="text-decoration-none">
+                                <div class="card border-left-danger shadow h-100 py-2 clickable-card">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Total Alerts</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">8</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-bell fa-2x text-gray-300"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                         <div class="col-xl-2 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tasks Complete</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">15</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                            <a href="assigned_tasks.html" class="text-decoration-none">
+                                <div class="card border-left-primary shadow h-100 py-2 clickable-card">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tasks Complete</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">15</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                         <div class="col-xl-2 col-md-6 mb-4">
-                            <div class="card border-left-secondary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">Tasks Incomplete</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">7</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-clock fa-2x text-gray-300"></i>
+                            <a href="assigned_tasks.html" class="text-decoration-none">
+                                <div class="card border-left-secondary shadow h-100 py-2 clickable-card">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">Tasks Incomplete</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">7</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-clock fa-2x text-gray-300"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                     <!-- Charts Row -->
@@ -273,7 +314,7 @@
                                     </div>
                                     <hr>
                                     <div class="text-center">
-                                        <h6 class="text-gray-600">Total Tortoises: 100</h6>
+                                        <h6 class="text-gray-600">Total Tortoises: 50</h6>
                                         <p class="text-muted small">Based on latest health records data</p>
                                     </div>
                                 </div>
@@ -288,37 +329,37 @@
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <div class="text-center">
-                                                <div class="h3 text-primary font-weight-bold">20</div>
+                                                <div class="h3 text-primary font-weight-bold">10</div>
                                                 <div class="text-muted">Galapagos Tortoises</div>
-                                                <span class="badge badge-primary">20%</span>
+                                                <span class="badge badge-primary">10%</span>
                                             </div>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <div class="text-center">
-                                                <div class="h3 text-info font-weight-bold">20</div>
+                                                <div class="h3 text-info font-weight-bold">10</div>
                                                 <div class="text-muted">Aldabra Tortoises</div>
-                                                <span class="badge badge-info">20%</span>
+                                                <span class="badge badge-info">10%</span>
                                             </div>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <div class="text-center">
-                                                <div class="h3 text-success font-weight-bold">20</div>
+                                                <div class="h3 text-success font-weight-bold">10</div>
                                                 <div class="text-muted">Sulcata Tortoises</div>
-                                                <span class="badge badge-success">20%</span>
+                                                <span class="badge badge-success">10%</span>
                                             </div>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <div class="text-center">
-                                                <div class="h3 text-warning font-weight-bold">20</div>
+                                                <div class="h3 text-warning font-weight-bold">10</div>
                                                 <div class="text-muted">Leopard Tortoises</div>
-                                                <span class="badge badge-warning">20%</span>
+                                                <span class="badge badge-warning">10%</span>
                                             </div>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <div class="text-center">
-                                                <div class="h3 text-secondary font-weight-bold">20</div>
+                                                <div class="h3 text-secondary font-weight-bold">10</div>
                                                 <div class="text-muted">Hermann Tortoises</div>
-                                                <span class="badge badge-secondary">20%</span>
+                                                <span class="badge badge-secondary">10%</span>
                                             </div>
                                         </div>
                                     </div>
@@ -339,7 +380,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Tortoise Conservation 2024</span>
+                        <span>Copyright &copy; Tortoise Conservation 2025</span>
                     </div>
                 </div>
             </footer>
