@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Tortoise Conservation Management System - Environment Monitor">
+    <meta name="author" content="">
+    <title>Tortoise Conservation - Environment Monitor</title>
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+        .clickable-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .clickable-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+        }
+        .clickable-card:hover .text-gray-300 {
+            color: #5a5c69 !important;
+        }
+        a.text-decoration-none:hover {
+            text-decoration: none !important;
+        }
+        .clickable-card:hover .text-success,
+        .clickable-card:hover .text-info,
+        .clickable-card:hover .text-warning,
+        .clickable-card:hover .text-danger,
+        .clickable-card:hover .text-primary,
+        .clickable-card:hover .text-secondary {
+            color: inherit !important;
+        }
+    </style>
+</head>
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="vetdashboard.html">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-turtle"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">TCMSS</div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item">
+                <a class="nav-link" href="environment_monitor.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">Environment Monitor Tools</div>
+            <li class="nav-item">
+                <a class="nav-link" href="#incubator-update-section">
+                    <i class="fas fa-fw fa-notes-medical"></i>
+                    <span>Incubator Data Update</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#environment-update-section">
+                    <i class="fas fa-fw fa-list"></i>
+                    <span>Environment Data Update</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#sensor-alerts-section">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i>
+                    <span>Sensor Alerts</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="assigned_tasks.html">
+                    <i class="fas fa-fw fa-tasks"></i>
+                    <span>Assigned Tasks</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">Environment </div>
+            
+            <li class="nav-item active">
+                <a class="nav-link" href="environment_monitor.html">
+                    <i class="fas fa-fw fa-leaf"></i>
+                    <span>Environment Monitor</span></a>
+            </li>
+            <div class="sidebar-heading">Incubator </div>
+            <li class="nav-item active">
+                <a class="nav-link" href="Egg_Incubator.html">
+                    <i class="fas fa-fw fa-leaf"></i>
+                    <span>Egg Incubator</span></a>
+            </li>
+            <hr class="sidebar-divider d-none d-md-block">
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <!-- End of Sidebar -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <h4 class="ml-3 mt-2 text-success font-weight-bold d-inline-block">Environment Monitor</h4>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Dr. Atika Humayra</span>
+                                <i class="fas fa-user-nurse fa-2x text-success img-profile rounded-circle"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Profile</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>Settings</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+                <div class="container-fluid">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Environment Monitoring Dashboard</h1>
+                    </div>
+                    <!-- Environment Monitor Content Here -->
+                    <div class="row">
+                        <!-- Live Sensor Data -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Enclosure Temperature</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">28°C</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-thermometer-half fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Enclosure Humidity</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">65%</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-tint fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Incubator Temperature</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">32°C</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-egg fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Incubator Data Update Section -->
+                    <div class="row" id="incubator-update-section">
+                        <div class="col-xl-6 mb-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-warning"><i class="fas fa-egg mr-2"></i>Incubator Data Update</h6>
+                                </div>
+                                <div class="card-body">
+                                    <form id="incubatorDataForm">
+                                        <div class="form-group">
+                                            <label for="incubatorTemp">Temperature (°C)</label>
+                                            <input type="number" class="form-control" id="incubatorTemp" name="incubatorTemp" min="20" max="40" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="incubatorHumidity">Humidity (%)</label>
+                                            <input type="number" class="form-control" id="incubatorHumidity" name="incubatorHumidity" min="0" max="100" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="eggCount">Egg Count</label>
+                                            <input type="number" class="form-control" id="eggCount" name="eggCount" min="0" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="incubatorNotes">Notes</label>
+                                            <textarea class="form-control" id="incubatorNotes" name="incubatorNotes" rows="2"></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-warning text-white"><i class="fas fa-save mr-1"></i>Update Incubator Data</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Environment Data Update Section -->
+                        <div class="col-xl-6 mb-4" id="environment-update-section">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-success"><i class="fas fa-leaf mr-2"></i>Environment Data Update</h6>
+                                </div>
+                                <div class="card-body">
+                                    <form id="environmentDataForm">
+                                        <div class="form-group">
+                                            <label for="enclosureSelect">Enclosure</label>
+                                            <select class="form-control" id="enclosureSelect" name="enclosureSelect" required>
+                                                <option value="">Select Enclosure</option>
+                                                <option value="Enclosure 1">Enclosure 1</option>
+                                                <option value="Enclosure 2">Enclosure 2</option>
+                                                <option value="Enclosure 3">Enclosure 3</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="enclosureTemp">Temperature (°C)</label>
+                                            <input type="number" class="form-control" id="enclosureTemp" name="enclosureTemp" min="10" max="40" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="enclosureHumidity">Humidity (%)</label>
+                                            <input type="number" class="form-control" id="enclosureHumidity" name="enclosureHumidity" min="0" max="100" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="enclosureNotes">Notes</label>
+                                            <textarea class="form-control" id="enclosureNotes" name="enclosureNotes" rows="2"></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-success"><i class="fas fa-save mr-1"></i>Update Environment Data</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alerts & Notifications -->
+                    <div class="row" id="sensor-alerts-section">
+                        <div class="col-xl-6 mb-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-danger"><i class="fas fa-exclamation-triangle mr-2"></i>Sensor Alerts</h6>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Enclosure 2: Temperature High!
+                                            <span class="badge badge-danger badge-pill">Critical</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Incubator: Humidity Low
+                                            <span class="badge badge-warning badge-pill">Warning</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            All sensors normal
+                                            <span class="badge badge-success badge-pill">Normal</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Maintenance Reminders -->
+                        <div class="col-xl-6 mb-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-tools mr-2"></i>Maintenance & Calibration</h6>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Sensor Calibration Due
+                                            <span class="badge badge-warning badge-pill">2 days</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Filter Change (Enclosure 1)
+                                            <span class="badge badge-info badge-pill">5 days</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            All systems up to date
+                                            <span class="badge badge-success badge-pill">OK</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Historical Data & Trends -->
+                    <div class="row">
+                        <div class="col-xl-12 mb-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-chart-line mr-2"></i>Historical Data & Trends</h6>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="envTrendChart" height="80"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Environment Logs -->
+                    <div class="row">
+                        <div class="col-xl-12 mb-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-secondary"><i class="fas fa-list-alt mr-2"></i>Environment Logs</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>Date/Time</th>
+                                                    <th>Location</th>
+                                                    <th>Temperature (°C)</th>
+                                                    <th>Humidity (%)</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>2025-07-31 09:00</td>
+                                                    <td>Enclosure 1</td>
+                                                    <td>28</td>
+                                                    <td>65</td>
+                                                    <td><span class="badge badge-success">Normal</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2025-07-31 09:00</td>
+                                                    <td>Incubator</td>
+                                                    <td>32</td>
+                                                    <td>55</td>
+                                                    <td><span class="badge badge-warning">Warning</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2025-07-31 08:00</td>
+                                                    <td>Enclosure 2</td>
+                                                    <td>31</td>
+                                                    <td>60</td>
+                                                    <td><span class="badge badge-danger">Critical</span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <button class="btn btn-outline-success btn-sm mt-2"><i class="fas fa-file-download mr-1"></i>Download Logs</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Tortoise Conservation 2025</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-success" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
+    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script>
+        // Example Chart.js for Historical Data & Trends
+        var ctx = document.getElementById('envTrendChart').getContext('2d');
+        var envTrendChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['08:00', '09:00', '10:00', '11:00', '12:00'],
+                datasets: [
+                    {
+                        label: 'Enclosure 1 Temp (°C)',
+                        data: [27, 28, 29, 28, 28],
+                        borderColor: '#36b9cc',
+                        fill: false
+                    },
+                    {
+                        label: 'Incubator Temp (°C)',
+                        data: [31, 32, 32, 33, 32],
+                        borderColor: '#f6c23e',
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // Example form handlers (no backend, just prevent reload)
+        document.getElementById('incubatorDataForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Incubator data updated!');
+            this.reset();
+        });
+        document.getElementById('environmentDataForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Environment data updated!');
+            this.reset();
+        });
+        </script>
+</body>
+</html>
