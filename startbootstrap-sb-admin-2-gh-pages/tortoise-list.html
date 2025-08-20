@@ -112,25 +112,6 @@
                                     <input type="text" class="form-control" id="searchInput" placeholder="Search by ID or Name...">
                                 </div>
                                 <div class="col-md-2">
-                                    <select class="form-control" id="speciesFilter">
-                                        <option value="">All Species</option>
-                                        <option value="Galapagos">Galapagos</option>
-                                        <option value="Aldabra">Aldabra</option>
-                                        <option value="Sulcata">Sulcata</option>
-                                        <option value="Leopard">Leopard</option>
-                                        <option value="Hermann">Hermann</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <select class="form-control" id="healthFilter">
-                                        <option value="">All Health Status</option>
-                                        <option value="Healthy">Healthy</option>
-                                        <option value="Sick">Sick</option>
-                                        <option value="Recovering">Recovering</option>
-                                        <option value="Critical">Critical</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
                                     <button class="btn btn-primary btn-sm" onclick="filterTable()">
                                         <i class="fas fa-search"></i> Filter
                                     </button>
@@ -164,9 +145,10 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Name</th>
-                                            <th>Species</th>
                                             <th>Age (Years)</th>
-                                            <th>Health Status</th>
+                                            <th>Gender</th>
+                                            <th>Enclosure ID</th>
+                                            <th>Species ID</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -323,6 +305,7 @@
         let tortoises = [];
         const species = ['Galapagos', 'Aldabra', 'Sulcata', 'Leopard', 'Hermann'];
         const healthStatuses = ['Healthy', 'Sick', 'Recovering', 'Critical'];
+        const genders = ['Male', 'Female'];
         const names = [
             'Tommy', 'Luna', 'Rocky', 'Stella', 'Shelly', 'Franklin', 'Crush', 'Squirt',
             'Donatello', 'Leonardo', 'Michelangelo', 'Raphael', 'Yertle', 'Myrtle', 'Speedy',
@@ -342,15 +325,30 @@
         // Generate 50 tortoises
         function generateTortoises() {
             for (let i = 1; i <= 50; i++) {
+                const selectedSpecies = species[Math.floor(Math.random() * species.length)];
                 const tortoise = {
                     id: `T${String(i).padStart(3, '0')}`,
                     name: names[i % names.length] + (Math.floor(i / names.length) + 1),
-                    species: species[Math.floor(Math.random() * species.length)],
+                    species: selectedSpecies,
                     age: Math.floor(Math.random() * 150) + 1,
+                    gender: genders[i % 2],
+                    enclosureId: `E${String((i % 20) + 1).padStart(3, '0')}`,
+                    speciesId: generateSpeciesId(selectedSpecies),
                     healthStatus: healthStatuses[Math.floor(Math.random() * healthStatuses.length)]
                 };
                 tortoises.push(tortoise);
             }
+        }
+
+        function generateSpeciesId(speciesName) {
+            const map = {
+                'Galapagos': 'S-GLP',
+                'Aldabra': 'S-ALD',
+                'Sulcata': 'S-SUL',
+                'Leopard': 'S-LEO',
+                'Hermann': 'S-HER'
+            };
+            return map[speciesName] || 'S-UNK';
         }
 
         // Populate table
@@ -360,14 +358,14 @@
             
             data.forEach(tortoise => {
                 const row = document.createElement('tr');
-                const healthClass = getHealthClass(tortoise.healthStatus);
                 
                 row.innerHTML = `
                     <td><strong>${tortoise.id}</strong></td>
                     <td>${tortoise.name}</td>
-                    <td>${tortoise.species}</td>
                     <td>${tortoise.age}</td>
-                    <td><span class="${healthClass}">${tortoise.healthStatus}</span></td>
+                    <td>${tortoise.gender || '-'}</td>
+                    <td>${tortoise.enclosureId || '-'}</td>
+                    <td>${tortoise.speciesId || '-'}</td>
                     <td>
                         <button class="btn btn-primary btn-sm" onclick="editTortoise('${tortoise.id}')">
                             <i class="fas fa-edit"></i> Edit
@@ -397,16 +395,11 @@
         // Filter table
         function filterTable() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const speciesFilter = document.getElementById('speciesFilter').value;
-            const healthFilter = document.getElementById('healthFilter').value;
             
             const filteredData = tortoises.filter(tortoise => {
                 const matchesSearch = tortoise.id.toLowerCase().includes(searchTerm) || 
                                     tortoise.name.toLowerCase().includes(searchTerm);
-                const matchesSpecies = !speciesFilter || tortoise.species === speciesFilter;
-                const matchesHealth = !healthFilter || tortoise.healthStatus === healthFilter;
-                
-                return matchesSearch && matchesSpecies && matchesHealth;
+                return matchesSearch;
             });
             
             populateTable(filteredData);
@@ -418,6 +411,9 @@
             const species = document.getElementById('tortoiseSpecies').value;
             const age = parseInt(document.getElementById('tortoiseAge').value);
             const healthStatus = document.getElementById('tortoiseHealth').value;
+            const gender = Math.random() > 0.5 ? 'Male' : 'Female';
+            const enclosureId = `E${String((tortoises.length % 20) + 1).padStart(3, '0')}`;
+            const speciesId = generateSpeciesId(species);
             
             if (!name || !species || !age || !healthStatus) {
                 alert('Please fill in all fields');
@@ -430,6 +426,9 @@
                 name: name,
                 species: species,
                 age: age,
+                gender: gender,
+                enclosureId: enclosureId,
+                speciesId: speciesId,
                 healthStatus: healthStatus
             };
             
@@ -473,6 +472,9 @@
                     name: name,
                     species: species,
                     age: age,
+                    gender: tortoises[tortoiseIndex].gender || 'Male',
+                    enclosureId: tortoises[tortoiseIndex].enclosureId || `E${String((tortoiseIndex % 20) + 1).padStart(3, '0')}`,
+                    speciesId: generateSpeciesId(species),
                     healthStatus: healthStatus
                 };
                 populateTable();
@@ -501,8 +503,6 @@
 
         // Search functionality
         document.getElementById('searchInput').addEventListener('input', filterTable);
-        document.getElementById('speciesFilter').addEventListener('change', filterTable);
-        document.getElementById('healthFilter').addEventListener('change', filterTable);
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
