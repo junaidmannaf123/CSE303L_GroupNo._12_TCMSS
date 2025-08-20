@@ -70,11 +70,12 @@
               <table class="table table-bordered table-hover">
                 <thead class="thead-dark">
                   <tr>
-                    <th scope="col">Tortoise ID</th>
+                    <th scope="col">TortoiseID</th>
                     <th scope="col">Name</th>
                     <th scope="col">Age</th>
-                    <th scope="col">Species</th>
-                    <th scope="col">Health Status</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">EnclosureID</th>
+                    <th scope="col">SpeciesID</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
@@ -98,11 +99,11 @@
 <script>
   // Sample tortoise records
   const tortoises = [
-    { id: '01', name: 'Toto', age: '5 yrs', species: 'Indian Star', health: 'Healthy' },
-    { id: '02', name: 'Luna', age: '3 yrs', species: 'Sulcata', health: 'Under Observation' },
-    { id: '03', name: 'Max', age: '7 yrs', species: 'Red-Footed', health: 'Needs Immediate Care' },
-    { id: '04', name: 'Daisy', age: '2 yrs', species: 'Leopard', health: 'Healthy' },
-    { id: '05', name: 'Rocky', age: '4 yrs', species: 'Marginated', health: 'Under Treatment' },
+    { id: '01', name: 'Toto', age: '5 yrs', gender: 'Male', enclosureId: 'E01', speciesId: 'S01' },
+    { id: '02', name: 'Luna', age: '3 yrs', gender: 'Female', enclosureId: 'E02', speciesId: 'S02' },
+    { id: '03', name: 'Max', age: '7 yrs', gender: 'Male', enclosureId: 'E03', speciesId: 'S03' },
+    { id: '04', name: 'Daisy', age: '2 yrs', gender: 'Female', enclosureId: 'E04', speciesId: 'S04' },
+    { id: '05', name: 'Rocky', age: '4 yrs', gender: 'Male', enclosureId: 'E05', speciesId: 'S05' },
 
   ];
 
@@ -118,14 +119,15 @@
     const tbody = $('table tbody');
     tbody.empty();
     tortoises.forEach((t, idx) => {
-      const searchString = `${t.id} ${t.name} ${t.age} ${t.species} ${t.health}`.toLowerCase();
+      const searchString = `${t.id} ${t.name} ${t.age} ${t.gender} ${t.enclosureId} ${t.speciesId}`.toLowerCase();
       if (filter && !searchString.includes(filter.toLowerCase())) return;
       const row = `<tr>
         <td>${t.id}</td>
         <td>${t.name}</td>
         <td>${t.age}</td>
-        <td>${t.species}</td>
-        <td>${getHealthBadge(t.health)}</td>
+        <td>${t.gender}</td>
+        <td>${t.enclosureId}</td>
+        <td>${t.speciesId}</td>
         <td>
           <button class="btn btn-sm btn-info mr-1 edit-tortoise-btn" data-index="${idx}"><i class="fas fa-edit"></i> Edit</button>
           <button class="btn btn-sm btn-danger delete-tortoise-btn" data-index="${idx}"><i class="fas fa-trash"></i> Delete</button>
@@ -157,8 +159,9 @@
       $('#tortoiseId').val(t.id);
       $('#tortoiseName').val(t.name);
       $('#tortoiseAge').val(t.age);
-      $('#tortoiseSpecies').val(t.species);
-      $('#tortoiseHealth').val(t.health);
+      $('#tortoiseGender').val(t.gender);
+      $('#tortoiseEnclosure').val(t.enclosureId);
+      $('#tortoiseSpecies').val(t.speciesId);
       $('#editTortoiseIndex').val(idx);
       $('#tortoiseModal').modal('show');
     });
@@ -178,13 +181,14 @@
       const id = $('#tortoiseId').val();
       const name = $('#tortoiseName').val();
       const age = $('#tortoiseAge').val();
-      const species = $('#tortoiseSpecies').val();
-      const health = $('#tortoiseHealth').val();
+      const gender = $('#tortoiseGender').val();
+      const enclosureId = $('#tortoiseEnclosure').val();
+      const speciesId = $('#tortoiseSpecies').val();
       const idx = $('#editTortoiseIndex').val();
       if (idx === '') {
-        tortoises.push({ id, name, age, species, health });
+        tortoises.push({ id, name, age, gender, enclosureId, speciesId });
       } else {
-        tortoises[idx] = { id, name, age, species, health };
+        tortoises[idx] = { id, name, age, gender, enclosureId, speciesId };
       }
       $('#tortoiseModal').modal('hide');
       renderTortoiseTable($('#searchInput').val());
