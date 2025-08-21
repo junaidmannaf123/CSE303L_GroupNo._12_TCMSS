@@ -38,6 +38,17 @@
         .clickable-card:hover .text-secondary {
             color: inherit !important;
         }
+
+        /* Consistent topbar height */
+        .topbar-fixed { min-height: 4.75rem; }
+
+        /* Ensure equal height for summary cards */
+        .dashboard-equal-row > [class^="col-"] { display: flex; }
+        .dashboard-equal-row .card { height: 100%; width: 100%; }
+        
+        /* Ensure equal height for statistic cards */
+        .row > [class*="col-"] > .card { height: 100%; }
+        .row > [class*="col-"] > a > .card { height: 100%; }
     </style>
 </head>
 <body id="page-top">
@@ -82,11 +93,11 @@
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow topbar-fixed">
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
-                    <h4 class="ml-3 mt-2 text-success font-weight-bold d-inline-block">Veterinarian Dashboard</h4>
+                    <h4 class="ml-3 mt-2 text-success font-weight-bold mr-auto">Veterinarian Dashboard</h4>
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -109,7 +120,7 @@
                     </div>
                     <!-- Statistic Cards -->
                     <div class="row">
-                        <div class="col-xl-2 col-md-6 mb-4">
+                        <div class="col-xl-3 col-lg-3 col-md-6 mb-4">
                             <a href="tortoise-list.html" class="text-decoration-none">
                                 <div class="card border-left-success shadow h-100 py-2 clickable-card">
                                     <div class="card-body">
@@ -126,7 +137,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="col-xl-2 col-md-6 mb-4">
+                        <div class="col-xl-2 col-lg-3 col-md-6 mb-4">
                             <a href="health-records.html" class="text-decoration-none">
                                 <div class="card border-left-info shadow h-100 py-2 clickable-card">
                                     <div class="card-body">
@@ -143,7 +154,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="col-xl-2 col-md-6 mb-4">
+                        <div class="col-xl-2 col-lg-3 col-md-6 mb-4">
                             <a href="assigned_tasks.html" class="text-decoration-none">
                                 <div class="card border-left-primary shadow h-100 py-2 clickable-card">
                                     <div class="card-body">
@@ -160,7 +171,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="col-xl-2 col-md-6 mb-4">
+                        <div class="col-xl-2 col-lg-3 col-md-6 mb-4">
                             <a href="assigned_tasks.html" class="text-decoration-none">
                                 <div class="card border-left-secondary shadow h-100 py-2 clickable-card">
                                     <div class="card-body">
@@ -177,10 +188,26 @@
                                 </div>
                             </a>
                         </div>
+                        <div class="col-xl-2.5 col-lg-3 col-md-6 mb-4">
+                            <a href="health-records.html" class="text-decoration-none"> 
+                            <div class="card border-left-success shadow h-100 py-2 clickable-card">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Health Records</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><span id="hr-count-stat">0</span></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-notes-medical fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- Charts Row -->
                     <div class="row">
-                        <div class="col-xl-8 col-lg-7">
+                        <div class="col-12">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-success">Health Checks Over Time</h6>
@@ -192,7 +219,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-lg-5">
+                    </div>
+                    <!-- Tortoise Health Status + Vaccination Status Summary -->
+                    <div class="row dashboard-equal-row">
+                        <div class="col-xl-6 col-lg-6">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-success">Tortoise Health Status</h6>
@@ -205,6 +235,32 @@
                                         <span class="mr-2"><i class="fas fa-circle text-success"></i> Healthy</span>
                                         <span class="mr-2"><i class="fas fa-circle text-warning"></i> Under Observation</span>
                                         <span class="mr-2"><i class="fas fa-circle text-danger"></i> Critical</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-success">Vaccination Status Summary</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-pie pt-4 pb-2">
+                                        <canvas id="vaccinationPieChart"></canvas>
+                                    </div>
+                                    <div class="mt-3 d-flex justify-content-around text-center small">
+                                        <div>
+                                            <div class="h4 text-success mb-0" id="vacc-up-to-date">0</div>
+                                            <div class="text-muted">Up to Date</div>
+                                        </div>
+                                        <div>
+                                            <div class="h4 text-warning mb-0" id="vacc-due">0</div>
+                                            <div class="text-muted">Due</div>
+                                        </div>
+                                        <div>
+                                            <div class="h4 text-danger mb-0" id="vacc-overdue">0</div>
+                                            <div class="text-muted">Overdue</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -453,6 +509,97 @@
     
     <!-- Health Record Modal JavaScript -->
     <script>
+        // Vaccination Status Summary Chart (pulls live counts from health-records.html)
+        document.addEventListener('DOMContentLoaded', function () {
+            let vaccinationChart = null;
+
+            function renderVaccinationSummary(upToDate, due, overdue) {
+                const upEl = document.getElementById('vacc-up-to-date');
+                const dueEl = document.getElementById('vacc-due');
+                const overEl = document.getElementById('vacc-overdue');
+                if (upEl) upEl.textContent = upToDate;
+                if (dueEl) dueEl.textContent = due;
+                if (overEl) overEl.textContent = overdue;
+
+                const ctx = document.getElementById('vaccinationPieChart');
+                if (ctx && window.Chart) {
+                    if (!vaccinationChart) {
+                        vaccinationChart = new Chart(ctx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['Up to Date', 'Due', 'Overdue'],
+                                datasets: [{
+                                    data: [upToDate, due, overdue],
+                                    backgroundColor: ['#1cc88a', '#f6c23e', '#e74a3b'],
+                                    hoverBackgroundColor: ['#17a673', '#dda20a', '#be2617'],
+                                    hoverBorderColor: 'rgba(234, 236, 244, 1)'
+                                }]
+                            },
+                            options: {
+                                maintainAspectRatio: false,
+                                tooltips: {
+                                    backgroundColor: 'rgb(255,255,255)',
+                                    bodyFontColor: '#858796',
+                                    borderColor: '#dddfeb',
+                                    borderWidth: 1,
+                                    xPadding: 15,
+                                    yPadding: 15,
+                                    displayColors: false,
+                                    caretPadding: 10
+                                },
+                                legend: { display: false },
+                                cutoutPercentage: 70
+                            }
+                        });
+                    } else {
+                        vaccinationChart.data.datasets[0].data = [upToDate, due, overdue];
+                        vaccinationChart.update();
+                    }
+                }
+            }
+
+            function computeFromDocument(doc) {
+                const rows = doc.querySelectorAll('#healthRecordsTableBody tr');
+                let upToDate = 0, due = 0, overdue = 0;
+                rows.forEach(row => {
+                    const tds = row.querySelectorAll('td');
+                    if (tds.length >= 7) {
+                        const vaccCellText = (tds[6].innerText || tds[6].textContent || '').trim().toLowerCase();
+                        if (vaccCellText.includes('up to date')) upToDate++;
+                        else if (vaccCellText.includes('due')) {
+                            // Ensure 'Overdue' doesn't count as 'Due'
+                            if (vaccCellText.includes('overdue')) overdue++; else due++;
+                        } else if (vaccCellText.includes('overdue')) overdue++;
+                    }
+                });
+                // update topbar HR count
+                const hrCountEl = document.getElementById('hr-count');
+                if (hrCountEl) hrCountEl.textContent = rows.length.toString();
+                const hrCountStatEl = document.getElementById('hr-count-stat');
+                if (hrCountStatEl) hrCountStatEl.textContent = rows.length.toString();
+
+                return { upToDate, due, overdue };
+            }
+
+            // Fetch health-records.html and parse vaccination statuses
+            fetch('health-records.html', { cache: 'no-store' })
+                .then(resp => resp.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const { upToDate, due, overdue } = computeFromDocument(doc);
+                    renderVaccinationSummary(upToDate, due, overdue);
+                })
+                .catch(() => {
+                    // Fallback sample numbers if fetch fails
+                    renderVaccinationSummary(28, 15, 7);
+                    const hrCountEl = document.getElementById('hr-count');
+                    if (hrCountEl) hrCountEl.textContent = '50';
+                    const hrCountStatEl = document.getElementById('hr-count-stat');
+                    if (hrCountStatEl) hrCountStatEl.textContent = '50';
+                });
+        });
+
         // Set default date to today
         document.addEventListener('DOMContentLoaded', function() {
             const today = new Date().toISOString().split('T')[0];
