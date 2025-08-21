@@ -14,7 +14,7 @@
 </head>
 <body id="page-top">
     <div id="wrapper">
-        <!-- Sidebar -->
+        
         <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
                 <div class="sidebar-brand-icon rotate-n-15">
@@ -34,61 +34,36 @@
                 <a class="nav-link" href="enclosure_overview.html">
                     <i class="fas fa-home"></i>
                     <span>Enclosure Overview</span></a>
+
+
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#environmental-controls-section">
-                    <i class="fas fa-thermometer-half"></i>
-                    <span>Environmental Controls</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="maintenance_logs_enclosure.html">
-                    <i class="fas fa-tools"></i>
-                    <span>Maintenance Logs</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#resource-inventory-section">
-                    <i class="fas fa-boxes"></i>
-                    <span>Resource Inventory</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="caretaker_assignment_enclosure.html">
-                    <i class="fas fa-user-friends"></i>
-                    <span>Caretaker Assignment</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="timeline_history_enclosure.html">
-                    <i class="fas fa-history"></i>
-                    <span>Timeline / History</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="enclosure_location_environment.html">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Location & Environment</span></a>
-            </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="tortoise_list_enclosure.html">
                     <i class="fas fa-list"></i>
                     <span>Tortoise List</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="alerts_warnings_enclosure.html">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <span>Alerts & Warnings</span></a>
-            </li>
+
             <li class="nav-item active">
                 <a class="nav-link" href="maintenance_logs_enclosure.html">
                     <i class="fas fa-tools"></i>
                     <span>Maintenance Logs</span></a>
             </li>
+            
+            
+               
+            
+            
+            
             <hr class="sidebar-divider d-none d-md-block">
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
         </ul>
-        <!-- End of Sidebar -->
+        
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                <!-- Topbar -->
+                
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
@@ -109,7 +84,7 @@
                         </li>
                     </ul>
                 </nav>
-                <!-- End of Topbar -->
+                
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Maintenance Logs</h1>
@@ -178,10 +153,10 @@
                         </div>
                     </div>
                 </div>
-                <!-- /.container-fluid -->
+                
             </div>
-            <!-- End of Main Content -->
-            <!-- Footer -->
+            
+            
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
@@ -189,12 +164,12 @@
                     </div>
                 </div>
             </footer>
-            <!-- End of Footer -->
+            
         </div>
     </div>
-    <!-- End of Page Wrapper -->
+    
 
-    <!-- Add Maintenance Modal -->
+    
     <div class="modal fade" id="addMaintenanceModal" tabindex="-1" role="dialog" aria-labelledby="addMaintenanceModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -256,12 +231,12 @@
         </div>
     </div>
 
-    <!-- Scroll to Top Button-->
+    
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Bootstrap core JavaScript-->
+    
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
@@ -283,7 +258,7 @@
             alert('Editing maintenance log for row: ' + id);
         }
         function saveMaintenance() {
-            // Get form values
+            
             const enclosureId = document.getElementById('enclosureId').value;
             const lastCleaned = document.getElementById('lastCleaned').value;
             const nextCleaning = document.getElementById('nextCleaning').value;
