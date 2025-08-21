@@ -31,38 +31,32 @@
             <hr class="sidebar-divider">
             <div class="sidebar-heading">Enclosure Management</div>
             <li class="nav-item">
-                <a class="nav-link" href="enclosure_overview.html">
+                <a class="nav-link" href="enclosure_list.html">
                     <i class="fas fa-home"></i>
-                    <span>Enclosure Overview</span></a>
+                    <span>Enclosure List</span></a>
             </li>
             
+            <li class="nav-item">
+                <a class="nav-link" href="enclosure_list_details.html">
+                    <i class="fas fa-list"></i>
+                    <span>Enclosure List Details</span></a>
+            </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="maintenance_logs_enclosure.html">
                     <i class="fas fa-tools"></i>
                     <span>Maintenance Logs</span></a>
             </li>
-            
-            
-            
-            <li class="nav-item active">
-                <a class="nav-link" href="tortoise_list_enclosure.html">
-                    <i class="fas fa-list"></i>
-                    <span>Tortoise List</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="alerts_warnings_enclosure.html">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <span>Alerts & Warnings</span></a>
-            </li>
+
             <hr class="sidebar-divider d-none d-md-block">
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
         </ul>
-        <!-- End of Sidebar -->
+        
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                <!-- Topbar -->
+                
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
@@ -83,7 +77,7 @@
                         </li>
                     </ul>
                 </nav>
-                <!-- End of Topbar -->
+                
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Tortoise List Inside Enclosure</h1>
@@ -160,10 +154,9 @@
                         </div>
                     </div>
                 </div>
-                <!-- /.container-fluid -->
+                
             </div>
-            <!-- End of Main Content -->
-            <!-- Footer -->
+            
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
@@ -171,12 +164,10 @@
                     </div>
                 </div>
             </footer>
-            <!-- End of Footer -->
+            
         </div>
     </div>
-    <!-- End of Page Wrapper -->
 
-    <!-- Add Tortoise Modal -->
     <div class="modal fade" id="addTortoiseModal" tabindex="-1" role="dialog" aria-labelledby="addTortoiseModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -260,12 +251,10 @@
         </div>
     </div>
 
-    <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
@@ -287,7 +276,7 @@
             alert('Editing tortoise info for row: ' + id);
         }
         function saveTortoise() {
-            // Get form values
+           
             const tortoiseId = document.getElementById('tortoiseId').value;
             const tortoiseName = document.getElementById('tortoiseName').value;
             const species = document.getElementById('species').value;
@@ -295,7 +284,7 @@
             const age = document.getElementById('age').value;
             const healthStatus = document.getElementById('healthStatus').value;
             const dateOfArrival = document.getElementById('dateOfArrival').value;
-            // Feeding schedule is optional
+            
             if (!tortoiseId || !tortoiseName || !species || !gender || !age || !healthStatus || !dateOfArrival) {
                 alert('Please fill in all required fields');
                 return;
