@@ -40,11 +40,6 @@
                     <span>View Tortoise List</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="vet_alerts.html">
-                    <i class="fas fa-fw fa-exclamation-triangle"></i>
-                    <span>Alerts</span></a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="assigned_tasks.html">
                     <i class="fas fa-fw fa-tasks"></i>
                     <span>Assigned Tasks</span></a>
@@ -102,13 +97,18 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label for="filterStatus" class="font-weight-bold text-gray-800">Health Status</label>
-                                            <select class="form-control" id="filterStatus">
-                                                <option value="">All Status</option>
-                                                <option value="healthy">Healthy</option>
-                                                <option value="sick">Sick</option>
-                                                <option value="recovering">Recovering</option>
-                                                <option value="critical">Critical</option>
+                                            <label for="filterType" class="font-weight-bold text-gray-800">Type</label>
+                                            <select class="form-control" id="filterType">
+                                                <option value="">All Types</option>
+                                                <option value="Illness">Illness</option>
+                                                <option value="Injury">Injury</option>
+                                                <option value="Checkup">Checkup</option>
+                                                <option value="Emergency">Emergency</option>
+                                                <option value="Monitoring">Monitoring</option>
+                                                <option value="Infection">Infection</option>
+                                                <option value="Surgery">Surgery</option>
+                                                <option value="Recovery">Recovery</option>
+                                                <option value="Nutrition">Nutrition</option>
                                             </select>
                                         </div>
                                     </div>
@@ -174,6 +174,7 @@
                                             <th>Check Time</th>
                                             <th>Staff ID</th>
                                             <th>Tortoise ID</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody id="healthRecordsTableBody">
@@ -446,12 +447,20 @@
             for (let i = 0; i < rows.length; i++) {
                 const row = rows[i];
                 const cells = row.getElementsByTagName('td');
-                if (cells.length >= 4) {
+                if (cells.length >= 11) {
+                    // Columns (0..10): Record ID, Recording Date, Diagnosis, Treatment, Type, Date, Vaccination, Check Date, Check Time, Staff ID, Tortoise ID
                     allRecords.push({
-                        date: cells[0].textContent,
-                        tortoiseId: cells[1].textContent,
-                        status: cells[2].textContent,
-                        notes: cells[3].textContent,
+                        recordId: cells[0].textContent.trim(),
+                        recordingDate: cells[1].textContent.trim(),
+                        diagnosis: cells[2].textContent.trim(),
+                        treatment: cells[3].textContent.trim(),
+                        type: cells[4].textContent.trim(),
+                        date: cells[5].textContent.trim(),
+                        vaccination: cells[6].innerText.trim(),
+                        checkDate: cells[7].textContent.trim(),
+                        checkTime: cells[8].textContent.trim(),
+                        staffId: cells[9].textContent.trim(),
+                        tortoiseId: cells[10].textContent.trim(),
                         element: row
                     });
                 }
@@ -460,7 +469,7 @@
 
         function applyFilter() {
             const tortoiseId = document.getElementById('filterTortoiseId').value.toLowerCase();
-            const status = document.getElementById('filterStatus').value.toLowerCase();
+            const typeFilter = document.getElementById('filterType').value.toLowerCase();
             const dateFrom = document.getElementById('filterDateFrom').value;
             const dateTo = document.getElementById('filterDateTo').value;
             const notes = document.getElementById('filterNotes').value.toLowerCase();
@@ -480,8 +489,8 @@
                     showRecord = false;
                 }
                 
-                // Filter by Status
-                if (status && !record.status.toLowerCase().includes(status)) {
+                // Filter by Type
+                if (typeFilter && record.type.toLowerCase() !== typeFilter) {
                     showRecord = false;
                 }
                 
@@ -494,7 +503,7 @@
                 }
                 
                 // Filter by Notes
-                if (notes && !record.notes.toLowerCase().includes(notes)) {
+                if (notes && !record.diagnosis.toLowerCase().includes(notes) && !record.treatment.toLowerCase().includes(notes)) {
                     showRecord = false;
                 }
                 
@@ -530,9 +539,40 @@
             document.getElementById('recordCount').textContent = `Showing ${allRecords.length} records`;
         }
 
+        // Inject actions column buttons for existing rows
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableBody = document.getElementById('healthRecordsTableBody');
+            const rows = tableBody.getElementsByTagName('tr');
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                const cells = row.getElementsByTagName('td');
+                if (cells.length && (!cells[cells.length - 1] || cells.length === 11)) {
+                    const actionsCell = document.createElement('td');
+                    actionsCell.innerHTML = '<button class="btn btn-sm btn-primary" onclick="editRecord(this)"><i class="fas fa-edit"></i> Edit</button> <button class="btn btn-sm btn-danger" onclick="deleteRecord(this)"><i class="fas fa-trash"></i> Delete</button>';
+                    row.appendChild(actionsCell);
+                }
+            }
+        });
+
+        function editRecord(btn) {
+            const row = btn.closest('tr');
+            const cells = row.getElementsByTagName('td');
+            const recordId = cells[0].textContent.trim();
+            alert('Edit record: ' + recordId);
+        }
+
+        function deleteRecord(btn) {
+            const row = btn.closest('tr');
+            const cells = row.getElementsByTagName('td');
+            const recordId = cells[0].textContent.trim();
+            if (confirm('Delete record ' + recordId + '?')) {
+                row.remove();
+            }
+        }
+
         // Add enter key support for filter inputs
         document.addEventListener('DOMContentLoaded', function() {
-            const filterInputs = ['filterTortoiseId', 'filterStatus', 'filterDateFrom', 'filterDateTo', 'filterNotes'];
+            const filterInputs = ['filterTortoiseId', 'filterType', 'filterDateFrom', 'filterDateTo', 'filterNotes'];
             
             filterInputs.forEach(inputId => {
                 const input = document.getElementById(inputId);
