@@ -40,11 +40,7 @@
                     <i class="fas fa-egg"></i>
                     <span>Egg Data</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="hatch_tracking.html">
-                    <i class="fas fa-baby"></i>
-                    <span>Hatch Tracking</span></a>
-            </li>
+            
             <li class="nav-item">
                 <a class="nav-link" href="assigned_tasks_BS.html">
                     <i class="fas fa-tasks"></i>
@@ -175,115 +171,42 @@
                                 <table class="table table-bordered" id="eggDataTable" width="100%" cellspacing="0">
                                     <thead class="thead-light">
                                         <tr>
-                                            <th>Egg Batch Number</th>
-                                            <th>Date Laid</th>
-                                            <th>Total Eggs</th>
-                                            <th>Fertile Eggs</th>
-                                            <th>Fertility Status</th>
-                                            <th>Incubation Start</th>
-                                            <th>Expected Hatch Date</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
+                                            <th>eggid</th>
+                                            <th>weight</th>
+                                            <th>length</th>
+                                            <th>width</th>
+                                            <th>eggcondition</th>
+                                            <th>incubatorid</th>
+                                            <th>breedingid</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><strong>EB-001</strong></td>
-                                            <td>2024-03-15</td>
-                                            <td>8</td>
-                                            <td>6</td>
-                                            <td><span class="badge badge-success">75%</span></td>
-                                            <td>2024-03-16</td>
-                                            <td>2024-06-15</td>
-                                            <td><span class="badge badge-info">Incubating</span></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editEggModal"><i class="fas fa-edit"></i></button>
-                                                <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                                            </td>
+                                            <td>EG-001</td>
+                                            <td>52</td>
+                                            <td>40</td>
+                                            <td>35</td>
+                                            <td>Healthy</td>
+                                            <td>INC-01</td>
+                                            <td>BR-1001</td>
                                         </tr>
                                         <tr>
-                                            <td><strong>EB-002</strong></td>
-                                            <td>2024-03-20</td>
-                                            <td>6</td>
-                                            <td>5</td>
-                                            <td><span class="badge badge-success">83%</span></td>
-                                            <td>2024-03-21</td>
-                                            <td>2024-06-20</td>
-                                            <td><span class="badge badge-info">Incubating</span></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editEggModal"><i class="fas fa-edit"></i></button>
-                                                <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                                            </td>
+                                            <td>EG-002</td>
+                                            <td>49</td>
+                                            <td>38</td>
+                                            <td>33</td>
+                                            <td>Healthy</td>
+                                            <td>INC-01</td>
+                                            <td>BR-1001</td>
                                         </tr>
                                         <tr>
-                                            <td><strong>EB-003</strong></td>
-                                            <td>2024-04-05</td>
-                                            <td>10</td>
-                                            <td>8</td>
-                                            <td><span class="badge badge-success">80%</span></td>
-                                            <td>2024-04-06</td>
-                                            <td>2024-07-05</td>
-                                            <td><span class="badge badge-info">Incubating</span></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editEggModal"><i class="fas fa-edit"></i></button>
-                                                <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>EB-004</strong></td>
-                                            <td>2024-04-10</td>
-                                            <td>7</td>
-                                            <td>4</td>
-                                            <td><span class="badge badge-warning">57%</span></td>
-                                            <td>2024-04-11</td>
-                                            <td>2024-07-10</td>
-                                            <td><span class="badge badge-info">Incubating</span></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editEggModal"><i class="fas fa-edit"></i></button>
-                                                <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>EB-005</strong></td>
-                                            <td>2024-04-15</td>
-                                            <td>9</td>
-                                            <td>7</td>
-                                            <td><span class="badge badge-success">78%</span></td>
-                                            <td>2024-04-16</td>
-                                            <td>2024-07-15</td>
-                                            <td><span class="badge badge-info">Incubating</span></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editEggModal"><i class="fas fa-edit"></i></button>
-                                                <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>EB-006</strong></td>
-                                            <td>2024-02-20</td>
-                                            <td>8</td>
-                                            <td>6</td>
-                                            <td><span class="badge badge-success">75%</span></td>
-                                            <td>2024-02-21</td>
-                                            <td>2024-05-20</td>
-                                            <td><span class="badge badge-success">Hatched</span></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editEggModal"><i class="fas fa-edit"></i></button>
-                                                <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>EB-007</strong></td>
-                                            <td>2024-02-25</td>
-                                            <td>6</td>
-                                            <td>5</td>
-                                            <td><span class="badge badge-success">83%</span></td>
-                                            <td>2024-02-26</td>
-                                            <td>2024-05-25</td>
-                                            <td><span class="badge badge-success">Hatched</span></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editEggModal"><i class="fas fa-edit"></i></button>
-                                                <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                                            </td>
+                                            <td>EG-003</td>
+                                            <td>55</td>
+                                            <td>41</td>
+                                            <td>36</td>
+                                            <td>Fragile</td>
+                                            <td>INC-02</td>
+                                            <td>BR-1002</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -445,7 +368,7 @@
     <script>
         $(document).ready(function() {
             $('#eggDataTable').DataTable({
-                "order": [[1, "desc"]], // Sort by date laid descending
+                "order": [[0, "asc"]],
                 "pageLength": 10,
                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
             });

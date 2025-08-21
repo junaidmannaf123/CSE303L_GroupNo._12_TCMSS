@@ -39,11 +39,7 @@
                     <i class="fas fa-egg"></i>
                     <span>Egg Data</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="hatch_tracking.html">
-                    <i class="fas fa-baby"></i>
-                    <span>Hatch Tracking</span></a>
-            </li>
+            
             <li class="nav-item">
                 <a class="nav-link" href="assigned_tasks_BS.html">
                     <i class="fas fa-tasks"></i>
@@ -196,36 +192,7 @@
                         </div>
                     </div>
 
-                    <!-- Hatch Tracking Summary Section -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-warning"><i class="fas fa-baby"></i> Hatch Tracking Summary</h6>
-                            <a href="hatch_tracking.html" class="btn btn-sm btn-warning">View Details</a>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <canvas id="hatchTimelineChart" width="400" height="200"></canvas>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="text-center">
-                                        <div class="mb-3">
-                                            <h4 class="text-success font-weight-bold">18</h4>
-                                            <p class="text-success">Total Hatched</p>
-                                        </div>
-                                        <div class="mb-3">
-                                            <h4 class="text-info font-weight-bold">6</h4>
-                                            <p class="text-info">Currently Incubating</p>
-                                        </div>
-                                        <div class="mb-3">
-                                            <h4 class="text-warning font-weight-bold">3</h4>
-                                            <p class="text-warning">Expected This Week</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
 
                     <!-- Assigned Tasks Summary Section -->
                     <div class="card shadow mb-4">
@@ -300,7 +267,7 @@
                                         <option value="">Select Record Type</option>
                                         <option value="mating_pair">Mating Pair</option>
                                         <option value="egg_data">Egg Data</option>
-                                        <option value="hatch_tracking">Hatch Tracking</option>
+                                        
                                         <option value="task">Task</option>
                                     </select>
                                 </div>
@@ -379,29 +346,7 @@
                             </div>
                         </div>
 
-                        <!-- Hatch Tracking Fields -->
-                        <div id="hatchTrackingFields" style="display: none;">
-                            <hr>
-                            <h6 class="text-warning">Hatch Tracking Information</h6>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="hatchDate">Hatch Date</label>
-                                        <input type="date" class="form-control" id="hatchDate">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="hatchlingCount">Number of Hatchlings</label>
-                                        <input type="number" class="form-control" id="hatchlingCount" min="0" placeholder="Number of hatchlings">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="hatchNotes">Hatch Notes</label>
-                                <textarea class="form-control" id="hatchNotes" rows="3" placeholder="Additional notes about the hatching process..."></textarea>
-                            </div>
-                        </div>
+                        
 
                         <!-- Task Fields -->
                         <div id="taskFields" style="display: none;">
@@ -512,52 +457,7 @@
             }
         });
 
-        // Hatch Timeline Chart
-        var hatchTimelineCtx = document.getElementById('hatchTimelineChart').getContext('2d');
-        var hatchTimelineChart = new Chart(hatchTimelineCtx, {
-            type: 'line',
-            data: {
-                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8', 'Week 9', 'Week 10', 'Week 11', 'Week 12', 'Week 13'],
-                datasets: [{
-                    label: 'Incubating Eggs',
-                    data: [15, 15, 15, 14, 13, 12, 10, 8, 6, 4, 2, 1, 0],
-                    borderColor: 'rgba(23, 162, 184, 1)',
-                    backgroundColor: 'rgba(23, 162, 184, 0.1)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4
-                }, {
-                    label: 'Hatched',
-                    data: [0, 0, 0, 1, 2, 3, 5, 7, 9, 11, 13, 14, 15],
-                    borderColor: 'rgba(40, 167, 69, 1)',
-                    backgroundColor: 'rgba(40, 167, 69, 0.1)',
-                    borderWidth: 3,
-                    fill: false,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 15,
-                        ticks: {
-                            stepSize: 3
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        position: 'top',
-                        labels: {
-                            usePointStyle: true
-                        }
-                    }
-                }
-            }
-        });
+        
 
         // Add Record Modal Functionality
         $(document).ready(function() {
@@ -569,7 +469,7 @@
                 var selectedType = $(this).val();
                 
                 // Hide all field sections first
-                $('#matingPairFields, #eggDataFields, #hatchTrackingFields, #taskFields').hide();
+                $('#matingPairFields, #eggDataFields, #taskFields').hide();
                 
                 // Show relevant fields based on selection
                 switch(selectedType) {
@@ -578,9 +478,6 @@
                         break;
                     case 'egg_data':
                         $('#eggDataFields').show();
-                        break;
-                    case 'hatch_tracking':
-                        $('#hatchTrackingFields').show();
                         break;
                     case 'task':
                         $('#taskFields').show();
@@ -618,11 +515,6 @@
                         formData.fertilityRate = $('#fertilityRate').val();
                         formData.incubationStatus = $('#incubationStatus').val();
                         break;
-                    case 'hatch_tracking':
-                        formData.hatchDate = $('#hatchDate').val();
-                        formData.hatchlingCount = $('#hatchlingCount').val();
-                        formData.hatchNotes = $('#hatchNotes').val();
-                        break;
                     case 'task':
                         formData.taskTitle = $('#taskTitle').val();
                         formData.taskPriority = $('#taskPriority').val();
@@ -640,7 +532,7 @@
                 
                 // Reset form and close modal
                 $('#addRecordForm')[0].reset();
-                $('#matingPairFields, #eggDataFields, #hatchTrackingFields, #taskFields').hide();
+                $('#matingPairFields, #eggDataFields, #taskFields').hide();
                 $('#addRecordModal').modal('hide');
                 
                 // Optionally refresh the page or update charts
@@ -650,7 +542,7 @@
             // Reset form when modal is closed
             $('#addRecordModal').on('hidden.bs.modal', function() {
                 $('#addRecordForm')[0].reset();
-                $('#matingPairFields, #eggDataFields, #hatchTrackingFields, #taskFields').hide();
+                $('#matingPairFields, #eggDataFields, #taskFields').hide();
                 $('#recordDate').val(new Date().toISOString().split('T')[0]);
             });
         });
