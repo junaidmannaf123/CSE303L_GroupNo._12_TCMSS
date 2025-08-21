@@ -12,130 +12,95 @@
 
 <body id="page-top">
   <div id="wrapper">
+    
     <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="caretaker_dashboard.html">
-        <div class="sidebar-brand-text mx-3">🐢TCCMS</div>
+        <div class="sidebar-brand-text mx-3">🐢 TCCMS</div>
       </a>
 
       <hr class="sidebar-divider my-0" />
-      <li class="nav-item">
-        <a class="nav-link" href="caretaker_dashboard.html">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a
-        >
-      </li>
-
+      <li class="nav-item"><a class="nav-link" href="caretaker_dashboard.html"><i class="fas fa-fw fa-tachometer-alt"></i><span>Dashboard</span></a></li>
       <hr class="sidebar-divider" />
-      <li class="nav-item">
-        <a class="nav-link" href="caretaker_tasks.html">
-          <i class="fas fa-tasks"></i>
-          <span>Tasks</span></a
-        >
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="feeding.html">
-          <i class="fas fa-seedling"></i>
-          <span>Feeding Schedule</span></a
-        >
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="care_Log.html">
-          <i class="fas fa-notes-medical"></i>
-          <span>Health & Care Report</span></a
-        >
-      </li>
-
+      <li class="nav-item"><a class="nav-link" href="caretaker_tasks.html"><i class="fas fa-tasks"></i><span>Tasks</span></a></li>
+      <li class="nav-item active"><a class="nav-link" href="feeding.html"><i class="fas fa-seedling"></i><span>Feeding Schedule</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="care_log.html"><i class="fas fa-notes-medical"></i><span>Health & Care Report</span></a></li>
       <hr class="sidebar-divider d-none d-md-block" />
     </ul>
+    
 
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
-        <nav
-          class="navbar navbar-expand navbar-light bg-white topbar mb-4 shadow">
-          <h1 class="h4 text-gray-800">Feeding Schedule</h1>
-          <ul class="navbar-nav ml-auto">
-            <div class="topbar-divider d-none d-sm-block"></div>
-            <li class="nav-item dropdown no-arrow">
-              <a class="nav-link dropdown-toggle" href="#">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Profile</span>
-                <i class="fas fa-user fa-2x text-success img-profile rounded-circle"></i>
-              </a>
-            </li>
-          </ul>
+        
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 shadow">
+          <h1 class="h4 text-gray-800 mb-0">Feeding Schedule</h1>
         </nav>
 
+        
         <div class="container-fluid">
           
+          <div class="mb-3 text-right">
+            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#addFeedingModal">
+              <i class="fas fa-plus-circle"></i> Add Feeding
+            </button>
+          </div>
 
+          
           <div class="card shadow mb-4">
             <div class="card-header py-3 bg-success">
-              <h6 class="m-0 font-weight-bold text-white">Feeding Schedule</h6>
+              <h6 class="m-0 font-weight-bold text-white">Feeding Schedule Table</h6>
             </div>
             <div class="card-body">
-              <h5 class="text-success">🐢 Young Tortoises (Feed Daily)</h5>
-              <div class="table-responsive mb-4">
-                <table class="table table-bordered">
-                  <thead class="bg-light text-success">
-                    <tr>
-                      <th>Feeding Time</th>
-                      <th>Food Type</th>
-                      <th>Notes</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>08:00 AM</td>
-                      <td>Leafy Greens + Edible Flowers</td>
-                      <td>High fiber &amp; hydration</td>
-                    </tr>
-                    <tr>
-                      <td>12:30 PM</td>
-                      <td>Vegetable Mix + Calcium Dust</td>
-                      <td>Supports bone growth</td>
-                    </tr>
-                    <tr>
-                      <td>04:00 PM</td>
-                      <td>Herbs &amp; Small Fruit Slices</td>
-                      <td>Optional, max 2x/week</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <h5 class="text-success">🐢 Adult Tortoises (Feed Every 1-2 Days)</h5>
               <div class="table-responsive">
-                <table class="table table-bordered">
-                  <thead class="bg-light text-success">
+                <table class="table table-bordered table-hover" id="feedingTable">
+                  <thead class="bg-light text-success text-center">
                     <tr>
-                      <th>Feeding Time</th>
-                      <th>Food Type</th>
-                      <th>Notes</th>
+                      <th>Feeding ID</th>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>Diet Notes</th>
+                      <th>Caretaker</th>
+                      <th>Enclosure</th>
+                      <th>Status</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td>09:00 AM</td>
-                      <td>Leafy Greens + Dandelions</td>
-                      <td>Main diet</td>
+                      <td>F001</td>
+                      <td>2025-08-10</td>
+                      <td>09:00</td>
+                      <td>Leafy greens and vegetables provided</td>
+                      <td>Anika Sultana</td>
+                      <td>EN-1</td>
+                      <td class="text-center"><span class="badge badge-warning clickable">Pending</span></td>
+                      <td class="text-center">
+                        <button class="btn btn-sm btn-warning edit-btn"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i></button>
+                      </td>
                     </tr>
                     <tr>
-                      <td>—</td>
-                      <td>Calcium Supplement</td>
-                      <td>Twice per week</td>
-                    </tr>
-                    <tr>
-                      <td>—</td>
-                      <td>Skip Day</td>
-                      <td>Once every 3-4 days to aid digestion</td>
+                      <td>F002</td>
+                      <td>2025-08-10</td>
+                      <td>15:00</td>
+                      <td>Fruit supplements and hydration check</td>
+                      <td>Anika Sultana</td>
+                      <td>EN-2</td>
+                      <td class="text-center"><span class="badge badge-warning clickable">Pending</span></td>
+                      <td class="text-center">
+                        <button class="btn btn-sm btn-warning edit-btn"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i></button>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
+
         </div>
       </div>
 
+      
       <footer class="sticky-footer bg-white">
         <div class="container my-auto text-center">
           <span>© 2025 Tortoise Conservation Center</span>
@@ -144,13 +109,116 @@
     </div>
   </div>
 
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
+  
+  <div class="modal fade" id="addFeedingModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>Add New Feeding</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="addFeedingForm">
+            <div class="form-group">
+              <label>Date</label>
+              <input type="date" class="form-control" id="feedingDate">
+            </div>
+            <div class="form-group">
+              <label>Time</label>
+              <input type="time" class="form-control" id="feedingTime">
+            </div>
+            <div class="form-group">
+              <label>Diet Notes</label>
+              <input type="text" class="form-control" id="dietNotes">
+            </div>
+            <div class="form-group">
+              <label>Caretaker</label>
+              <input type="text" class="form-control" id="caretaker">
+            </div>
+            <div class="form-group">
+              <label>Enclosure</label>
+              <input type="text" class="form-control" id="enclosure">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button class="btn btn-success" onclick="addFeeding()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-  <script src="js/sb-admin-2.min.js"></script>
+  <script>
+    let editingRow = null;
+
+    
+    function addFeeding() {
+      const table = document.getElementById('feedingTable').getElementsByTagName('tbody')[0];
+      const date = document.getElementById('feedingDate').value;
+      const time = document.getElementById('feedingTime').value;
+      const diet = document.getElementById('dietNotes').value;
+      const caretaker = document.getElementById('caretaker').value;
+      const enclosure = document.getElementById('enclosure').value;
+
+      const row = table.insertRow();
+      row.innerHTML = `
+        <td>${date}</td>
+        <td>${time}</td>
+        <td>${diet}</td>
+        <td>${caretaker}</td>
+        <td>${enclosure}</td>
+        <td class="text-center"><span class="badge badge-warning clickable">Pending</span></td>
+        <td class="text-center">
+          <button class="btn btn-sm btn-warning edit-btn"><i class="fas fa-edit"></i></button>
+          <button class="btn btn-sm btn-danger delete-btn"><i class="fas fa-trash"></i></button>
+        </td>
+      `;
+      $('#addFeedingModal').modal('hide');
+      document.getElementById('addFeedingForm').reset();
+    }
+
+    
+    document.getElementById('feedingTable').addEventListener('click', function (e) {
+      if (e.target.closest('.clickable')) {
+        const badge = e.target.closest('.clickable');
+        if (badge.textContent === 'Pending') {
+          badge.textContent = 'Done';
+          badge.classList.remove('badge-warning');
+          badge.classList.add('badge-success');
+        }
+      }
+      if (e.target.closest('.delete-btn')) {
+        if (confirm('Are you sure you want to delete this feeding?')) {
+          const row = e.target.closest('tr');
+          row.parentNode.removeChild(row);
+        }
+      }
+      if (e.target.closest('.edit-btn')) {
+        const row = e.target.closest('tr');
+        editingRow = row;
+        document.getElementById('feedingDate').value = row.cells[0].textContent;
+        document.getElementById('feedingTime').value = row.cells[1].textContent;
+        document.getElementById('dietNotes').value = row.cells[2].textContent;
+        document.getElementById('caretaker').value = row.cells[3].textContent;
+        document.getElementById('enclosure').value = row.cells[4].textContent;
+        $('#addFeedingModal').modal('show');
+
+       
+        const saveBtn = document.querySelector('#addFeedingModal .btn-success');
+        saveBtn.onclick = function () {
+          row.cells[0].textContent = document.getElementById('feedingDate').value;
+          row.cells[1].textContent = document.getElementById('feedingTime').value;
+          row.cells[2].textContent = document.getElementById('dietNotes').value;
+          row.cells[3].textContent = document.getElementById('caretaker').value;
+          row.cells[4].textContent = document.getElementById('enclosure').value;
+          $('#addFeedingModal').modal('hide');
+        };
+      }
+    });
+  </script>
+
 </body>
 </html>
