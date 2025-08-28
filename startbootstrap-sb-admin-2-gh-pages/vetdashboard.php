@@ -55,7 +55,7 @@
     <div id="wrapper">
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="vetdashboard.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="vetdashboard.php">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-turtle"></i>
                 </div>
@@ -63,19 +63,19 @@
             </a>
             <hr class="sidebar-divider my-0">
             <li class="nav-item active">
-                <a class="nav-link" href="vetdashboard.html">
+                <a class="nav-link" href="vetdashboard.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
             <hr class="sidebar-divider">
             <div class="sidebar-heading">Vet Tools</div>
             <li class="nav-item">
-                <a class="nav-link" href="health-records.html">
+                <a class="nav-link" href="health-records.php">
                     <i class="fas fa-fw fa-notes-medical"></i>
                     <span>Health Records</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="tortoise-list.html">
+                <a class="nav-link" href="tortoise-list.php">
                     <i class="fas fa-fw fa-list"></i>
                     <span>View Tortoise List</span></a>
             </li>
@@ -121,7 +121,7 @@
                     <!-- Statistic Cards -->
                     <div class="row">
                         <div class="col-xl-3 col-lg-3 col-md-6 mb-4">
-                            <a href="tortoise-list.html" class="text-decoration-none">
+                            <a href="tortoise-list.php" class="text-decoration-none">
                                 <div class="card border-left-success shadow h-100 py-2 clickable-card">
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
@@ -138,24 +138,7 @@
                             </a>
                         </div>
                         <div class="col-xl-2 col-lg-3 col-md-6 mb-4">
-                            <a href="health-records.html" class="text-decoration-none">
-                                <div class="card border-left-info shadow h-100 py-2 clickable-card">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Health Checks (This Month)</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">42</div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <i class="fas fa-stethoscope fa-2x text-gray-300"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-xl-2 col-lg-3 col-md-6 mb-4">
-                            <a href="assigned_tasks.html" class="text-decoration-none">
+                            <a href="assigned_tasks.php" class="text-decoration-none">
                                 <div class="card border-left-primary shadow h-100 py-2 clickable-card">
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
@@ -172,7 +155,7 @@
                             </a>
                         </div>
                         <div class="col-xl-2 col-lg-3 col-md-6 mb-4">
-                            <a href="assigned_tasks.html" class="text-decoration-none">
+                            <a href="assigned_tasks.php" class="text-decoration-none">
                                 <div class="card border-left-secondary shadow h-100 py-2 clickable-card">
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
@@ -189,7 +172,7 @@
                             </a>
                         </div>
                         <div class="col-xl-2.5 col-lg-3 col-md-6 mb-4">
-                            <a href="health-records.html" class="text-decoration-none"> 
+                            <a href="health-records.php" class="text-decoration-none"> 
                             <div class="card border-left-success shadow h-100 py-2 clickable-card">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -210,7 +193,7 @@
                         <div class="col-12">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-success">Health Checks Over Time</h6>
+                                    <h6 class="m-0 font-weight-bold text-success">Health Checks Over Time (by Check Date)</h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="chart-area">
@@ -225,16 +208,11 @@
                         <div class="col-xl-6 col-lg-6">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-success">Tortoise Health Status</h6>
+                                    <h6 class="m-0 font-weight-bold text-success">Tortoise Health Status by Type</h6>
                                 </div>
                                 <div class="card-body">
-                                    <div class="chart-pie pt-4 pb-2">
-                                        <canvas id="myPieChart"></canvas>
-                                    </div>
-                                    <div class="mt-4 text-center small">
-                                        <span class="mr-2"><i class="fas fa-circle text-success"></i> Healthy</span>
-                                        <span class="mr-2"><i class="fas fa-circle text-warning"></i> Under Observation</span>
-                                        <span class="mr-2"><i class="fas fa-circle text-danger"></i> Critical</span>
+                                    <div class="pt-2 pb-2">
+                                        <canvas id="typeBarChart"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -272,43 +250,14 @@
                         <div class="col-md-6 mb-4">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-success">Health Status Summary</h6>
+                                    <h6 class="m-0 font-weight-bold text-success">Tortoises Gender Summary</h6>
                                 </div>
-                                <div class="card-body" style="min-height: 450px;">
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <div class="text-center">
-                                                <div class="h2 text-success font-weight-bold">50</div>
-                                                <div class="text-muted">Healthy Tortoises</div>
-                                                <span class="badge badge-success">50%</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <div class="text-center">
-                                                <div class="h2 text-warning font-weight-bold">20</div>
-                                                <div class="text-muted">Recovering Tortoises</div>
-                                                <span class="badge badge-warning">20%</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <div class="text-center">
-                                                <div class="h2 text-danger font-weight-bold">20</div>
-                                                <div class="text-muted">Sick Tortoises</div>
-                                                <span class="badge badge-danger">20%</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <div class="text-center">
-                                                <div class="h2 text-danger font-weight-bold">10</div>
-                                                <div class="text-muted">Critical Tortoises</div>
-                                                <span class="badge badge-danger">10%</span>
-                                            </div>
-                                        </div>
+                                <div class="card-body" style="min-height: 420px;">
+                                    <div class="pt-2 pb-2">
+                                        <canvas id="genderPieChart" height="280"></canvas>
                                     </div>
-                                    <hr>
-                                    <div class="text-center">
-                                        <h6 class="text-gray-600">Total Tortoises: 50</h6>
-                                        <p class="text-muted small">Based on latest health records data</p>
+                                    <div class="text-center mt-2">
+                                        <p class="text-muted small">Based on latest tortoise registry data</p>
                                     </div>
                                 </div>
                             </div>
@@ -318,48 +267,9 @@
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-success">Species Distribution</h6>
                                 </div>
-                                <div class="card-body" style="min-height: 420px;">
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <div class="text-center">
-                                                <div class="h3 text-primary font-weight-bold">10</div>
-                                                <div class="text-muted">Galapagos Tortoises</div>
-                                                <span class="badge badge-primary">10%</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <div class="text-center">
-                                                <div class="h3 text-info font-weight-bold">10</div>
-                                                <div class="text-muted">Aldabra Tortoises</div>
-                                                <span class="badge badge-info">10%</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <div class="text-center">
-                                                <div class="h3 text-success font-weight-bold">10</div>
-                                                <div class="text-muted">Sulcata Tortoises</div>
-                                                <span class="badge badge-success">10%</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <div class="text-center">
-                                                <div class="h3 text-warning font-weight-bold">10</div>
-                                                <div class="text-muted">Leopard Tortoises</div>
-                                                <span class="badge badge-warning">10%</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <div class="text-center">
-                                                <div class="h3 text-secondary font-weight-bold">10</div>
-                                                <div class="text-muted">Hermann Tortoises</div>
-                                                <span class="badge badge-secondary">10%</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="text-center">
-                                        <h6 class="text-gray-600">Total Species: 5</h6>
-                                        <p class="text-muted small">Even distribution across species</p>
+                                <div class="card-body" style="min-height: 520px;">
+                                    <div class="pt-2 pb-2">
+                                        <canvas id="speciesPieChart" height="340"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -509,9 +419,25 @@
     
     <!-- Health Record Modal JavaScript -->
     <script>
-        // Vaccination Status Summary Chart (pulls live counts from health-records.html)
+        // Live dashboard data updates using APIs
         document.addEventListener('DOMContentLoaded', function () {
             let vaccinationChart = null;
+            let typeBarChart = null;
+            let checksLineChart = null;
+            let speciesPieChart = null;
+            let genderPieChart = null;
+
+            function setCardNumberByLabel(labelText, value) {
+                const cards = document.querySelectorAll('.card');
+                for (const card of cards) {
+                    const label = card.querySelector('.text-xs');
+                    const num = card.querySelector('.h5');
+                    if (label && num && label.textContent.trim().toLowerCase() === labelText.trim().toLowerCase()) {
+                        num.textContent = String(value);
+                        return;
+                    }
+                }
+            }
 
             function renderVaccinationSummary(upToDate, due, overdue) {
                 const upEl = document.getElementById('vacc-up-to-date');
@@ -523,81 +449,298 @@
 
                 const ctx = document.getElementById('vaccinationPieChart');
                 if (ctx && window.Chart) {
-                    if (!vaccinationChart) {
-                        vaccinationChart = new Chart(ctx, {
-                            type: 'doughnut',
-                            data: {
-                                labels: ['Up to Date', 'Due', 'Overdue'],
-                                datasets: [{
-                                    data: [upToDate, due, overdue],
-                                    backgroundColor: ['#1cc88a', '#f6c23e', '#e74a3b'],
-                                    hoverBackgroundColor: ['#17a673', '#dda20a', '#be2617'],
-                                    hoverBorderColor: 'rgba(234, 236, 244, 1)'
-                                }]
-                            },
-                            options: {
-                                maintainAspectRatio: false,
-                                tooltips: {
-                                    backgroundColor: 'rgb(255,255,255)',
-                                    bodyFontColor: '#858796',
-                                    borderColor: '#dddfeb',
-                                    borderWidth: 1,
-                                    xPadding: 15,
-                                    yPadding: 15,
-                                    displayColors: false,
-                                    caretPadding: 10
-                                },
-                                legend: { display: false },
-                                cutoutPercentage: 70
-                            }
-                        });
-                    } else {
-                        vaccinationChart.data.datasets[0].data = [upToDate, due, overdue];
-                        vaccinationChart.update();
+                    // Destroy existing chart if it exists
+                    if (vaccinationChart) {
+                        vaccinationChart.destroy();
+                        vaccinationChart = null;
                     }
+                    
+                    // Create new chart instance
+                    vaccinationChart = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Up to Date', 'Due', 'Overdue'],
+                            datasets: [{
+                                data: [upToDate, due, overdue],
+                                backgroundColor: ['#1cc88a', '#f6c23e', '#e74a3b'],
+                                hoverBackgroundColor: ['#17a673', '#dda20a', '#be2617'],
+                                hoverBorderColor: 'rgba(234, 236, 244, 1)'
+                            }]
+                        },
+                        options: {
+                            maintainAspectRatio: false,
+                            responsive: true,
+                            tooltips: {
+                                backgroundColor: 'rgb(255,255,255)',
+                                bodyFontColor: '#858796',
+                                borderColor: '#dddfeb',
+                                borderWidth: 1,
+                                xPadding: 15,
+                                yPadding: 15,
+                                displayColors: false,
+                                caretPadding: 10
+                            },
+                            legend: { display: false },
+                            cutoutPercentage: 70
+                        }
+                    });
                 }
             }
 
-            function computeFromDocument(doc) {
-                const rows = doc.querySelectorAll('#healthRecordsTableBody tr');
-                let upToDate = 0, due = 0, overdue = 0;
-                rows.forEach(row => {
-                    const tds = row.querySelectorAll('td');
-                    if (tds.length >= 7) {
-                        const vaccCellText = (tds[6].innerText || tds[6].textContent || '').trim().toLowerCase();
-                        if (vaccCellText.includes('up to date')) upToDate++;
-                        else if (vaccCellText.includes('due')) {
-                            // Ensure 'Overdue' doesn't count as 'Due'
-                            if (vaccCellText.includes('overdue')) overdue++; else due++;
-                        } else if (vaccCellText.includes('overdue')) overdue++;
+            function renderTypeBarChart(typeCounts) {
+                const ctx = document.getElementById('typeBarChart');
+                if (!ctx || !window.Chart) return;
+                
+                // Destroy existing chart if it exists
+                if (typeBarChart) {
+                    typeBarChart.destroy();
+                    typeBarChart = null;
+                }
+                
+                const labels = Object.keys(typeCounts);
+                const values = Object.values(typeCounts);
+                
+                // Create new chart instance
+                typeBarChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: { 
+                        labels, 
+                        datasets: [{ 
+                            label: 'Records by Type', 
+                            data: values, 
+                            backgroundColor: '#36a2eb' 
+                        }] 
+                    },
+                    options: { 
+                        legend: { display: false }, 
+                        maintainAspectRatio: false, 
+                        responsive: true,
+                        scales: { 
+                            yAxes: [{ 
+                                ticks: { beginAtZero: true, precision: 0 } 
+                            }] 
+                        } 
                     }
                 });
-                // update topbar HR count
-                const hrCountEl = document.getElementById('hr-count');
-                if (hrCountEl) hrCountEl.textContent = rows.length.toString();
-                const hrCountStatEl = document.getElementById('hr-count-stat');
-                if (hrCountStatEl) hrCountStatEl.textContent = rows.length.toString();
-
-                return { upToDate, due, overdue };
             }
 
-            // Fetch health-records.html and parse vaccination statuses
-            fetch('health-records.html', { cache: 'no-store' })
-                .then(resp => resp.text())
-                .then(html => {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    const { upToDate, due, overdue } = computeFromDocument(doc);
-                    renderVaccinationSummary(upToDate, due, overdue);
-                })
-                .catch(() => {
-                    // Fallback sample numbers if fetch fails
-                    renderVaccinationSummary(28, 15, 7);
-                    const hrCountEl = document.getElementById('hr-count');
-                    if (hrCountEl) hrCountEl.textContent = '50';
-                    const hrCountStatEl = document.getElementById('hr-count-stat');
-                    if (hrCountStatEl) hrCountStatEl.textContent = '50';
+            function renderChecksLineChart(series) {
+                const ctx = document.getElementById('myAreaChart');
+                if (!ctx || !window.Chart) return;
+                
+                // Destroy existing chart if it exists
+                if (checksLineChart) {
+                    checksLineChart.destroy();
+                    checksLineChart = null;
+                }
+                
+                const labels = series.map(p => p.label);
+                const values = series.map(p => p.count);
+                
+                // Create new chart instance
+                checksLineChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels,
+                        datasets: [{
+                            label: 'Health Checks',
+                            data: values,
+                            lineTension: 0.3,
+                            backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                            borderColor: 'rgba(78, 115, 223, 1)',
+                            pointRadius: 3,
+                            pointBackgroundColor: 'rgba(78, 115, 223, 1)',
+                            pointBorderColor: 'rgba(78, 115, 223, 1)',
+                            pointHoverRadius: 3,
+                            pointHoverBackgroundColor: 'rgba(78, 115, 223, 1)',
+                            pointHoverBorderColor: 'rgba(78, 115, 223, 1)',
+                            pointHitRadius: 10,
+                            pointBorderWidth: 2
+                        }]
+                    },
+                    options: { 
+                        maintainAspectRatio: false, 
+                        legend: { display: false },
+                        responsive: true,
+                        interaction: {
+                            intersect: false,
+                            mode: 'index'
+                        },
+                        plugins: {
+                            tooltip: {
+                                enabled: true,
+                                mode: 'index',
+                                intersect: false
+                            }
+                        }
+                    }
                 });
+            }
+
+            function renderGenderPie(counts) {
+                const ctx = document.getElementById('genderPieChart');
+                if (!ctx || !window.Chart) return;
+                
+                // Destroy existing chart if it exists
+                if (genderPieChart) {
+                    genderPieChart.destroy();
+                    genderPieChart = null;
+                }
+                
+                const labels = Object.keys(counts);
+                const values = Object.values(counts);
+                const colors = ['#36b9cc','#f6c23e','#e74a3b','#1cc88a'];
+                
+                // Create new chart instance
+                genderPieChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: { 
+                        labels, 
+                        datasets: [{ 
+                            data: values, 
+                            backgroundColor: colors.slice(0, labels.length) 
+                        }] 
+                    },
+                    options: { 
+                        maintainAspectRatio: false, 
+                        responsive: true,
+                        legend: { display: true } 
+                    }
+                });
+            }
+
+            const fmtMonth = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+
+            async function refreshDashboard() {
+                const [tortoisesResp, medicalResp] = await Promise.all([
+                    fetch('api/get_tortoises.php').then(r => r.json()),
+                    fetch('api/get_medical_records.php').then(r => r.json())
+                ]);
+                const tortoises = tortoisesResp.success ? tortoisesResp.data : [];
+                const medical = medicalResp.success ? medicalResp.data : [];
+
+                // Total tortoises
+                setCardNumberByLabel('Total Tortoises', tortoises.length);
+
+                // Health Records card number (requested to be number of tortoises)
+                const hrCountStatEl = document.getElementById('hr-count-stat');
+                if (hrCountStatEl) hrCountStatEl.textContent = String(medical.length);
+
+                // Line graph: monthly aggregation from ddate (Date column)
+                const byMonth = {};
+                medical.forEach(r => {
+                    const dateStr = r.dcheckdate || r.ddate || r.drecordingdate || '';
+                    if (!dateStr) return;
+                    // Parse the date and format as YYYY-MM
+                    const date = new Date(dateStr);
+                    if (isNaN(date.getTime())) return; // Skip invalid dates
+                    const label = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+                    byMonth[label] = (byMonth[label] || 0) + 1;
+                });
+                const months = Object.keys(byMonth).sort();
+                const monthSeries = months.map(m => ({ label: m, count: byMonth[m] }));
+                // If no data, show last 6 months with 0 counts
+                if (monthSeries.length === 0) {
+                    const today = new Date();
+                    for (let i = 5; i >= 0; i--) {
+                        const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
+                        const label = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+                        monthSeries.push({ label, count: 0 });
+                    }
+                }
+                renderChecksLineChart(monthSeries);
+
+                // Type distribution bar chart from type column
+                const typeCounts = {};
+                medical.forEach(r => {
+                    const t = String(r.ctype || 'Unknown');
+                    typeCounts[t] = (typeCounts[t] + 1) || 1;
+                });
+                renderTypeBarChart(typeCounts);
+
+                // Populate Health Status Summary table counts
+                ['Illness','Injury','Checkup','Emergency','Monitoring','Infection','Surgery','Recovery','Nutrition'].forEach(tp => {
+                    const el = document.getElementById('type-count-' + tp);
+                    if (el) el.textContent = String(typeCounts[tp] || 0);
+                });
+
+                // Vaccination summary from cvaccinationstatus
+                let up = 0, due = 0, over = 0;
+                medical.forEach(r => {
+                    const s = String(r.cvaccinationstatus || '').toLowerCase();
+                    if (!s) return;
+                    if (s.includes('overdue')) over++;
+                    else if (s.includes('due') || s.includes('pending')) due++;
+                    else up++;
+                });
+                renderVaccinationSummary(up, due, over);
+
+                // Health Status Summary numeric tiles (Healthy/Recovering/Sick/Critical)
+                function setTile(labelContains, value) {
+                    const cards = document.querySelectorAll('#health-records-section .card .card-body .row .col-md-6');
+                    for (const col of cards) {
+                        const textMuted = col.querySelector('.text-muted');
+                        const num = col.querySelector('.h2');
+                        if (textMuted && num && textMuted.textContent.toLowerCase().includes(labelContains)) {
+                            num.textContent = String(value);
+                            const badge = col.querySelector('.badge');
+                            if (badge) badge.textContent = Math.round((value / Math.max(1, tortoises.length)) * 100) + '%';
+                        }
+                    }
+                }
+                const toType = v => String(v || '').trim();
+                setTile('healthy', medical.filter(r => ['Checkup','Recovery','Nutrition'].includes(toType(r.ctype))).length);
+                setTile('recovering', medical.filter(r => toType(r.ctype) === 'Recovery').length);
+                setTile('sick', medical.filter(r => ['Illness','Infection','Injury'].includes(toType(r.ctype))).length);
+                setTile('critical', medical.filter(r => toType(r.ctype) === 'Emergency').length);
+
+                // Species distribution from tortoise list (species_name)
+                const speciesCounts = {};
+                tortoises.forEach(t => {
+                    const s = String(t.species_name || t.cspeciesid || 'Unknown');
+                    speciesCounts[s] = (speciesCounts[s] || 0) + 1;
+                });
+                const spLabels = Object.keys(speciesCounts);
+                const spValues = Object.values(speciesCounts);
+                const spCtx = document.getElementById('speciesPieChart');
+                if (spCtx && window.Chart) {
+                    // Destroy existing chart if it exists
+                    if (speciesPieChart) {
+                        speciesPieChart.destroy();
+                        speciesPieChart = null;
+                    }
+                    
+                    // Create new chart instance
+                    speciesPieChart = new Chart(spCtx, {
+                        type: 'pie',
+                        data: { 
+                            labels: spLabels, 
+                            datasets: [{ 
+                                data: spValues, 
+                                backgroundColor: ['#4e73df','#1cc88a','#36b9cc','#f6c23e','#e74a3b','#858796','#fd7e14','#20c997','#6f42c1','#17a2b8'] 
+                            }] 
+                        },
+                        options: { 
+                            maintainAspectRatio: false, 
+                            responsive: true,
+                            legend: { display: true } 
+                        }
+                    });
+                }
+
+                // Gender summary from tortoise list (cgender)
+                const genderCounts = {};
+                tortoises.forEach(t => {
+                    const g = String(t.cgender || 'unknown').toLowerCase();
+                    const norm = g === 'm' ? 'male' : g === 'f' ? 'female' : g;
+                    genderCounts[norm.charAt(0).toUpperCase() + norm.slice(1)] = (genderCounts[norm.charAt(0).toUpperCase() + norm.slice(1)] || 0) + 1;
+                });
+                renderGenderPie(genderCounts);
+            }
+
+            // Initial refresh and periodic updates
+            refreshDashboard().catch(console.error);
+            setInterval(() => { refreshDashboard().catch(console.error); }, 60000);
         });
 
         // Set default date to today

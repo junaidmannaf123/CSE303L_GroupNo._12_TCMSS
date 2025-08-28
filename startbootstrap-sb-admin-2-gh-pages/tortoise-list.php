@@ -24,7 +24,7 @@
     <div id="wrapper">
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="vetdashboard.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="vetdashboard.php">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-turtle"></i>
                 </div>
@@ -32,19 +32,19 @@
             </a>
             <hr class="sidebar-divider my-0">
             <li class="nav-item">
-                <a class="nav-link" href="vetdashboard.html">
+                <a class="nav-link" href="vetdashboard.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
             <hr class="sidebar-divider">
             <div class="sidebar-heading">Vet Tools</div>
             <li class="nav-item active">
-                <a class="nav-link" href="tortoise-list.html">
+                <a class="nav-link" href="tortoise-list.php">
                     <i class="fas fa-fw fa-list"></i>
                     <span>View Tortoise List</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="health-records.html">
+                <a class="nav-link" href="health-records.php">
                     <i class="fas fa-fw fa-notes-medical"></i>
                     <span>Health Records</span></a>
             </li>
@@ -90,9 +90,6 @@
                             <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#addTortoiseModal">
                                 <i class="fas fa-plus fa-sm text-white-50"></i> Add New Tortoise
                             </button>
-                            <button class="btn btn-info btn-sm ml-2">
-                                <i class="fas fa-download fa-sm text-white-50"></i> Export Data
-                            </button>
                         </div>
                     </div>
                     
@@ -112,7 +109,7 @@
                                     </button>
                                 </div>
                                 <div class="col-md-3">
-                                    <span class="text-muted">Showing <span id="recordCount">50</span> of 50 tortoises</span>
+                                    <span class="text-muted">Showing <span id="recordCount">30</span> of 30 tortoises</span>
                                 </div>
                             </div>
                         </div>
@@ -122,16 +119,6 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-turtle"></i> Tortoise Registry</h6>
-                            <div class="dropdown">
-                                <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-cog"></i> Actions
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#"><i class="fas fa-download"></i> Export to CSV</a>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-print"></i> Print Report</a>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-chart-bar"></i> Generate Report</a>
-                                </div>
-                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -142,8 +129,8 @@
                                             <th>Name</th>
                                             <th>Age (Years)</th>
                                             <th>Gender</th>
-                                            <th>Enclosure ID</th>
-                                            <th>Species ID</th>
+                                            <th>Enclosure</th>
+                                            <th>Species</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -179,11 +166,28 @@
                             <label for="tortoiseSpecies">Species</label>
                             <select class="form-control" id="tortoiseSpecies" required>
                                 <option value="">Select Species</option>
-                                <option value="Galapagos">Galapagos</option>
-                                <option value="Aldabra">Aldabra</option>
-                                <option value="Sulcata">Sulcata</option>
-                                <option value="Leopard">Leopard</option>
-                                <option value="Hermann">Hermann</option>
+                                <option value="Asian Giant Tortoise">Asian Giant Tortoise</option>
+                                <option value="Arakan Forest Turtle">Arakan Forest Turtle</option>
+                                <option value="Elongated Tortoise">Elongated Tortoise</option>
+                                <option value="Keeled Box Turtle">Keeled Box Turtle</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tortoiseGender">Gender</label>
+                            <select class="form-control" id="tortoiseGender" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="juvenile">Juvenile</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tortoiseEnclosure">Enclosure</label>
+                            <select class="form-control" id="tortoiseEnclosure" required>
+                                <option value="">Select Enclosure</option>
+                                <option value="EN-1">EN-1 (Outdoor - North Zone)</option>
+                                <option value="EN-2">EN-2 (Outdoor - East Wing)</option>
+                                <option value="LAB">LAB (Indoor - Research Block A)</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -231,11 +235,28 @@
                             <label for="editTortoiseSpecies">Species</label>
                             <select class="form-control" id="editTortoiseSpecies" required>
                                 <option value="">Select Species</option>
-                                <option value="Galapagos">Galapagos</option>
-                                <option value="Aldabra">Aldabra</option>
-                                <option value="Sulcata">Sulcata</option>
-                                <option value="Leopard">Leopard</option>
-                                <option value="Hermann">Hermann</option>
+                                <option value="Asian Giant Tortoise">Asian Giant Tortoise</option>
+                                <option value="Arakan Forest Turtle">Arakan Forest Turtle</option>
+                                <option value="Elongated Tortoise">Elongated Tortoise</option>
+                                <option value="Keeled Box Turtle">Keeled Box Turtle</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editTortoiseGender">Gender</label>
+                            <select class="form-control" id="editTortoiseGender" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="juvenile">Juvenile</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editTortoiseEnclosure">Enclosure</label>
+                            <select class="form-control" id="editTortoiseEnclosure" required>
+                                <option value="">Select Enclosure</option>
+                                <option value="EN-1">EN-1 (Outdoor - North Zone)</option>
+                                <option value="EN-2">EN-2 (Outdoor - East Wing)</option>
+                                <option value="LAB">LAB (Indoor - Research Block A)</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -295,54 +316,53 @@
     <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
     <script>
-        // Sample tortoise data - 50 tortoises
+        // Real tortoise data from database
         let tortoises = [];
-        const species = ['Galapagos', 'Aldabra', 'Sulcata', 'Leopard', 'Hermann'];
-        const healthStatuses = ['Healthy', 'Sick', 'Recovering', 'Critical'];
-        const genders = ['Male', 'Female'];
-        const names = [
-            'Tommy', 'Luna', 'Rocky', 'Stella', 'Shelly', 'Franklin', 'Crush', 'Squirt',
-            'Donatello', 'Leonardo', 'Michelangelo', 'Raphael', 'Yertle', 'Myrtle', 'Speedy',
-            'Tank', 'Tiny', 'Biggie', 'Little', 'Spike', 'Spot', 'Dot', 'Dash', 'Flash',
-            'Thunder', 'Lightning', 'Storm', 'Rain', 'Sunny', 'Cloud', 'Star', 'Moon',
-            'Comet', 'Meteor', 'Nova', 'Cosmos', 'Galaxy', 'Nebula', 'Orion', 'Atlas',
-            'Zeus', 'Hera', 'Apollo', 'Artemis', 'Athena', 'Hermes', 'Dionysus', 'Poseidon',
-            'Hades', 'Demeter', 'Hestia', 'Aphrodite', 'Ares', 'Hephaestus', 'Persephone',
-            'Hecate', 'Iris', 'Nike', 'Tyche', 'Nemesis', 'Themis', 'Dike', 'Eunomia',
-            'Eirene', 'Harmonia', 'Hebe', 'Iris', 'Leto', 'Maia', 'Metis', 'Mnemosyne',
-            'Phoebe', 'Rhea', 'Selene', 'Theia', 'Themis', 'Tethys', 'Thalia', 'Urania',
-            'Calliope', 'Clio', 'Erato', 'Euterpe', 'Melpomene', 'Polyhymnia', 'Terpsichore',
-            'Thalia', 'Urania', 'Calypso', 'Circe', 'Medea', 'Penelope', 'Helen', 'Andromeda',
-            'Cassandra', 'Clytemnestra', 'Electra', 'Iphigenia', 'Antigone', 'Ismene', 'Jocasta'
-        ];
-
-        // Generate 50 tortoises
-        function generateTortoises() {
-            for (let i = 1; i <= 50; i++) {
-                const selectedSpecies = species[Math.floor(Math.random() * species.length)];
-                const tortoise = {
-                    id: `T${String(i).padStart(3, '0')}`,
-                    name: names[i % names.length] + (Math.floor(i / names.length) + 1),
-                    species: selectedSpecies,
-                    age: Math.floor(Math.random() * 150) + 1,
-                    gender: genders[i % 2],
-                    enclosureId: `E${String((i % 20) + 1).padStart(3, '0')}`,
-                    speciesId: generateSpeciesId(selectedSpecies),
-                    healthStatus: healthStatuses[Math.floor(Math.random() * healthStatuses.length)]
-                };
-                tortoises.push(tortoise);
+        const species = ['Asian Giant Tortoise', 'Arakan Forest Turtle', 'Elongated Tortoise', 'Keeled Box Turtle'];
+        
+        // Fetch tortoises from database
+        async function fetchTortoises() {
+            try {
+                const response = await fetch('api/get_tortoises.php');
+                const result = await response.json();
+                
+                if (result.success) {
+                    tortoises = result.data;
+                    populateTable();
+                } else {
+                    console.error('Error fetching tortoises:', result.error);
+                    // Fallback to sample data if API fails
+                    generateSampleTortoises();
+                }
+            } catch (error) {
+                console.error('Error fetching tortoises:', error);
+                // Fallback to sample data if API fails
+                generateSampleTortoises();
             }
         }
 
-        function generateSpeciesId(speciesName) {
-            const map = {
-                'Galapagos': 'S-GLP',
-                'Aldabra': 'S-ALD',
-                'Sulcata': 'S-SUL',
-                'Leopard': 'S-LEO',
-                'Hermann': 'S-HER'
-            };
-            return map[speciesName] || 'S-UNK';
+        // Fallback sample data generation
+        function generateSampleTortoises() {
+            const sampleNames = ['Shella', 'Boulder', 'Mossy', 'Pebble', 'Spike', 'Hazel', 'Drift', 'Clover', 'Terra', 'Stone'];
+            const sampleSpecies = ['Elongated Tortoise', 'Arakan Forest Turtle', 'Asian Giant Tortoise', 'Keeled Box Turtle'];
+            
+            for (let i = 1; i <= 10; i++) {
+                const tortoise = {
+                    ctortoiseid: String(i).padStart(3, '0'),
+                    cname: sampleNames[i - 1],
+                    nage: Math.floor(Math.random() * 80) + 1,
+                    cgender: ['male', 'female', 'juvenile'][Math.floor(Math.random() * 3)],
+                    cenclosureid: ['EN-1', 'EN-2', 'LAB'][Math.floor(Math.random() * 3)],
+                    cspeciesid: `S${Math.floor(Math.random() * 4) + 1}`,
+                    species_name: sampleSpecies[Math.floor(Math.random() * 4)],
+                    scientific_name: 'Sample Scientific Name',
+                    cenclosuretype: ['Outdoor', 'Indoor'][Math.floor(Math.random() * 2)],
+                    clocation: ['North Zone', 'East Wing', 'Research Block A'][Math.floor(Math.random() * 3)],
+                    csize: '50x40m'
+                };
+                tortoises.push(tortoise);
+            }
+            populateTable();
         }
 
         // Populate table
@@ -354,17 +374,23 @@
                 const row = document.createElement('tr');
                 
                 row.innerHTML = `
-                    <td><strong>${tortoise.id}</strong></td>
-                    <td>${tortoise.name}</td>
-                    <td>${tortoise.age}</td>
-                    <td>${tortoise.gender || '-'}</td>
-                    <td>${tortoise.enclosureId || '-'}</td>
-                    <td>${tortoise.speciesId || '-'}</td>
+                    <td><strong>${tortoise.ctortoiseid}</strong></td>
+                    <td>${tortoise.cname || '-'}</td>
+                    <td>${tortoise.nage || '-'}</td>
+                    <td><span class="badge badge-info">${tortoise.cgender || '-'}</span></td>
                     <td>
-                        <button class="btn btn-primary btn-sm" onclick="editTortoise('${tortoise.id}')">
+                        <small class="text-muted">${tortoise.cenclosureid || '-'}</small><br>
+                        <span class="badge badge-secondary">${tortoise.cenclosuretype || '-'}</span>
+                    </td>
+                    <td>
+                        <small class="text-muted">${tortoise.cspeciesid || '-'}</small><br>
+                        <span class="badge badge-primary">${tortoise.species_name || '-'}</span>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick="editTortoise('${tortoise.ctortoiseid}')">
                             <i class="fas fa-edit"></i> Edit
                         </button>
-                        <button class="btn btn-danger btn-sm" onclick="confirmDelete('${tortoise.id}', '${tortoise.name}')">
+                                                <button class="btn btn-danger btn-sm" onclick="confirmDelete('${tortoise.ctortoiseid}', '${tortoise.cname || 'Unknown'}')">
                             <i class="fas fa-trash"></i> Delete
                         </button>
                     </td>
@@ -391,8 +417,8 @@
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             
             const filteredData = tortoises.filter(tortoise => {
-                const matchesSearch = tortoise.id.toLowerCase().includes(searchTerm) || 
-                                    tortoise.name.toLowerCase().includes(searchTerm);
+                const matchesSearch = tortoise.ctortoiseid.toLowerCase().includes(searchTerm) || 
+                                    (tortoise.cname && tortoise.cname.toLowerCase().includes(searchTerm));
                 return matchesSearch;
             });
             
@@ -400,79 +426,113 @@
         }
 
         // Add new tortoise
-        function addTortoise() {
+        async function addTortoise() {
             const name = document.getElementById('tortoiseName').value;
             const species = document.getElementById('tortoiseSpecies').value;
+            const gender = document.getElementById('tortoiseGender').value;
+            const enclosure = document.getElementById('tortoiseEnclosure').value;
             const age = parseInt(document.getElementById('tortoiseAge').value);
             const healthStatus = document.getElementById('tortoiseHealth').value;
-            const gender = Math.random() > 0.5 ? 'Male' : 'Female';
-            const enclosureId = `E${String((tortoises.length % 20) + 1).padStart(3, '0')}`;
-            const speciesId = generateSpeciesId(species);
             
-            if (!name || !species || !age || !healthStatus) {
+            if (!name || !species || !gender || !enclosure || !age || !healthStatus) {
                 alert('Please fill in all fields');
                 return;
             }
             
-            const newId = `T${String(tortoises.length + 1).padStart(3, '0')}`;
-            const newTortoise = {
-                id: newId,
-                name: name,
-                species: species,
-                age: age,
-                gender: gender,
-                enclosureId: enclosureId,
-                speciesId: speciesId,
-                healthStatus: healthStatus
-            };
-            
-            tortoises.push(newTortoise);
-            populateTable();
-            $('#addTortoiseModal').modal('hide');
-            document.getElementById('addTortoiseForm').reset();
+            try {
+                const response = await fetch('api/add_tortoise.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        species: species,
+                        gender: gender,
+                        enclosure: enclosure,
+                        age: age,
+                        health_status: healthStatus
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Tortoise added successfully!');
+                    $('#addTortoiseModal').modal('hide');
+                    document.getElementById('addTortoiseForm').reset();
+                    // Refresh the data
+                    await fetchTortoises();
+                } else {
+                    alert('Error adding tortoise: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error adding tortoise:', error);
+                alert('Error adding tortoise. Please try again.');
+            }
         }
 
         // Edit tortoise
         function editTortoise(id) {
-            const tortoise = tortoises.find(t => t.id === id);
+            const tortoise = tortoises.find(t => t.ctortoiseid === id);
             if (!tortoise) return;
             
-            document.getElementById('editTortoiseId').value = tortoise.id;
-            document.getElementById('editTortoiseName').value = tortoise.name;
-            document.getElementById('editTortoiseSpecies').value = tortoise.species;
-            document.getElementById('editTortoiseAge').value = tortoise.age;
-            document.getElementById('editTortoiseHealth').value = tortoise.healthStatus;
+            document.getElementById('editTortoiseId').value = tortoise.ctortoiseid;
+            document.getElementById('editTortoiseName').value = tortoise.cname || '';
+            document.getElementById('editTortoiseSpecies').value = tortoise.species_name || 'Asian Giant Tortoise';
+            document.getElementById('editTortoiseGender').value = tortoise.cgender || 'male';
+            document.getElementById('editTortoiseEnclosure').value = tortoise.cenclosureid || 'EN-1';
+            document.getElementById('editTortoiseAge').value = tortoise.nage || '';
+            document.getElementById('editTortoiseHealth').value = 'Healthy'; // Default value since health status is not in the main table
             
             $('#editTortoiseModal').modal('show');
         }
 
         // Update tortoise
-        function updateTortoise() {
+        async function updateTortoise() {
             const id = document.getElementById('editTortoiseId').value;
             const name = document.getElementById('editTortoiseName').value;
             const species = document.getElementById('editTortoiseSpecies').value;
+            const gender = document.getElementById('editTortoiseGender').value;
+            const enclosure = document.getElementById('editTortoiseEnclosure').value;
             const age = parseInt(document.getElementById('editTortoiseAge').value);
             const healthStatus = document.getElementById('editTortoiseHealth').value;
             
-            if (!name || !species || !age || !healthStatus) {
+            if (!name || !species || !gender || !enclosure || !age || !healthStatus) {
                 alert('Please fill in all fields');
                 return;
             }
             
-            const tortoiseIndex = tortoises.findIndex(t => t.id === id);
-            if (tortoiseIndex !== -1) {
-                tortoises[tortoiseIndex] = {
-                    id: id,
-                    name: name,
-                    species: species,
-                    age: age,
-                    gender: tortoises[tortoiseIndex].gender || 'Male',
-                    enclosureId: tortoises[tortoiseIndex].enclosureId || `E${String((tortoiseIndex % 20) + 1).padStart(3, '0')}`,
-                    speciesId: generateSpeciesId(species),
-                    healthStatus: healthStatus
-                };
-                populateTable();
-                $('#editTortoiseModal').modal('hide');
+            try {
+                const response = await fetch('api/update_tortoise.php', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: id,
+                        name: name,
+                        species: species,
+                        gender: gender,
+                        enclosure: enclosure,
+                        age: age,
+                        health_status: healthStatus
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Tortoise updated successfully!');
+                    $('#editTortoiseModal').modal('hide');
+                    // Refresh the data
+                    await fetchTortoises();
+                } else {
+                    alert('Error updating tortoise: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error updating tortoise:', error);
+                alert('Error updating tortoise. Please try again.');
             }
         }
 
@@ -484,14 +544,33 @@
         }
 
         // Delete tortoise
-        function deleteTortoise() {
+        async function deleteTortoise() {
             const id = document.getElementById('deleteTortoiseModal').getAttribute('data-tortoise-id');
-            const tortoiseIndex = tortoises.findIndex(t => t.id === id);
             
-            if (tortoiseIndex !== -1) {
-                tortoises.splice(tortoiseIndex, 1);
-                populateTable();
-                $('#deleteTortoiseModal').modal('hide');
+            try {
+                const response = await fetch('api/delete_tortoise.php', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: id
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Tortoise deleted successfully!');
+                    $('#deleteTortoiseModal').modal('hide');
+                    // Refresh the data
+                    await fetchTortoises();
+                } else {
+                    alert('Error deleting tortoise: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error deleting tortoise:', error);
+                alert('Error deleting tortoise. Please try again.');
             }
         }
 
@@ -500,8 +579,7 @@
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
-            generateTortoises();
-            populateTable();
+            fetchTortoises();
         });
     </script>
 </body>
