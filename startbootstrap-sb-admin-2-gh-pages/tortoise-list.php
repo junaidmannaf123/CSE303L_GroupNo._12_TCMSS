@@ -49,7 +49,7 @@
                     <span>Health Records</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="assigned_tasks.html">
+                <a class="nav-link" href="assigned_tasks.php">
                     <i class="fas fa-fw fa-tasks"></i>
                     <span>Assigned Tasks</span></a>
             </li>
