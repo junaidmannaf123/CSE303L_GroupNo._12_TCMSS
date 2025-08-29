@@ -13,7 +13,7 @@
 
   <!-- Sidebar -->
   <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="homepage.html">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="homepage.php">
       <div class="sidebar-brand-icon rotate-n-15">
         <i class="fas fa-archive"></i>
       </div>
@@ -23,19 +23,25 @@
     <hr class="sidebar-divider my-0">
 
     <li class="nav-item">
-      <a class="nav-link" href="homepage.html">
+      <a class="nav-link" href="homepage.php">
         <i class="fas fa-fw fa-home"></i>
         <span>Home</span>
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="records_M.html">
+      <a class="nav-link" href="records_M.php">
         <i class="fas fa-fw fa-list"></i>
         <span>Tortoise Records</span>
       </a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link" href="staffMember.php">
+        <i class="fas fa-fw fa-users"></i>
+        <span>Staff Management</span>
+      </a>
+    </li>
     <li class="nav-item active">
-      <a class="nav-link" href="assignTasks.html">
+      <a class="nav-link" href="assignTasks.php">
         <i class="fas fa-fw fa-tasks"></i>
         <span>Assign Task</span>
       </a>
