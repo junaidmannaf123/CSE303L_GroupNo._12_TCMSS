@@ -52,6 +52,17 @@
                     <span>Dashboard</span></a>
             </li>
             <hr class="sidebar-divider">
+            <li class="nav-item active">
+                <a class="nav-link" href="Egg_Incubator.php">
+                    <i class="fas fa-fw fa-egg"></i>
+                    <span>Egg Incubator</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="environment_monitor.php">
+                    <i class="fas fa-fw fa-leaf"></i>
+                    <span>Environment Monitor</span></a>
+            </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="#assigned-tasks-section">
                     <i class="fas fa-fw fa-tasks"></i>

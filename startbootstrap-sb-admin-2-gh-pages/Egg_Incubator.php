@@ -30,20 +30,16 @@
             <hr class="sidebar-divider">
             <div class="sidebar-heading">Incubator Tools</div>
             <li class="nav-item active">
-                <a class="nav-link" href="Egg_Incubator.html">
+                <a class="nav-link" href="Egg_Incubator.php">
                     <i class="fas fa-fw fa-egg"></i>
                     <span>Egg Incubator</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="environment_monitor.html">
+                <a class="nav-link" href="environment_monitor.php">
                     <i class="fas fa-fw fa-leaf"></i>
                     <span>Environment Monitor</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="assigned_tasks.html">
-                    <i class="fas fa-fw fa-tasks"></i>
-                    <span>Assigned Tasks</span></a>
-            </li>
+            
             <hr class="sidebar-divider d-none d-md-block">
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
