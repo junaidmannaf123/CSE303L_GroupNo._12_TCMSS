@@ -1,3 +1,119 @@
+<?php
+require_once __DIR__ . '/config/database.php';
+
+// Helpers
+function fetchTortoiseList(PDO $pdo, $q = '') {
+    $sql = "
+        SELECT 
+            t.ctortoiseid,
+            t.cname,
+            t.nage,
+            t.cgender,
+            t.cenclosureid,
+            t.cspeciesid,
+            s.ccommonname as species_name,
+            s.cscientificname as scientific_name,
+            e.cenclosuretype,
+            e.clocation,
+            e.csize
+        FROM tbltortoise t
+        LEFT JOIN tblspecies s ON t.cspeciesid = s.cspeciesid
+        LEFT JOIN tblenclosure e ON t.cenclosureid = e.cenclosureid
+    ";
+    $params = [];
+    if ($q !== '') {
+        $sql .= " WHERE t.ctortoiseid LIKE :q OR t.cname LIKE :q2";
+        $params[':q'] = "%$q%";
+        $params[':q2'] = "%$q%";
+    }
+    $sql .= " ORDER BY t.ctortoiseid";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    return $stmt->fetchAll();
+}
+
+function mapSpeciesNameToId($name) {
+    $map = [
+        'Asian Giant Tortoise' => 'S1',
+        'Arakan Forest Turtle' => 'S2',
+        'Elongated Tortoise' => 'S3',
+        'Keeled Box Turtle' => 'S4'
+    ];
+    return isset($map[$name]) ? $map[$name] : 'S1';
+}
+
+$error = '';
+$success = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = isset($_POST['action']) ? $_POST['action'] : '';
+    try {
+        if ($action === 'create') {
+            $name = isset($_POST['name']) ? trim($_POST['name']) : '';
+            $speciesName = isset($_POST['species']) ? $_POST['species'] : '';
+            $gender = isset($_POST['gender']) ? $_POST['gender'] : '';
+            $enclosure = isset($_POST['enclosure']) ? $_POST['enclosure'] : '';
+            $age = isset($_POST['age']) ? (int)$_POST['age'] : 0;
+            if ($name === '' || $speciesName === '' || $gender === '' || $enclosure === '' || $age <= 0) {
+                throw new Exception('Please fill in all fields');
+            }
+            // Generate new ID (numeric padded to 3)
+            $row = $pdo->query("SELECT MAX(CAST(ctortoiseid AS UNSIGNED)) as max_id FROM tbltortoise")->fetch();
+            $newId = str_pad((int)($row && isset($row['max_id']) ? $row['max_id'] : 0) + 1, 3, '0', STR_PAD_LEFT);
+            $stmt = $pdo->prepare("INSERT INTO tbltortoise (ctortoiseid, cname, nage, cgender, cenclosureid, cspeciesid) VALUES (:id, :name, :age, :gender, :enclosure, :species)");
+            $stmt->execute([
+                ':id' => $newId,
+                ':name' => $name,
+                ':age' => $age,
+                ':gender' => $gender,
+                ':enclosure' => $enclosure,
+                ':species' => mapSpeciesNameToId($speciesName)
+            ]);
+            $success = 'Tortoise added successfully (ID ' . htmlspecialchars($newId) . ')';
+        } elseif ($action === 'update') {
+            $id = isset($_POST['id']) ? $_POST['id'] : '';
+            if ($id === '') throw new Exception('Missing ID');
+            $name = isset($_POST['name']) ? trim($_POST['name']) : '';
+            $speciesName = isset($_POST['species']) ? $_POST['species'] : '';
+            $gender = isset($_POST['gender']) ? $_POST['gender'] : '';
+            $enclosure = isset($_POST['enclosure']) ? $_POST['enclosure'] : '';
+            $age = isset($_POST['age']) ? (int)$_POST['age'] : 0;
+            if ($name === '' || $speciesName === '' || $gender === '' || $enclosure === '' || $age <= 0) {
+                throw new Exception('Please fill in all fields');
+            }
+            $stmt = $pdo->prepare("UPDATE tbltortoise SET cname = :name, nage = :age, cgender = :gender, cenclosureid = :enclosure, cspeciesid = :species WHERE ctortoiseid = :id");
+            $stmt->execute([
+                ':id' => $id,
+                ':name' => $name,
+                ':age' => $age,
+                ':gender' => $gender,
+                ':enclosure' => $enclosure,
+                ':species' => mapSpeciesNameToId($speciesName)
+            ]);
+            $success = 'Tortoise updated successfully (ID ' . htmlspecialchars($id) . ')';
+        } elseif ($action === 'delete') {
+            $id = isset($_POST['id']) ? $_POST['id'] : '';
+            if ($id === '') throw new Exception('Missing ID');
+            $stmt = $pdo->prepare("DELETE FROM tbltortoise WHERE ctortoiseid = :id");
+            $stmt->execute([':id' => $id]);
+            $success = 'Tortoise deleted (ID ' . htmlspecialchars($id) . ')';
+        }
+    } catch (Throwable $e) {
+        $error = $e->getMessage();
+    }
+}
+
+// For edit prefill
+$editId = isset($_GET['edit']) ? $_GET['edit'] : '';
+$edit = null;
+if ($editId !== '') {
+    $stmt = $pdo->prepare("SELECT * FROM tbltortoise WHERE ctortoiseid = :id");
+    $stmt->execute([':id' => $editId]);
+    $edit = $stmt->fetch();
+}
+
+$q = isset($_GET['q']) ? trim($_GET['q']) : '';
+$tortoises = fetchTortoiseList($pdo, $q);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,11 +202,7 @@
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Tortoise Registry</h1>
-                        <div>
-                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#addTortoiseModal">
-                                <i class="fas fa-plus fa-sm text-white-50"></i> Add New Tortoise
-                            </button>
-                        </div>
+                        <div></div>
                     </div>
                     
                     <!-- Search and Filter Section -->
@@ -99,19 +211,116 @@
                             <h6 class="m-0 font-weight-bold text-primary">Search & Filter</h6>
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control" id="searchInput" placeholder="Search by ID or Name...">
+                            <form method="get">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" name="q" value="<?php echo htmlspecialchars($q); ?>" placeholder="Search by ID or Name...">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-primary btn-sm" type="submit">
+                                            <i class="fas fa-search"></i> Filter
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span class="text-muted">Showing <span id="recordCount"><?php echo count($tortoises); ?></span> tortoises</span>
+                                    </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <button class="btn btn-primary btn-sm" onclick="filterTable()">
-                                        <i class="fas fa-search"></i> Filter
-                                    </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Add/Edit Form -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-success"><?php echo $edit ? 'Edit Tortoise' : 'Add New Tortoise'; ?></h6>
+                        </div>
+                        <div class="card-body">
+                            <?php if ($error): ?>
+                            <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
+                            <?php endif; ?>
+                            <?php if ($success): ?>
+                            <div class="alert alert-success"><?php echo htmlspecialchars($success); ?></div>
+                            <?php endif; ?>
+                            <form method="post">
+                                <input type="hidden" name="action" value="<?php echo $edit ? 'update' : 'create'; ?>">
+                                <?php if ($edit): ?>
+                                <input type="hidden" name="id" value="<?php echo htmlspecialchars($edit['ctortoiseid']); ?>">
+                                <?php endif; ?>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Name</label>
+                                            <input type="text" class="form-control" name="name" value="<?php echo htmlspecialchars($edit['cname'] ?? ''); ?>" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Species</label>
+                                            <select class="form-control" name="species" required>
+                                                <?php
+                                                $speciesOptions = ['Asian Giant Tortoise','Arakan Forest Turtle','Elongated Tortoise','Keeled Box Turtle'];
+                                                $selSpecies = '';
+                                                if ($edit && isset($edit['cspeciesid'])) {
+                                                    $rev = ['S1'=>'Asian Giant Tortoise','S2'=>'Arakan Forest Turtle','S3'=>'Elongated Tortoise','S4'=>'Keeled Box Turtle'];
+                                                    $selSpecies = isset($rev[$edit['cspeciesid']]) ? $rev[$edit['cspeciesid']] : '';
+                                                }
+                                                echo '<option value="">Select Species</option>';
+                                                foreach ($speciesOptions as $s) {
+                                                    $sel = ($selSpecies === $s) ? ' selected' : '';
+                                                    echo '<option value="' . htmlspecialchars($s) . '"' . $sel . '>' . htmlspecialchars($s) . '</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Gender</label>
+                                            <select class="form-control" name="gender" required>
+                                                <?php
+                                                $genders = ['male' => 'Male', 'female' => 'Female', 'juvenile' => 'Juvenile'];
+                                                $selGender = $edit['cgender'] ?? '';
+                                                echo '<option value="">Select Gender</option>';
+                                                foreach ($genders as $val => $label) {
+                                                    $sel = ($selGender === $val) ? ' selected' : '';
+                                                    echo '<option value="' . htmlspecialchars($val) . '"' . $sel . '>' . htmlspecialchars($label) . '</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <span class="text-muted">Showing <span id="recordCount">30</span> of 30 tortoises</span>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Enclosure</label>
+                                            <select class="form-control" name="enclosure" required>
+                                                <?php
+                                                $enclosures = ['EN-1' => 'EN-1 (Outdoor - North Zone)','EN-2' => 'EN-2 (Outdoor - East Wing)','LAB' => 'LAB (Indoor - Research Block A)'];
+                                                $selEnc = $edit['cenclosureid'] ?? '';
+                                                echo '<option value="">Select Enclosure</option>';
+                                                foreach ($enclosures as $val => $label) {
+                                                    $sel = ($selEnc === $val) ? ' selected' : '';
+                                                    echo '<option value="' . htmlspecialchars($val) . '"' . $sel . '>' . htmlspecialchars($label) . '</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Age (Years)</label>
+                                            <input type="number" class="form-control" name="age" min="0" max="200" value="<?php echo htmlspecialchars($edit['nage'] ?? ''); ?>" required>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="d-flex">
+                                    <button type="submit" class="btn btn-success btn-sm mr-2"><i class="fas fa-save mr-1"></i><?php echo $edit ? 'Update Tortoise' : 'Add Tortoise'; ?></button>
+                                    <?php if ($edit): ?>
+                                    <a class="btn btn-secondary btn-sm" href="tortoise-list.php">Cancel</a>
+                                    <?php endif; ?>
+                                </div>
+                            </form>
                         </div>
                     </div>
 
@@ -135,170 +344,37 @@
                                         </tr>
                                     </thead>
                                     <tbody id="tortoiseTableBody">
-                                        <!-- Tortoise data will be populated by JavaScript -->
+<?php foreach ($tortoises as $t): ?>
+                                        <tr>
+                                            <td><strong><?php echo htmlspecialchars($t['ctortoiseid']); ?></strong></td>
+                                            <td><?php echo htmlspecialchars($t['cname'] ?? '-'); ?></td>
+                                            <td><?php echo htmlspecialchars($t['nage'] ?? '-'); ?></td>
+                                            <td><span class="badge badge-info"><?php echo htmlspecialchars($t['cgender'] ?? '-'); ?></span></td>
+                                            <td>
+                                                <small class="text-muted"><?php echo htmlspecialchars($t['cenclosureid'] ?? '-'); ?></small><br>
+                                                <span class="badge badge-secondary"><?php echo htmlspecialchars($t['cenclosuretype'] ?? '-'); ?></span>
+                                            </td>
+                                            <td>
+                                                <small class="text-muted"><?php echo htmlspecialchars($t['cspeciesid'] ?? '-'); ?></small><br>
+                                                <span class="badge badge-primary"><?php echo htmlspecialchars($t['species_name'] ?? '-'); ?></span>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-primary btn-sm" href="tortoise-list.php?edit=<?php echo urlencode($t['ctortoiseid']); ?>">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </a>
+                                                <form method="post" style="display:inline;" onsubmit="return confirm('Delete tortoise <?php echo htmlspecialchars($t['cname'] ?? $t['ctortoiseid']); ?>?');">
+                                                    <input type="hidden" name="action" value="delete">
+                                                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($t['ctortoiseid']); ?>">
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+<?php endforeach; ?>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Tortoise Modal -->
-    <div class="modal fade" id="addTortoiseModal" tabindex="-1" role="dialog" aria-labelledby="addTortoiseModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addTortoiseModalLabel">Add New Tortoise</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="addTortoiseForm">
-                        <div class="form-group">
-                            <label for="tortoiseName">Name</label>
-                            <input type="text" class="form-control" id="tortoiseName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="tortoiseSpecies">Species</label>
-                            <select class="form-control" id="tortoiseSpecies" required>
-                                <option value="">Select Species</option>
-                                <option value="Asian Giant Tortoise">Asian Giant Tortoise</option>
-                                <option value="Arakan Forest Turtle">Arakan Forest Turtle</option>
-                                <option value="Elongated Tortoise">Elongated Tortoise</option>
-                                <option value="Keeled Box Turtle">Keeled Box Turtle</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="tortoiseGender">Gender</label>
-                            <select class="form-control" id="tortoiseGender" required>
-                                <option value="">Select Gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="juvenile">Juvenile</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="tortoiseEnclosure">Enclosure</label>
-                            <select class="form-control" id="tortoiseEnclosure" required>
-                                <option value="">Select Enclosure</option>
-                                <option value="EN-1">EN-1 (Outdoor - North Zone)</option>
-                                <option value="EN-2">EN-2 (Outdoor - East Wing)</option>
-                                <option value="LAB">LAB (Indoor - Research Block A)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="tortoiseAge">Age (Years)</label>
-                            <input type="number" class="form-control" id="tortoiseAge" min="0" max="200" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="tortoiseHealth">Health Status</label>
-                            <select class="form-control" id="tortoiseHealth" required>
-                                <option value="">Select Health Status</option>
-                                <option value="Healthy">Healthy</option>
-                                <option value="Sick">Sick</option>
-                                <option value="Recovering">Recovering</option>
-                                <option value="Critical">Critical</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-success" onclick="addTortoise()">Add Tortoise</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Tortoise Modal -->
-    <div class="modal fade" id="editTortoiseModal" tabindex="-1" role="dialog" aria-labelledby="editTortoiseModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editTortoiseModalLabel">Edit Tortoise</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="editTortoiseForm">
-                        <input type="hidden" id="editTortoiseId">
-                        <div class="form-group">
-                            <label for="editTortoiseName">Name</label>
-                            <input type="text" class="form-control" id="editTortoiseName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="editTortoiseSpecies">Species</label>
-                            <select class="form-control" id="editTortoiseSpecies" required>
-                                <option value="">Select Species</option>
-                                <option value="Asian Giant Tortoise">Asian Giant Tortoise</option>
-                                <option value="Arakan Forest Turtle">Arakan Forest Turtle</option>
-                                <option value="Elongated Tortoise">Elongated Tortoise</option>
-                                <option value="Keeled Box Turtle">Keeled Box Turtle</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="editTortoiseGender">Gender</label>
-                            <select class="form-control" id="editTortoiseGender" required>
-                                <option value="">Select Gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="juvenile">Juvenile</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="editTortoiseEnclosure">Enclosure</label>
-                            <select class="form-control" id="editTortoiseEnclosure" required>
-                                <option value="">Select Enclosure</option>
-                                <option value="EN-1">EN-1 (Outdoor - North Zone)</option>
-                                <option value="EN-2">EN-2 (Outdoor - East Wing)</option>
-                                <option value="LAB">LAB (Indoor - Research Block A)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="editTortoiseAge">Age (Years)</label>
-                            <input type="number" class="form-control" id="editTortoiseAge" min="0" max="200" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="editTortoiseHealth">Health Status</label>
-                            <select class="form-control" id="editTortoiseHealth" required>
-                                <option value="">Select Health Status</option>
-                                <option value="Healthy">Treatment</option>
-                                <option value="Sick">Vaccination</option>
-                                <option value="Recovering">Checkup</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="updateTortoise()">Update Tortoise</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Delete Confirmation Modal -->
-    <div class="modal fade" id="deleteTortoiseModal" tabindex="-1" role="dialog" aria-labelledby="deleteTortoiseModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteTortoiseModalLabel">Confirm Delete</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to delete tortoise <span id="deleteTortoiseName"></span>?</p>
-                    <p class="text-danger">This action cannot be undone.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" onclick="deleteTortoise()">Delete</button>
                 </div>
             </div>
         </div>
@@ -314,273 +390,5 @@
     <!-- DataTables -->
     <script src="vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <script>
-        // Real tortoise data from database
-        let tortoises = [];
-        const species = ['Asian Giant Tortoise', 'Arakan Forest Turtle', 'Elongated Tortoise', 'Keeled Box Turtle'];
-        
-        // Fetch tortoises from database
-        async function fetchTortoises() {
-            try {
-                const response = await fetch('api/get_tortoises.php');
-                const result = await response.json();
-                
-                if (result.success) {
-                    tortoises = result.data;
-                    populateTable();
-                } else {
-                    console.error('Error fetching tortoises:', result.error);
-                    // Fallback to sample data if API fails
-                    generateSampleTortoises();
-                }
-            } catch (error) {
-                console.error('Error fetching tortoises:', error);
-                // Fallback to sample data if API fails
-                generateSampleTortoises();
-            }
-        }
-
-        // Fallback sample data generation
-        function generateSampleTortoises() {
-            const sampleNames = ['Shella', 'Boulder', 'Mossy', 'Pebble', 'Spike', 'Hazel', 'Drift', 'Clover', 'Terra', 'Stone'];
-            const sampleSpecies = ['Elongated Tortoise', 'Arakan Forest Turtle', 'Asian Giant Tortoise', 'Keeled Box Turtle'];
-            
-            for (let i = 1; i <= 10; i++) {
-                const tortoise = {
-                    ctortoiseid: String(i).padStart(3, '0'),
-                    cname: sampleNames[i - 1],
-                    nage: Math.floor(Math.random() * 80) + 1,
-                    cgender: ['male', 'female', 'juvenile'][Math.floor(Math.random() * 3)],
-                    cenclosureid: ['EN-1', 'EN-2', 'LAB'][Math.floor(Math.random() * 3)],
-                    cspeciesid: `S${Math.floor(Math.random() * 4) + 1}`,
-                    species_name: sampleSpecies[Math.floor(Math.random() * 4)],
-                    scientific_name: 'Sample Scientific Name',
-                    cenclosuretype: ['Outdoor', 'Indoor'][Math.floor(Math.random() * 2)],
-                    clocation: ['North Zone', 'East Wing', 'Research Block A'][Math.floor(Math.random() * 3)],
-                    csize: '50x40m'
-                };
-                tortoises.push(tortoise);
-            }
-            populateTable();
-        }
-
-        // Populate table
-        function populateTable(data = tortoises) {
-            const tbody = document.getElementById('tortoiseTableBody');
-            tbody.innerHTML = '';
-            
-            data.forEach(tortoise => {
-                const row = document.createElement('tr');
-                
-                row.innerHTML = `
-                    <td><strong>${tortoise.ctortoiseid}</strong></td>
-                    <td>${tortoise.cname || '-'}</td>
-                    <td>${tortoise.nage || '-'}</td>
-                    <td><span class="badge badge-info">${tortoise.cgender || '-'}</span></td>
-                    <td>
-                        <small class="text-muted">${tortoise.cenclosureid || '-'}</small><br>
-                        <span class="badge badge-secondary">${tortoise.cenclosuretype || '-'}</span>
-                    </td>
-                    <td>
-                        <small class="text-muted">${tortoise.cspeciesid || '-'}</small><br>
-                        <span class="badge badge-primary">${tortoise.species_name || '-'}</span>
-                    </td>
-                    <td>
-                        <button class="btn btn-primary btn-sm" onclick="editTortoise('${tortoise.ctortoiseid}')">
-                            <i class="fas fa-edit"></i> Edit
-                        </button>
-                                                <button class="btn btn-danger btn-sm" onclick="confirmDelete('${tortoise.ctortoiseid}', '${tortoise.cname || 'Unknown'}')">
-                            <i class="fas fa-trash"></i> Delete
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-            
-            document.getElementById('recordCount').textContent = data.length;
-        }
-
-        // Get health status CSS class
-        function getHealthClass(status) {
-            switch(status) {
-                case 'Healthy': return 'status-healthy';
-                case 'Sick': return 'status-sick';
-                case 'Recovering': return 'status-recovering';
-                case 'Critical': return 'status-critical';
-                default: return '';
-            }
-        }
-
-        // Filter table
-        function filterTable() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            
-            const filteredData = tortoises.filter(tortoise => {
-                const matchesSearch = tortoise.ctortoiseid.toLowerCase().includes(searchTerm) || 
-                                    (tortoise.cname && tortoise.cname.toLowerCase().includes(searchTerm));
-                return matchesSearch;
-            });
-            
-            populateTable(filteredData);
-        }
-
-        // Add new tortoise
-        async function addTortoise() {
-            const name = document.getElementById('tortoiseName').value;
-            const species = document.getElementById('tortoiseSpecies').value;
-            const gender = document.getElementById('tortoiseGender').value;
-            const enclosure = document.getElementById('tortoiseEnclosure').value;
-            const age = parseInt(document.getElementById('tortoiseAge').value);
-            const healthStatus = document.getElementById('tortoiseHealth').value;
-            
-            if (!name || !species || !gender || !enclosure || !age || !healthStatus) {
-                alert('Please fill in all fields');
-                return;
-            }
-            
-            try {
-                const response = await fetch('api/add_tortoise.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        name: name,
-                        species: species,
-                        gender: gender,
-                        enclosure: enclosure,
-                        age: age,
-                        health_status: healthStatus
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    alert('Tortoise added successfully!');
-                    $('#addTortoiseModal').modal('hide');
-                    document.getElementById('addTortoiseForm').reset();
-                    // Refresh the data
-                    await fetchTortoises();
-                } else {
-                    alert('Error adding tortoise: ' + result.error);
-                }
-            } catch (error) {
-                console.error('Error adding tortoise:', error);
-                alert('Error adding tortoise. Please try again.');
-            }
-        }
-
-        // Edit tortoise
-        function editTortoise(id) {
-            const tortoise = tortoises.find(t => t.ctortoiseid === id);
-            if (!tortoise) return;
-            
-            document.getElementById('editTortoiseId').value = tortoise.ctortoiseid;
-            document.getElementById('editTortoiseName').value = tortoise.cname || '';
-            document.getElementById('editTortoiseSpecies').value = tortoise.species_name || 'Asian Giant Tortoise';
-            document.getElementById('editTortoiseGender').value = tortoise.cgender || 'male';
-            document.getElementById('editTortoiseEnclosure').value = tortoise.cenclosureid || 'EN-1';
-            document.getElementById('editTortoiseAge').value = tortoise.nage || '';
-            document.getElementById('editTortoiseHealth').value = 'Healthy'; // Default value since health status is not in the main table
-            
-            $('#editTortoiseModal').modal('show');
-        }
-
-        // Update tortoise
-        async function updateTortoise() {
-            const id = document.getElementById('editTortoiseId').value;
-            const name = document.getElementById('editTortoiseName').value;
-            const species = document.getElementById('editTortoiseSpecies').value;
-            const gender = document.getElementById('editTortoiseGender').value;
-            const enclosure = document.getElementById('editTortoiseEnclosure').value;
-            const age = parseInt(document.getElementById('editTortoiseAge').value);
-            const healthStatus = document.getElementById('editTortoiseHealth').value;
-            
-            if (!name || !species || !gender || !enclosure || !age || !healthStatus) {
-                alert('Please fill in all fields');
-                return;
-            }
-            
-            try {
-                const response = await fetch('api/update_tortoise.php', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        id: id,
-                        name: name,
-                        species: species,
-                        gender: gender,
-                        enclosure: enclosure,
-                        age: age,
-                        health_status: healthStatus
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    alert('Tortoise updated successfully!');
-                    $('#editTortoiseModal').modal('hide');
-                    // Refresh the data
-                    await fetchTortoises();
-                } else {
-                    alert('Error updating tortoise: ' + result.error);
-                }
-            } catch (error) {
-                console.error('Error updating tortoise:', error);
-                alert('Error updating tortoise. Please try again.');
-            }
-        }
-
-        // Confirm delete
-        function confirmDelete(id, name) {
-            document.getElementById('deleteTortoiseName').textContent = name;
-            document.getElementById('deleteTortoiseModal').setAttribute('data-tortoise-id', id);
-            $('#deleteTortoiseModal').modal('show');
-        }
-
-        // Delete tortoise
-        async function deleteTortoise() {
-            const id = document.getElementById('deleteTortoiseModal').getAttribute('data-tortoise-id');
-            
-            try {
-                const response = await fetch('api/delete_tortoise.php', {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        id: id
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    alert('Tortoise deleted successfully!');
-                    $('#deleteTortoiseModal').modal('hide');
-                    // Refresh the data
-                    await fetchTortoises();
-                } else {
-                    alert('Error deleting tortoise: ' + result.error);
-                }
-            } catch (error) {
-                console.error('Error deleting tortoise:', error);
-                alert('Error deleting tortoise. Please try again.');
-            }
-        }
-
-        // Search functionality
-        document.getElementById('searchInput').addEventListener('input', filterTable);
-
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', function() {
-            fetchTortoises();
-        });
-    </script>
 </body>
 </html> 

@@ -1,3 +1,129 @@
+<?php
+require_once __DIR__ . '/config/database.php';
+
+// Fetch tortoises with species and enclosure info
+$tortoises = [];
+try {
+    $stmt = $pdo->prepare(
+        "SELECT 
+            t.ctortoiseid,
+            t.cname,
+            t.nage,
+            t.cgender,
+            t.cenclosureid,
+            t.cspeciesid,
+            s.ccommonname AS species_name,
+            s.cscientificname AS scientific_name,
+            e.cenclosuretype,
+            e.clocation,
+            e.csize
+        FROM tbltortoise t
+        LEFT JOIN tblspecies s ON t.cspeciesid = s.cspeciesid
+        LEFT JOIN tblenclosure e ON t.cenclosureid = e.cenclosureid
+        ORDER BY t.ctortoiseid"
+    );
+    $stmt->execute();
+    $tortoises = $stmt->fetchAll();
+} catch (Throwable $e) {
+    $tortoises = [];
+}
+
+// Fetch medical records
+$medical = [];
+try {
+    $stmt = $pdo->prepare(
+        "SELECT 
+            crecordid,
+            drecordingdate,
+            cdiagnosis,
+            ctreatment,
+            ctype,
+            ddate,
+            cvaccinationstatus,
+            dcheckdate,
+            dchecktime,
+            cstaffid,
+            ctortoiseid
+        FROM tblmedicalrecords"
+    );
+    $stmt->execute();
+    $medical = $stmt->fetchAll();
+} catch (Throwable $e) {
+    $medical = [];
+}
+
+$totalTortoises = count($tortoises);
+$medicalCount = count($medical);
+
+// Aggregate helpers
+function normalizeDateForSeries($r) {
+    $candidates = [
+        isset($r['dcheckdate']) ? $r['dcheckdate'] : '',
+        isset($r['ddate']) ? $r['ddate'] : '',
+        isset($r['drecordingdate']) ? $r['drecordingdate'] : ''
+    ];
+    foreach ($candidates as $d) {
+        if (!$d) continue;
+        $ts = strtotime($d);
+        if ($ts) return date('Y-m', $ts);
+    }
+    return '';
+}
+
+// Monthly series
+$byMonth = [];
+foreach ($medical as $r) {
+    $label = normalizeDateForSeries($r);
+    if ($label === '') continue;
+    $byMonth[$label] = isset($byMonth[$label]) ? ($byMonth[$label] + 1) : 1;
+}
+$months = array_keys($byMonth);
+sort($months);
+$monthSeries = [];
+foreach ($months as $m) { $monthSeries[] = ['label' => $m, 'count' => $byMonth[$m]]; }
+if (count($monthSeries) === 0) {
+    $today = new DateTime();
+    for ($i = 5; $i >= 0; $i--) {
+        $d = (clone $today)->modify("-{$i} months");
+        $label = $d->format('Y-m');
+        $monthSeries[] = ['label' => $label, 'count' => 0];
+    }
+}
+
+// Type counts
+$typeCounts = [];
+foreach ($medical as $r) {
+    $t = isset($r['ctype']) ? trim((string)$r['ctype']) : 'Unknown';
+    if ($t === '') $t = 'Unknown';
+    $typeCounts[$t] = isset($typeCounts[$t]) ? ($typeCounts[$t] + 1) : 1;
+}
+
+// Vaccination counts
+$vaccCounts = ['upToDate' => 0, 'due' => 0, 'overdue' => 0];
+foreach ($medical as $r) {
+    $s = strtolower(trim((string)($r['cvaccinationstatus'] ?? '')));
+    if ($s === '') continue;
+    if (strpos($s, 'overdue') !== false) $vaccCounts['overdue']++;
+    else if (strpos($s, 'due') !== false || strpos($s, 'pending') !== false) $vaccCounts['due']++;
+    else $vaccCounts['upToDate']++;
+}
+
+// Species distribution
+$speciesCounts = [];
+foreach ($tortoises as $t) {
+    $s = isset($t['species_name']) && $t['species_name'] !== '' ? $t['species_name'] : (isset($t['cspeciesid']) ? $t['cspeciesid'] : 'Unknown');
+    $speciesCounts[$s] = isset($speciesCounts[$s]) ? ($speciesCounts[$s] + 1) : 1;
+}
+
+// Gender counts
+$genderCounts = [];
+foreach ($tortoises as $t) {
+    $g = strtolower(trim((string)($t['cgender'] ?? 'unknown')));
+    $norm = ($g === 'm') ? 'male' : (($g === 'f') ? 'female' : $g);
+    $label = ucfirst($norm);
+    $genderCounts[$label] = isset($genderCounts[$label]) ? ($genderCounts[$label] + 1) : 1;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -127,7 +253,7 @@
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Tortoises</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">50</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $totalTortoises; ?></div>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fas fa-turtle fa-2x text-gray-300"></i>
@@ -178,7 +304,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Health Records</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><span id="hr-count-stat">0</span></div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><span id="hr-count-stat"><?php echo $medicalCount; ?></span></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-notes-medical fa-2x text-gray-300"></i>
@@ -419,7 +545,7 @@
     
     <!-- Health Record Modal JavaScript -->
     <script>
-        // Live dashboard data updates using APIs
+        // Live dashboard data using embedded PHP (no API fetch)
         document.addEventListener('DOMContentLoaded', function () {
             let vaccinationChart = null;
             let typeBarChart = null;
@@ -611,136 +737,64 @@
 
             const fmtMonth = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
 
-            async function refreshDashboard() {
-                const [tortoisesResp, medicalResp] = await Promise.all([
-                    fetch('api/get_tortoises.php').then(r => r.json()),
-                    fetch('api/get_medical_records.php').then(r => r.json())
-                ]);
-                const tortoises = tortoisesResp.success ? tortoisesResp.data : [];
-                const medical = medicalResp.success ? medicalResp.data : [];
+            // Embedded data from PHP
+            const tortoises = <?php echo json_encode($tortoises); ?>;
+            const medical = <?php echo json_encode($medical); ?>;
+            const monthSeries = <?php echo json_encode($monthSeries); ?>;
+            const typeCounts = <?php echo json_encode($typeCounts); ?>;
+            const vaccCounts = <?php echo json_encode($vaccCounts); ?>;
+            const speciesCounts = <?php echo json_encode($speciesCounts); ?>;
+            const genderCounts = <?php echo json_encode($genderCounts); ?>;
 
-                // Total tortoises
-                setCardNumberByLabel('Total Tortoises', tortoises.length);
+            // Counters
+            setCardNumberByLabel('Total Tortoises', tortoises.length);
+            const hrCountStatEl = document.getElementById('hr-count-stat');
+            if (hrCountStatEl) hrCountStatEl.textContent = String(medical.length);
 
-                // Health Records card number (requested to be number of tortoises)
-                const hrCountStatEl = document.getElementById('hr-count-stat');
-                if (hrCountStatEl) hrCountStatEl.textContent = String(medical.length);
+            // Charts and summaries
+            renderChecksLineChart(monthSeries);
+            renderTypeBarChart(typeCounts);
+            ['Illness','Injury','Checkup','Emergency','Monitoring','Infection','Surgery','Recovery','Nutrition'].forEach(tp => {
+                const el = document.getElementById('type-count-' + tp);
+                if (el) el.textContent = String(typeCounts[tp] || 0);
+            });
+            renderVaccinationSummary(vaccCounts.upToDate, vaccCounts.due, vaccCounts.overdue);
 
-                // Line graph: monthly aggregation from ddate (Date column)
-                const byMonth = {};
-                medical.forEach(r => {
-                    const dateStr = r.dcheckdate || r.ddate || r.drecordingdate || '';
-                    if (!dateStr) return;
-                    // Parse the date and format as YYYY-MM
-                    const date = new Date(dateStr);
-                    if (isNaN(date.getTime())) return; // Skip invalid dates
-                    const label = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-                    byMonth[label] = (byMonth[label] || 0) + 1;
-                });
-                const months = Object.keys(byMonth).sort();
-                const monthSeries = months.map(m => ({ label: m, count: byMonth[m] }));
-                // If no data, show last 6 months with 0 counts
-                if (monthSeries.length === 0) {
-                    const today = new Date();
-                    for (let i = 5; i >= 0; i--) {
-                        const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
-                        const label = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-                        monthSeries.push({ label, count: 0 });
+            function setTile(labelContains, value) {
+                const cards = document.querySelectorAll('#health-records-section .card .card-body .row .col-md-6');
+                for (const col of cards) {
+                    const textMuted = col.querySelector('.text-muted');
+                    const num = col.querySelector('.h2');
+                    if (textMuted && num && textMuted.textContent.toLowerCase().includes(labelContains)) {
+                        num.textContent = String(value);
+                        const badge = col.querySelector('.badge');
+                        if (badge) badge.textContent = Math.round((value / Math.max(1, tortoises.length)) * 100) + '%';
                     }
                 }
-                renderChecksLineChart(monthSeries);
+            }
+            const toType = v => String(v || '').trim();
+            setTile('healthy', medical.filter(r => ['Checkup','Recovery','Nutrition'].includes(toType(r.ctype))).length);
+            setTile('recovering', medical.filter(r => toType(r.ctype) === 'Recovery').length);
+            setTile('sick', medical.filter(r => ['Illness','Infection','Injury'].includes(toType(r.ctype))).length);
+            setTile('critical', medical.filter(r => toType(r.ctype) === 'Emergency').length);
 
-                // Type distribution bar chart from type column
-                const typeCounts = {};
-                medical.forEach(r => {
-                    const t = String(r.ctype || 'Unknown');
-                    typeCounts[t] = (typeCounts[t] + 1) || 1;
-                });
-                renderTypeBarChart(typeCounts);
-
-                // Populate Health Status Summary table counts
-                ['Illness','Injury','Checkup','Emergency','Monitoring','Infection','Surgery','Recovery','Nutrition'].forEach(tp => {
-                    const el = document.getElementById('type-count-' + tp);
-                    if (el) el.textContent = String(typeCounts[tp] || 0);
-                });
-
-                // Vaccination summary from cvaccinationstatus
-                let up = 0, due = 0, over = 0;
-                medical.forEach(r => {
-                    const s = String(r.cvaccinationstatus || '').toLowerCase();
-                    if (!s) return;
-                    if (s.includes('overdue')) over++;
-                    else if (s.includes('due') || s.includes('pending')) due++;
-                    else up++;
-                });
-                renderVaccinationSummary(up, due, over);
-
-                // Health Status Summary numeric tiles (Healthy/Recovering/Sick/Critical)
-                function setTile(labelContains, value) {
-                    const cards = document.querySelectorAll('#health-records-section .card .card-body .row .col-md-6');
-                    for (const col of cards) {
-                        const textMuted = col.querySelector('.text-muted');
-                        const num = col.querySelector('.h2');
-                        if (textMuted && num && textMuted.textContent.toLowerCase().includes(labelContains)) {
-                            num.textContent = String(value);
-                            const badge = col.querySelector('.badge');
-                            if (badge) badge.textContent = Math.round((value / Math.max(1, tortoises.length)) * 100) + '%';
-                        }
-                    }
-                }
-                const toType = v => String(v || '').trim();
-                setTile('healthy', medical.filter(r => ['Checkup','Recovery','Nutrition'].includes(toType(r.ctype))).length);
-                setTile('recovering', medical.filter(r => toType(r.ctype) === 'Recovery').length);
-                setTile('sick', medical.filter(r => ['Illness','Infection','Injury'].includes(toType(r.ctype))).length);
-                setTile('critical', medical.filter(r => toType(r.ctype) === 'Emergency').length);
-
-                // Species distribution from tortoise list (species_name)
-                const speciesCounts = {};
-                tortoises.forEach(t => {
-                    const s = String(t.species_name || t.cspeciesid || 'Unknown');
-                    speciesCounts[s] = (speciesCounts[s] || 0) + 1;
-                });
+            // Species distribution chart
+            (function(){
                 const spLabels = Object.keys(speciesCounts);
                 const spValues = Object.values(speciesCounts);
                 const spCtx = document.getElementById('speciesPieChart');
                 if (spCtx && window.Chart) {
-                    // Destroy existing chart if it exists
-                    if (speciesPieChart) {
-                        speciesPieChart.destroy();
-                        speciesPieChart = null;
-                    }
-                    
-                    // Create new chart instance
+                    if (speciesPieChart) { speciesPieChart.destroy(); speciesPieChart = null; }
                     speciesPieChart = new Chart(spCtx, {
                         type: 'pie',
-                        data: { 
-                            labels: spLabels, 
-                            datasets: [{ 
-                                data: spValues, 
-                                backgroundColor: ['#4e73df','#1cc88a','#36b9cc','#f6c23e','#e74a3b','#858796','#fd7e14','#20c997','#6f42c1','#17a2b8'] 
-                            }] 
-                        },
-                        options: { 
-                            maintainAspectRatio: false, 
-                            responsive: true,
-                            legend: { display: true } 
-                        }
+                        data: { labels: spLabels, datasets: [{ data: spValues, backgroundColor: ['#4e73df','#1cc88a','#36b9cc','#f6c23e','#e74a3b','#858796','#fd7e14','#20c997','#6f42c1','#17a2b8'] }] },
+                        options: { maintainAspectRatio: false, responsive: true, legend: { display: true } }
                     });
                 }
+            })();
 
-                // Gender summary from tortoise list (cgender)
-                const genderCounts = {};
-                tortoises.forEach(t => {
-                    const g = String(t.cgender || 'unknown').toLowerCase();
-                    const norm = g === 'm' ? 'male' : g === 'f' ? 'female' : g;
-                    genderCounts[norm.charAt(0).toUpperCase() + norm.slice(1)] = (genderCounts[norm.charAt(0).toUpperCase() + norm.slice(1)] || 0) + 1;
-                });
-                renderGenderPie(genderCounts);
-            }
-
-            // Initial refresh and periodic updates
-            refreshDashboard().catch(console.error);
-            setInterval(() => { refreshDashboard().catch(console.error); }, 60000);
+            // Gender pie chart
+            renderGenderPie(genderCounts);
         });
 
         // Set default date to today

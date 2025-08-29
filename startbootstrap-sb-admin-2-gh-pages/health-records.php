@@ -1,3 +1,164 @@
+<?php
+require_once __DIR__ . '/config/database.php'; 
+
+// Helpers
+function renderVaccinationBadge($text) {
+    if ($text === null || $text === '') return '';
+    $t = strtolower((string)$text);
+    if (strpos($t, 'overdue') !== false) return '<span class="badge badge-danger">' . htmlspecialchars($text) . '</span>';
+    if (strpos($t, 'pending') !== false || strpos($t, 'due') !== false) return '<span class="badge badge-warning">' . htmlspecialchars($text) . '</span>';
+    return '<span class="badge badge-success">' . htmlspecialchars($text) . '</span>';
+}
+
+function fetchMedicalRecords(PDO $pdo, array $filters = []) {
+    $where = [];
+    $params = [];
+    if (!empty($filters['tortoiseId'])) {
+        $where[] = 'mr.ctortoiseid = :tortoiseId';
+        $params[':tortoiseId'] = $filters['tortoiseId'];
+    }
+    if (!empty($filters['type'])) {
+        $where[] = 'mr.ctype = :type';
+        $params[':type'] = $filters['type'];
+    }
+    if (!empty($filters['dateFrom'])) {
+        $where[] = 'mr.ddate >= :dateFrom';
+        $params[':dateFrom'] = $filters['dateFrom'];
+    }
+    if (!empty($filters['dateTo'])) {
+        $where[] = 'mr.ddate <= :dateTo';
+        $params[':dateTo'] = $filters['dateTo'];
+    }
+    if (!empty($filters['notes'])) {
+        $where[] = '(mr.cdiagnosis LIKE :notes OR mr.ctreatment LIKE :notes)';
+        $params[':notes'] = '%' . $filters['notes'] . '%';
+    }
+    $whereSql = $where ? ('WHERE ' . implode(' AND ', $where)) : '';
+    $sql = "
+        SELECT 
+            mr.crecordid,
+            mr.drecordingdate,
+            mr.cdiagnosis,
+            mr.ctreatment,
+            mr.ctype,
+            mr.ddate,
+            mr.cvaccinationstatus,
+            mr.dcheckdate,
+            mr.dchecktime,
+            mr.cstaffid,
+            mr.ctortoiseid
+        FROM tblmedicalrecords mr
+        $whereSql
+        ORDER BY mr.drecordingdate DESC, mr.crecordid ASC
+    ";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    return $stmt->fetchAll();
+}
+
+// CRUD Handlers
+$error = '';
+$success = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = isset($_POST['action']) ? $_POST['action'] : '';
+    try {
+        if ($action === 'create') {
+            $drecordingdate = isset($_POST['drecordingdate']) ? $_POST['drecordingdate'] : '';
+            $ctype = isset($_POST['ctype']) ? $_POST['ctype'] : '';
+            $ctortoiseid = isset($_POST['ctortoiseid']) ? $_POST['ctortoiseid'] : '';
+            $cstaffid = isset($_POST['cstaffid']) ? $_POST['cstaffid'] : '';
+            if (!$drecordingdate || !$ctype || !$ctortoiseid || !$cstaffid) {
+                throw new Exception('Please fill in required fields.');
+            }
+            // Ensure tortoise exists (best effort)
+            $stmt = $pdo->prepare('SELECT ctortoiseid FROM tbltortoise WHERE ctortoiseid = :id');
+            $stmt->execute([':id' => $ctortoiseid]);
+            if (!$stmt->fetch()) {
+                throw new Exception('Invalid tortoise ID.');
+            }
+            // Generate next MR id
+            $row = $pdo->query("SELECT MAX(CAST(SUBSTRING(crecordid,3) AS UNSIGNED)) AS max_num FROM tblmedicalrecords WHERE crecordid REGEXP '^MR[0-9]+'")->fetch();
+            $nextNum = (int)($row && isset($row['max_num']) ? $row['max_num'] : 0) + 1;
+            $newId = 'MR' . str_pad((string)$nextNum, 3, '0', STR_PAD_LEFT);
+            $sql = 'INSERT INTO tblmedicalrecords (
+                crecordid, drecordingdate, cdiagnosis, ctreatment, ctype, ddate,
+                cvaccinationstatus, dcheckdate, dchecktime, cstaffid, ctortoiseid
+            ) VALUES (
+                :crecordid, :drecordingdate, :cdiagnosis, :ctreatment, :ctype, :ddate,
+                :cvaccinationstatus, :dcheckdate, :dchecktime, :cstaffid, :ctortoiseid
+            )';
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':crecordid' => $newId,
+                ':drecordingdate' => $drecordingdate,
+                ':cdiagnosis' => isset($_POST['cdiagnosis']) && $_POST['cdiagnosis'] !== '' ? $_POST['cdiagnosis'] : null,
+                ':ctreatment' => isset($_POST['ctreatment']) && $_POST['ctreatment'] !== '' ? $_POST['ctreatment'] : null,
+                ':ctype' => $ctype,
+                ':ddate' => isset($_POST['ddate']) && $_POST['ddate'] !== '' ? $_POST['ddate'] : $drecordingdate,
+                ':cvaccinationstatus' => isset($_POST['cvaccinationstatus']) && $_POST['cvaccinationstatus'] !== '' ? $_POST['cvaccinationstatus'] : null,
+                ':dcheckdate' => isset($_POST['dcheckdate']) && $_POST['dcheckdate'] !== '' ? $_POST['dcheckdate'] : null,
+                ':dchecktime' => isset($_POST['dchecktime']) && $_POST['dchecktime'] !== '' ? $_POST['dchecktime'] : null,
+                ':cstaffid' => $cstaffid,
+                ':ctortoiseid' => $ctortoiseid
+            ]);
+            $success = 'Medical record added: ' . htmlspecialchars($newId);
+        } elseif ($action === 'update') {
+            $crecordid = isset($_POST['crecordid']) ? $_POST['crecordid'] : '';
+            if (!$crecordid) throw new Exception('Missing record id');
+            $stmt = $pdo->prepare('SELECT crecordid FROM tblmedicalrecords WHERE crecordid = :id');
+            $stmt->execute([':id' => $crecordid]);
+            if (!$stmt->fetch()) throw new Exception('Record not found');
+            $fields = [
+                'drecordingdate', 'cdiagnosis', 'ctreatment', 'ctype', 'ddate',
+                'cvaccinationstatus', 'dcheckdate', 'dchecktime', 'cstaffid', 'ctortoiseid'
+            ];
+            $sets = [];
+            $params = [':id' => $crecordid];
+            foreach ($fields as $f) {
+                if (array_key_exists($f, $_POST)) {
+                    $sets[] = "$f = :$f";
+                    $params[":$f"] = ($_POST[$f] === '' ? null : $_POST[$f]);
+                }
+            }
+            if ($sets) {
+                $sql = 'UPDATE tblmedicalrecords SET ' . implode(', ', $sets) . ' WHERE crecordid = :id';
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute($params);
+                $success = 'Medical record updated: ' . htmlspecialchars($crecordid);
+            } else {
+                $success = 'Nothing to update';
+            }
+        } elseif ($action === 'delete') {
+            $crecordid = isset($_POST['crecordid']) ? $_POST['crecordid'] : '';
+            if (!$crecordid) throw new Exception('Missing record id');
+            $stmt = $pdo->prepare('DELETE FROM tblmedicalrecords WHERE crecordid = :id');
+            $stmt->execute([':id' => $crecordid]);
+            $success = 'Medical record deleted: ' . htmlspecialchars($crecordid);
+        }
+    } catch (Throwable $e) {
+        $error = $e->getMessage();
+    }
+}
+
+// Prefill for edit form
+$editId = isset($_GET['edit']) ? $_GET['edit'] : '';
+$editRecord = null;
+if ($editId) {
+    $stmt = $pdo->prepare('SELECT * FROM tblmedicalrecords WHERE crecordid = :id');
+    $stmt->execute([':id' => $editId]);
+    $editRecord = $stmt->fetch();
+}
+
+// Filters from GET
+$filters = [
+    'tortoiseId' => isset($_GET['tortoiseId']) ? $_GET['tortoiseId'] : '',
+    'type' => isset($_GET['type']) ? $_GET['type'] : '',
+    'dateFrom' => isset($_GET['dateFrom']) ? $_GET['dateFrom'] : '',
+    'dateTo' => isset($_GET['dateTo']) ? $_GET['dateTo'] : '',
+    'notes' => isset($_GET['notes']) ? $_GET['notes'] : ''
+];
+$records = fetchMedicalRecords($pdo, $filters);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,7 +238,130 @@
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Health Records</h1>
-                        <a href="#" class="btn btn-success btn-sm shadow-sm" data-toggle="modal" data-target="#addHealthRecordModal"><i class="fas fa-plus fa-sm text-white-50"></i> Add New Record</a>
+                    </div>
+
+                    <?php if ($error): ?>
+                    <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
+                    <?php endif; ?>
+                    <?php if ($success): ?>
+                    <div class="alert alert-success"><?php echo htmlspecialchars($success); ?></div>
+                    <?php endif; ?>
+
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-success">
+                                <i class="fas fa-<?php echo $editRecord ? 'edit' : 'plus-circle'; ?> mr-2"></i><?php echo $editRecord ? 'Edit Health Record' : 'Add New Health Record'; ?>
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <form method="post">
+                                <input type="hidden" name="action" value="<?php echo $editRecord ? 'update' : 'create'; ?>">
+                                <?php if ($editRecord): ?>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold text-gray-800">Record ID</label>
+                                            <input type="text" class="form-control" name="crecordid" value="<?php echo htmlspecialchars($editRecord['crecordid']); ?>" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php endif; ?>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold text-gray-800">Recording Date *</label>
+                                            <input type="date" class="form-control" name="drecordingdate" value="<?php echo htmlspecialchars($editRecord['drecordingdate'] ?? ''); ?>" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold text-gray-800">Tortoise ID *</label>
+                                            <input type="text" class="form-control" name="ctortoiseid" value="<?php echo htmlspecialchars($editRecord['ctortoiseid'] ?? ''); ?>" required placeholder="e.g. 001">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold text-gray-800">Staff ID *</label>
+                                            <input type="text" class="form-control" name="cstaffid" value="<?php echo htmlspecialchars($editRecord['cstaffid'] ?? ''); ?>" required placeholder="e.g. SM004">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold text-gray-800">Diagnosis</label>
+                                            <input type="text" class="form-control" name="cdiagnosis" value="<?php echo htmlspecialchars($editRecord['cdiagnosis'] ?? ''); ?>" placeholder="Enter diagnosis">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold text-gray-800">Treatment</label>
+                                            <input type="text" class="form-control" name="ctreatment" value="<?php echo htmlspecialchars($editRecord['ctreatment'] ?? ''); ?>" placeholder="Enter treatment">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold text-gray-800">Type *</label>
+                                            <select class="form-control" name="ctype" required>
+                                                <?php
+                                                $types = ['Illness','Injury','Checkup','Emergency','Monitoring','Infection','Surgery','Recovery','Nutrition'];
+                                                $selType = $editRecord['ctype'] ?? '';
+                                                echo '<option value="">Select type</option>';
+                                                foreach ($types as $t) {
+                                                    $sel = ($selType === $t) ? ' selected' : '';
+                                                    echo '<option value="' . htmlspecialchars($t) . '"' . $sel . '>' . htmlspecialchars($t) . '</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold text-gray-800">Date</label>
+                                            <input type="date" class="form-control" name="ddate" value="<?php echo htmlspecialchars($editRecord['ddate'] ?? ''); ?>">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold text-gray-800">Vaccination Status</label>
+                                            <select class="form-control" name="cvaccinationstatus">
+                                                <?php
+                                                $vacc = ['', 'Up-to-date', 'Pending', 'Overdue'];
+                                                $selV = $editRecord['cvaccinationstatus'] ?? '';
+                                                foreach ($vacc as $v) {
+                                                    $sel = ($selV === $v) ? ' selected' : '';
+                                                    $label = $v === '' ? 'Select' : $v;
+                                                    echo '<option value="' . htmlspecialchars($v) . '"' . $sel . '>' . htmlspecialchars($label) . '</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold text-gray-800">Check Date</label>
+                                            <input type="date" class="form-control" name="dcheckdate" value="<?php echo htmlspecialchars($editRecord['dcheckdate'] ?? ''); ?>">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold text-gray-800">Check Time</label>
+                                            <input type="time" class="form-control" name="dchecktime" value="<?php echo htmlspecialchars($editRecord['dchecktime'] ?? ''); ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <button class="btn btn-success btn-sm mr-2" type="submit"><i class="fas fa-save mr-1"></i><?php echo $editRecord ? 'Update Record' : 'Save Record'; ?></button>
+                                    <?php if ($editRecord): ?>
+                                    <a class="btn btn-secondary btn-sm" href="health-records.php">Cancel</a>
+                                    <?php endif; ?>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     <!-- Filter Section -->
                     <div class="card shadow mb-4">
@@ -87,41 +371,38 @@
                             </h6>
                         </div>
                         <div class="card-body">
-                            <form id="filterForm">
+                            <form id="filterForm" method="get">
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="filterTortoiseId" class="font-weight-bold text-gray-800">Tortoise ID</label>
-                                            <input type="text" class="form-control" id="filterTortoiseId" placeholder="Enter tortoise ID">
+                                            <input type="text" class="form-control" id="filterTortoiseId" name="tortoiseId" value="<?php echo htmlspecialchars($filters['tortoiseId']); ?>" placeholder="Enter tortoise ID">
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="filterType" class="font-weight-bold text-gray-800">Type</label>
-                                            <select class="form-control" id="filterType">
-                                                <option value="">All Types</option>
-                                                <option value="Illness">Illness</option>
-                                                <option value="Injury">Injury</option>
-                                                <option value="Checkup">Checkup</option>
-                                                <option value="Emergency">Emergency</option>
-                                                <option value="Monitoring">Monitoring</option>
-                                                <option value="Infection">Infection</option>
-                                                <option value="Surgery">Surgery</option>
-                                                <option value="Recovery">Recovery</option>
-                                                <option value="Nutrition">Nutrition</option>
+                                            <select class="form-control" id="filterType" name="type">
+                                                <?php
+                                                $ftypes = ['' => 'All Types','Illness'=>'Illness','Injury'=>'Injury','Checkup'=>'Checkup','Emergency'=>'Emergency','Monitoring'=>'Monitoring','Infection'=>'Infection','Surgery'=>'Surgery','Recovery'=>'Recovery','Nutrition'=>'Nutrition'];
+                                                foreach ($ftypes as $val => $label) {
+                                                    $sel = ($filters['type'] === $val) ? ' selected' : '';
+                                                    echo '<option value="' . htmlspecialchars($val) . '"' . $sel . '>' . htmlspecialchars($label) . '</option>';
+                                                }
+                                                ?>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="filterDateFrom" class="font-weight-bold text-gray-800">Date From</label>
-                                            <input type="date" class="form-control" id="filterDateFrom">
+                                            <input type="date" class="form-control" id="filterDateFrom" name="dateFrom" value="<?php echo htmlspecialchars($filters['dateFrom']); ?>">
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="filterDateTo" class="font-weight-bold text-gray-800">Date To</label>
-                                            <input type="date" class="form-control" id="filterDateTo">
+                                            <input type="date" class="form-control" id="filterDateTo" name="dateTo" value="<?php echo htmlspecialchars($filters['dateTo']); ?>">
                                         </div>
                                     </div>
                                 </div>
@@ -129,19 +410,19 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="filterNotes" class="font-weight-bold text-gray-800">Search in Notes</label>
-                                            <input type="text" class="form-control" id="filterNotes" placeholder="Search in notes...">
+                                            <input type="text" class="form-control" id="filterNotes" name="notes" value="<?php echo htmlspecialchars($filters['notes']); ?>" placeholder="Search in notes...">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="font-weight-bold text-gray-800">Actions</label>
                                             <div class="d-flex">
-                                                <button type="button" class="btn btn-success btn-sm mr-2" onclick="applyFilter()">
+                                                <button type="submit" class="btn btn-success btn-sm mr-2">
                                                     <i class="fas fa-search mr-1"></i>Apply Filter
                                                 </button>
-                                                <button type="button" class="btn btn-secondary btn-sm" onclick="clearFilter()">
+                                                <a href="health-records.php" class="btn btn-secondary btn-sm">
                                                     <i class="fas fa-times mr-1"></i>Clear Filter
-                                                </button>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -155,7 +436,7 @@
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6 class="m-0 font-weight-bold text-success">All Health Records</h6>
                             <div class="text-muted">
-                                <span id="recordCount">Showing 50 records</span>
+                                <span id="recordCount">Showing <?php echo count($records); ?> records</span>
                             </div>
                         </div>
                         <div class="card-body">
@@ -178,6 +459,31 @@
                                         </tr>
                                     </thead>
                                     <tbody id="healthRecordsTableBody">
+<?php foreach ($records as $r): ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($r['crecordid'] ?? ''); ?></td>
+                                            <td><?php echo htmlspecialchars($r['drecordingdate'] ?? ''); ?></td>
+                                            <td><?php echo htmlspecialchars($r['cdiagnosis'] ?? ''); ?></td>
+                                            <td><?php echo htmlspecialchars($r['ctreatment'] ?? ''); ?></td>
+                                            <td><?php echo htmlspecialchars($r['ctype'] ?? ''); ?></td>
+                                            <td><?php echo htmlspecialchars($r['ddate'] ?? ''); ?></td>
+                                            <td><?php echo renderVaccinationBadge($r['cvaccinationstatus'] ?? ''); ?></td>
+                                            <td><?php echo htmlspecialchars($r['dcheckdate'] ?? ''); ?></td>
+                                            <td><?php echo htmlspecialchars($r['dchecktime'] ?? ''); ?></td>
+                                            <td><?php echo htmlspecialchars($r['cstaffid'] ?? ''); ?></td>
+                                            <td><?php echo htmlspecialchars($r['ctortoiseid'] ?? ''); ?></td>
+                                            <td>
+                                                <a class="btn btn-sm btn-primary mr-1" href="health-records.php?edit=<?php echo urlencode($r['crecordid']); ?>">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </a>
+                                                <form method="post" style="display:inline;" onsubmit="return confirm('Delete record <?php echo htmlspecialchars($r['crecordid']); ?>?');">
+                                                    <input type="hidden" name="action" value="delete">
+                                                    <input type="hidden" name="crecordid" value="<?php echo htmlspecialchars($r['crecordid']); ?>">
+                                                    <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+<?php endforeach; ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -199,122 +505,7 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-    <!-- Add Health Record Modal -->
-    <div class="modal fade" id="addHealthRecordModal" tabindex="-1" role="dialog" aria-labelledby="addHealthRecordModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-success" id="addHealthRecordModalLabel">
-                        <i class="fas fa-plus-circle mr-2"></i>Add New Health Record
-                    </h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="addHealthRecordForm">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="crecordid" class="font-weight-bold text-gray-800">Record ID</label>
-                                    <input type="text" class="form-control" id="crecordid" name="crecordid" placeholder="Auto when adding" readonly>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="drecordingdate" class="font-weight-bold text-gray-800">Recording Date *</label>
-                                    <input type="date" class="form-control" id="drecordingdate" name="drecordingdate" required>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="ctortoiseid" class="font-weight-bold text-gray-800">Tortoise ID *</label>
-                                    <input type="text" class="form-control" id="ctortoiseid" name="ctortoiseid" required placeholder="e.g. 001">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="cdiagnosis" class="font-weight-bold text-gray-800">Diagnosis</label>
-                                    <input type="text" class="form-control" id="cdiagnosis" name="cdiagnosis" placeholder="Enter diagnosis">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="ctreatment" class="font-weight-bold text-gray-800">Treatment</label>
-                                    <input type="text" class="form-control" id="ctreatment" name="ctreatment" placeholder="Enter treatment">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="ctype" class="font-weight-bold text-gray-800">Type *</label>
-                                    <select class="form-control" id="ctype" name="ctype" required>
-                                        <option value="">Select type</option>
-                                        <option value="Illness">Illness</option>
-                                        <option value="Injury">Injury</option>
-                                        <option value="Checkup">Checkup</option>
-                                        <option value="Emergency">Emergency</option>
-                                        <option value="Monitoring">Monitoring</option>
-                                        <option value="Infection">Infection</option>
-                                        <option value="Surgery">Surgery</option>
-                                        <option value="Recovery">Recovery</option>
-                                        <option value="Nutrition">Nutrition</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="ddate" class="font-weight-bold text-gray-800">Date</label>
-                                    <input type="date" class="form-control" id="ddate" name="ddate">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                        <div class="form-group">
-                                    <label for="cvaccinationstatus" class="font-weight-bold text-gray-800">Vaccination Status</label>
-                                    <select class="form-control" id="cvaccinationstatus" name="cvaccinationstatus">
-                                        <option value="">Select</option>
-                                        <option>Up-to-date</option>
-                                        <option>Pending</option>
-                                        <option>Overdue</option>
-                                    </select>
-                        </div>
-                        </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="dcheckdate" class="font-weight-bold text-gray-800">Check Date</label>
-                                    <input type="date" class="form-control" id="dcheckdate" name="dcheckdate">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="dchecktime" class="font-weight-bold text-gray-800">Check Time</label>
-                                    <input type="time" class="form-control" id="dchecktime" name="dchecktime">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="cstaffid" class="font-weight-bold text-gray-800">Staff ID *</label>
-                                    <input type="text" class="form-control" id="cstaffid" name="cstaffid" placeholder="e.g. SM004" required>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancel</button>
-                    <button class="btn btn-success btn-sm" type="button" onclick="saveHealthRecord()">
-                        <i class="fas fa-save mr-1"></i>Save Record
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Add Health Record Modal -->
+    
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -336,209 +527,5 @@
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="js/sb-admin-2.min.js"></script>
-    
-    <!-- Health Record Modal JavaScript -->
-    <script>
-        // Set default date to today
-        document.addEventListener('DOMContentLoaded', function() {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('drecordingdate').value = today;
-        });
-
-        // ===== API-driven loading and CRUD (appended) =====
-        async function apiFetchMedicalRecords(filters = {}) {
-            const params = new URLSearchParams(filters);
-            const res = await fetch('api/get_medical_records.php' + (params.toString() ? ('?' + params.toString()) : ''));
-            const json = await res.json();
-            if (!json.success) throw new Error(json.error || 'Failed to load records');
-            return json.data;
-        }
-
-        function inDefaultRange(id) {
-            if (!id || id.length < 5) return false;
-            const num = parseInt(String(id).replace(/^[^0-9]+/, ''), 10);
-            return num >= 1 && num <= 30;
-        }
-
-        function vaccinationBadge(text) {
-            if (!text) return '';
-            const t = String(text).toLowerCase();
-            if (t.includes('overdue')) return '<span class="badge badge-danger">' + text + '</span>';
-            if (t.includes('pending') || t.includes('due')) return '<span class="badge badge-warning">' + text + '</span>';
-            return '<span class="badge badge-success">' + text + '</span>';
-        }
-
-        function renderRecords(records) {
-            const tbody = document.getElementById('healthRecordsTableBody');
-            tbody.innerHTML = '';
-            records.forEach(r => {
-                const tr = document.createElement('tr');
-                tr.innerHTML =
-                    '<td>' + (r.crecordid ?? '') + '</td>' +
-                    '<td>' + (r.drecordingdate ?? '') + '</td>' +
-                    '<td>' + (r.cdiagnosis ?? '') + '</td>' +
-                    '<td>' + (r.ctreatment ?? '') + '</td>' +
-                    '<td>' + (r.ctype ?? '') + '</td>' +
-                    '<td>' + (r.ddate ?? '') + '</td>' +
-                    '<td>' + vaccinationBadge(r.cvaccinationstatus ?? '') + '</td>' +
-                    '<td>' + (r.dcheckdate ?? '') + '</td>' +
-                    '<td>' + (r.dchecktime ?? '') + '</td>' +
-                    '<td>' + (r.cstaffid ?? '') + '</td>' +
-                    '<td>' + (r.ctortoiseid ?? '') + '</td>' +
-                    '<td><button class="btn btn-sm btn-primary mr-1" onclick="editRecord(this)"><i class="fas fa-edit"></i> Edit</button> <button class="btn btn-sm btn-danger" onclick="deleteRecord(this)"><i class="fas fa-trash"></i> Delete</button></td>';
-                tbody.appendChild(tr);
-            });
-            document.getElementById('recordCount').textContent = 'Showing ' + records.length + ' records';
-        }
-
-        async function loadAllSorted() {
-            const all = await apiFetchMedicalRecords();
-            const parseNum = id => {
-                const m = String(id || '').match(/(\d+)/);
-                return m ? parseInt(m[1], 10) : Number.MAX_SAFE_INTEGER;
-            };
-            const first = all.filter(r => {
-                const n = parseNum(r.crecordid);
-                return n >= 1 && n <= 30;
-            }).sort((a, b) => parseNum(a.crecordid) - parseNum(b.crecordid));
-            const rest = all.filter(r => {
-                const n = parseNum(r.crecordid);
-                return n > 30;
-            }).sort((a, b) => parseNum(a.crecordid) - parseNum(b.crecordid));
-            renderRecords([...first, ...rest]);
-        }
-
-        async function loadRecordsFromApiWithFilters() {
-            const tortoiseId = document.getElementById('filterTortoiseId').value;
-            const type = document.getElementById('filterType').value;
-            const dateFrom = document.getElementById('filterDateFrom').value;
-            const dateTo = document.getElementById('filterDateTo').value;
-            const notes = document.getElementById('filterNotes').value;
-            const filters = {};
-            if (tortoiseId) filters.tortoiseId = tortoiseId;
-            if (type) filters.type = type;
-            if (dateFrom) filters.dateFrom = dateFrom;
-            if (dateTo) filters.dateTo = dateTo;
-            if (notes) filters.notes = notes;
-            const data = await apiFetchMedicalRecords(filters);
-            renderRecords(data);
-        }
-
-        // Override filter functions to use API and default range on clear
-        applyFilter = function() {
-            loadRecordsFromApiWithFilters().catch(console.error);
-        }
-        clearFilter = function() {
-            document.getElementById('filterForm').reset();
-            loadAllSorted().catch(console.error);
-        }
-
-        // Modal helpers
-        function setModalTitle(text, iconClass) {
-            const title = document.getElementById('addHealthRecordModalLabel');
-            if (title) title.innerHTML = '<i class="' + (iconClass || 'fas fa-plus-circle') + ' mr-2"></i>' + text;
-        }
-        function openAddModal() {
-            setModalTitle('Add New Health Record', 'fas fa-plus-circle');
-            document.getElementById('crecordid').value = '';
-            $('#addHealthRecordModal').modal('show');
-        }
-
-        // Wire the existing "Add New Record" button to our add modal handler
-        document.addEventListener('DOMContentLoaded', function() {
-            const addBtn = document.querySelector('[data-target="#addHealthRecordModal"]');
-            if (addBtn) {
-                addBtn.addEventListener('click', function() {
-                    openAddModal();
-                });
-            }
-        });
-
-        // Save (create or update) via API using table columns
-        saveHealthRecord = async function() {
-            const form = document.getElementById('addHealthRecordForm');
-            const payload = {
-                crecordid: document.getElementById('crecordid').value || undefined,
-                drecordingdate: document.getElementById('drecordingdate').value,
-                cdiagnosis: document.getElementById('cdiagnosis').value || null,
-                ctreatment: document.getElementById('ctreatment').value || null,
-                ctype: document.getElementById('ctype').value,
-                ddate: document.getElementById('ddate').value || null,
-                cvaccinationstatus: document.getElementById('cvaccinationstatus').value || null,
-                dcheckdate: document.getElementById('dcheckdate').value || null,
-                dchecktime: document.getElementById('dchecktime').value || null,
-                cstaffid: document.getElementById('cstaffid').value,
-                ctortoiseid: document.getElementById('ctortoiseid').value
-            };
-
-            if (!payload.drecordingdate || !payload.ctype || !payload.ctortoiseid || !payload.cstaffid) {
-                alert('Please fill in required fields.');
-                return;
-            }
-
-            const isUpdate = !!payload.crecordid;
-            try {
-                const url = isUpdate ? 'api/update_medical_record.php' : 'api/add_medical_record.php';
-                const method = isUpdate ? 'PUT' : 'POST';
-                const res = await fetch(url, {
-                    method,
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                const json = await res.json();
-                if (!json.success) throw new Error(json.error || 'Operation failed');
-                $('#addHealthRecordModal').modal('hide');
-                await loadAllSorted();
-            } catch (e) {
-                alert(e.message);
-            }
-        }
-
-        // Implement edit to prefill and switch to update mode
-        editRecord = function(btn) {
-            const row = btn.closest('tr');
-            const cells = row.getElementsByTagName('td');
-            if (!cells.length) return;
-            setModalTitle('Edit Health Record', 'fas fa-edit');
-            document.getElementById('crecordid').value = cells[0].textContent.trim();
-            document.getElementById('drecordingdate').value = cells[1].textContent.trim();
-            document.getElementById('cdiagnosis').value = cells[2].textContent.trim();
-            document.getElementById('ctreatment').value = cells[3].textContent.trim();
-            document.getElementById('ctype').value = cells[4].textContent.trim();
-            document.getElementById('ddate').value = cells[5].textContent.trim();
-            // vaccination cell contains badge; use innerText
-            document.getElementById('cvaccinationstatus').value = cells[6].innerText.trim();
-            document.getElementById('dcheckdate').value = cells[7].textContent.trim();
-            document.getElementById('dchecktime').value = cells[8].textContent.trim();
-            document.getElementById('cstaffid').value = cells[9].textContent.trim();
-            document.getElementById('ctortoiseid').value = cells[10].textContent.trim();
-            $('#addHealthRecordModal').modal('show');
-        }
-
-        // Delete via API
-        deleteRecord = async function(btn) {
-            const row = btn.closest('tr');
-            const recordId = row && row.cells && row.cells[0] ? row.cells[0].textContent.trim() : '';
-            if (!recordId) return;
-            if (!confirm('Delete record ' + recordId + '?')) return;
-            try {
-                const res = await fetch('api/delete_medical_record.php', {
-                    method: 'DELETE',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ crecordid: recordId })
-                });
-                const json = await res.json();
-                if (!json.success) throw new Error(json.error || 'Delete failed');
-                await loadAllSorted();
-            } catch (e) {
-                alert(e.message);
-            }
-        }
-
-        // Initial load: MR001–MR030
-        document.addEventListener('DOMContentLoaded', function() {
-            loadAllSorted().catch(console.error);
-        });
-    </script>
 </body>
 </html> 
