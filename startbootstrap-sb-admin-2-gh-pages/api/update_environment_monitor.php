@@ -22,4 +22,4 @@ $success = $stmt->execute();
 echo json_encode(['success' => $success]);
 
 $stmt->close();
-$conn->close();
+$conn->close(); 
