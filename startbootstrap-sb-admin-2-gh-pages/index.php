@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tortoise Conservation Center</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  <style>
+    body, html {
+      height: 100%;
+      background: #f8f9fc;
+    }
+    .hero-section {
+      position: relative;
+      min-height: 70vh;
+      background: url('images/tortoise.jpg') center center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(30, 40, 40, 0.55);
+      z-index: 1;
+      transition: none;
+    }
+    .hero-section .hero-content {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      text-align: center;
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .hero-section h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    .hero-section p {
+      font-size: 1.3rem;
+      margin-bottom: 2rem;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.18);
+    }
+    .hero-section .btn-light {
+      background: #1cc88a;
+      color: #fff;
+      border: none;
+      font-weight: bold;
+    }
+    .hero-section .btn-outline-light {
+      border: 2px solid #1cc88a;
+      color: #1cc88a;
+      background: transparent;
+      font-weight: bold;
+    }
+    .hero-section .btn-light:hover,
+    .hero-section .btn-outline-light:hover {
+      background: #17a673;
+      color: #fff;
+      border-color: #17a673;
+    }
+    .navbar-custom {
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .nav-link.btn {
+      color: white !important;
+      margin-left: 0.5rem;
+    }
+    .section-title {
+      font-weight: bold;
+      color: #1cc88a;
+      margin-bottom: 1rem;
+    }
+    .about-section, .contact-section {
+      padding: 60px 0;
+      background: white;
+    }
+    .contact-section {
+      background: #f8f9fc;
+    }
+    .footer {
+      background: #222;
+      color: #fff;
+      padding: 20px 0;
+      text-align: center;
+    }
+  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCCMS - Tortoise Conservation Center</title>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+    <div class="container">
+      <a class="navbar-brand font-weight-bold text-success" href="#"><i class="fas fa-turtle"></i> Tortoise Conservation Center</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav align-items-center">
+          <li class="nav-item">
+            <a class="nav-link btn btn-success px-4" href="login.php">Login</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1>Welcome to Tortoise Conservation Center</h1>
+      <p>Protecting and preserving endangered tortoise species with technology, care, and community.</p>
+      <a href="#about" class="btn btn-light btn-lg font-weight-bold mr-2">Learn About Us</a>
+      <a href="#contact" class="btn btn-outline-light btn-lg font-weight-bold">Contact Us</a>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about-section" id="about">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <div class="row text-center">
+            <div class="col-6 col-md-6 mb-4">
+              <div class="p-4 border rounded shadow-sm h-100">
+                <i class="fas fa-leaf fa-3x text-success mb-3"></i>
+                <h5 class="font-weight-bold mb-1">Conservation</h5>
+                <p class="mb-0 small">Protecting endangered tortoise species and their habitats.</p>
+              </div>
+            </div>
+            <div class="col-6 col-md-6 mb-4">
+              <div class="p-4 border rounded shadow-sm h-100">
+                <i class="fas fa-flask fa-3x text-info mb-3"></i>
+                <h5 class="font-weight-bold mb-1">Research</h5>
+                <p class="mb-0 small">Advancing knowledge through scientific study and monitoring.</p>
+              </div>
+            </div>
+            <div class="col-6 col-md-6 mb-4">
+              <div class="p-4 border rounded shadow-sm h-100">
+                <i class="fas fa-graduation-cap fa-3x text-warning mb-3"></i>
+                <h5 class="font-weight-bold mb-1">Education</h5>
+                <p class="mb-0 small">Raising awareness and educating the community.</p>
+              </div>
+            </div>
+            <div class="col-6 col-md-6 mb-4">
+              <div class="p-4 border rounded shadow-sm h-100">
+                <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                <h5 class="font-weight-bold mb-1">Community</h5>
+                <p class="mb-0 small">Engaging volunteers and building partnerships.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <h2 class="section-title">Learn About Us</h2>
+          <p>
+            The Tortoise Conservation Center is dedicated to the protection and preservation of endangered tortoise species. Our mission is to provide a safe, nurturing environment for tortoises, support breeding programs, and educate the public about conservation efforts. We use advanced technology to monitor health, manage habitats, and ensure the well-being of every tortoise in our care.
+          </p>
+          <ul class="list-unstyled mt-3">
+            <li><i class="fas fa-check-circle text-success mr-2"></i>Centralized management system</li>
+            <li><i class="fas fa-check-circle text-success mr-2"></i>Expert staff and veterinarians</li>
+            <li><i class="fas fa-check-circle text-success mr-2"></i>Community education and outreach</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact-section" id="contact">
+    <div class="container">
+      <h2 class="section-title text-center">Contact Us</h2>
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <form>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Your Name" required>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="Your Email" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea class="form-control" id="message" rows="4" placeholder="Type your message..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-success btn-block font-weight-bold">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <span>&copy; 2025 Tortoise Conservation Center. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="js/sb-admin-2.min.js"></script>
+  <script>
+    // Smooth scroll for nav links
+    $(document).on('click', 'a[href^="#"]', function(event) {
+      var target = $(this.getAttribute('href'));
+      if( target.length ) {
+        event.preventDefault();
+        $('html, body').stop().animate({
+          scrollTop: target.offset().top - 60
+        }, 800);
+      }
+    });
+    // Simulate contact form submission
+    $('form').on('submit', function(e) {
+      e.preventDefault();
+      alert('Thank you for contacting us! We will get back to you soon.');
+      this.reset();
+    });
+  </script>
+</body>
+</html>

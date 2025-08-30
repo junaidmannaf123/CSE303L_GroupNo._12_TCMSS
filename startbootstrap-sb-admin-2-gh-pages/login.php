@@ -280,14 +280,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
         </div>
       </div>
-      
-      <div class="text-center mt-3">
-        <a href="forgot-password.html" class="small">Forgot Password?</a>
-      </div>
-      <div class="text-center mt-2">
-        <span class="small">Don't have an account?</span>
-        <a href="register.html" class="font-weight-bold">Contact Administrator</a>
-      </div>
       <div class="text-center mt-2">
         <a href="login.php?clear=1" class="small text-muted">Clear Session & Start Fresh</a>
       </div>
