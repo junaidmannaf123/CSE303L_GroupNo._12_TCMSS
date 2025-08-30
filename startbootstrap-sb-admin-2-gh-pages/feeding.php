@@ -10,8 +10,7 @@ try {
             TIME_FORMAT(dtime, '%H:%i') as dtime,
             cdietnotes,
             cstaffid,
-            cenclosureid,
-            COALESCE(cstatus, 'Pending') as cstatus
+            cenclosureid
         FROM tblfeedingschedule 
         ORDER BY ddate DESC, dtime DESC
     ");
@@ -66,8 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             TIME_FORMAT(dtime, '%H:%i') as dtime,
                             cdietnotes,
                             cstaffid,
-                            cenclosureid,
-                            COALESCE(cstatus, 'Pending') as cstatus
+                            cenclosureid
                         FROM tblfeedingschedule 
                         ORDER BY ddate DESC, dtime DESC
                     ");
@@ -108,8 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             TIME_FORMAT(dtime, '%H:%i') as dtime,
                             cdietnotes,
                             cstaffid,
-                            cenclosureid,
-                            COALESCE(cstatus, 'Pending') as cstatus
+                            cenclosureid
                         FROM tblfeedingschedule 
                         ORDER BY ddate DESC, dtime DESC
                     ");
@@ -140,41 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             TIME_FORMAT(dtime, '%H:%i') as dtime,
                             cdietnotes,
                             cstaffid,
-                            cenclosureid,
-                            COALESCE(cstatus, 'Pending') as cstatus
-                        FROM tblfeedingschedule 
-                        ORDER BY ddate DESC, dtime DESC
-                    ");
-                    $stmt->execute();
-                    $feedingSchedules = $stmt->fetchAll();
-                    
-                } catch(Exception $e) {
-                    $message = "Error: " . $e->getMessage();
-                    $message_type = "danger";
-                }
-                break;
-
-            case 'update_status':
-                try {
-                    $feedingID = $_POST['feedingID'];
-                    $status = $_POST['status'];
-                    
-                    $stmt = $pdo->prepare("UPDATE tblfeedingschedule SET cstatus = ? WHERE cfeedingid = ?");
-                    $stmt->execute([$status, $feedingID]);
-                    
-                    $message = "Status updated successfully!";
-                    $message_type = "success";
-                    
-                    
-                    $stmt = $pdo->prepare("
-                        SELECT 
-                            cfeedingid,
-                            DATE_FORMAT(ddate, '%Y-%m-%d') as ddate,
-                            TIME_FORMAT(dtime, '%H:%i') as dtime,
-                            cdietnotes,
-                            cstaffid,
-                            cenclosureid,
-                            COALESCE(cstatus, 'Pending') as cstatus
+                            cenclosureid
                         FROM tblfeedingschedule 
                         ORDER BY ddate DESC, dtime DESC
                     ");
@@ -271,7 +234,6 @@ function generateFeedingID() {
                       <th>Diet Notes</th>
                       <th>Staff ID</th>
                       <th>Enclosure ID</th>
-                      <th>Status</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -285,16 +247,6 @@ function generateFeedingID() {
                           <td><?php echo htmlspecialchars($schedule['cdietnotes'] ?? ''); ?></td>
                           <td><?php echo htmlspecialchars($schedule['cstaffid']); ?></td>
                           <td><?php echo htmlspecialchars($schedule['cenclosureid']); ?></td>
-                          <td class="text-center">
-                            <form method="POST" style="display: inline;">
-                              <input type="hidden" name="action" value="update_status">
-                              <input type="hidden" name="feedingID" value="<?php echo htmlspecialchars($schedule['cfeedingid']); ?>">
-                              <input type="hidden" name="status" value="<?php echo $schedule['cstatus'] === 'Pending' ? 'Done' : 'Pending'; ?>">
-                              <button type="submit" class="btn btn-sm badge <?php echo $schedule['cstatus'] === 'Done' ? 'badge-success' : 'badge-warning'; ?>">
-                                <?php echo htmlspecialchars($schedule['cstatus']); ?>
-                              </button>
-                            </form>
-                          </td>
                           <td class="text-center">
                             <button class="btn btn-sm btn-warning edit-btn" 
                                     data-id="<?php echo htmlspecialchars($schedule['cfeedingid']); ?>"
@@ -317,7 +269,7 @@ function generateFeedingID() {
                       <?php endforeach; ?>
                     <?php else: ?>
                       <tr>
-                        <td colspan="8" class="text-center">No feeding schedules found.</td>
+                        <td colspan="7" class="text-center">No feeding schedules found.</td>
                       </tr>
                     <?php endif; ?>
                   </tbody>

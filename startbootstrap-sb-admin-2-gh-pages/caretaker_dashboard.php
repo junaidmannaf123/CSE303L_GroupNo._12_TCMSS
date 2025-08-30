@@ -13,15 +13,10 @@ try {
     $stmt->execute();
     $todayFeedings = $stmt->fetch()['today_feedings'];
 
-    // Get pending feeding schedules count
-    $stmt = $pdo->prepare("SELECT COUNT(*) as pending_feedings FROM tblfeedingschedule WHERE cstatus = 'Pending' OR cstatus IS NULL");
+    // Get total feeding schedules count (since no status column exists)
+    $stmt = $pdo->prepare("SELECT COUNT(*) as total_feedings FROM tblfeedingschedule");
     $stmt->execute();
-    $pendingFeedings = $stmt->fetch()['pending_feedings'];
-
-    // Get completed feeding schedules count
-    $stmt = $pdo->prepare("SELECT COUNT(*) as completed_feedings FROM tblfeedingschedule WHERE cstatus = 'Done'");
-    $stmt->execute();
-    $completedFeedings = $stmt->fetch()['completed_feedings'];
+    $totalFeedings = $stmt->fetch()['total_feedings'];
 
     // Get total medical records count
     $stmt = $pdo->prepare("SELECT COUNT(*) as total_medical FROM tblmedicalrecords");
@@ -64,14 +59,13 @@ try {
     $stmt->execute();
     $underObservation = $stmt->fetch()['under_observation'];
 
-    // Get today's feeding schedules
+    // Get today's feeding schedules (without status)
     $stmt = $pdo->prepare("
         SELECT 
             cfeedingid,
             TIME_FORMAT(dtime, '%H:%i') as feeding_time,
             cdietnotes,
-            cenclosureid,
-            COALESCE(cstatus, 'Pending') as status
+            cenclosureid
         FROM tblfeedingschedule 
         WHERE DATE(ddate) = CURDATE()
         ORDER BY dtime ASC
@@ -97,23 +91,17 @@ try {
     $stmt->execute();
     $recentAlerts = $stmt->fetchAll();
 
-    // Calculate feeding progress
+    // Since no status column exists, we'll show all today's feedings as pending
     $totalTodayFeedings = count($todaySchedules);
-    $completedTodayFeedings = 0;
-    foreach ($todaySchedules as $schedule) {
-        if ($schedule['status'] === 'Done') {
-            $completedTodayFeedings++;
-        }
-    }
-    $feedingProgress = $totalTodayFeedings > 0 ? round(($completedTodayFeedings / $totalTodayFeedings) * 100) : 0;
+    $completedTodayFeedings = 0; // No status tracking available
+    $feedingProgress = 0; // No progress tracking without status
 
 } catch(PDOException $e) {
     $error_message = "Database error: " . $e->getMessage();
     // Set default values if database error occurs
     $totalTortoises = 0;
     $todayFeedings = 0;
-    $pendingFeedings = 0;
-    $completedFeedings = 0;
+    $totalFeedings = 0;
     $totalMedical = 0;
     $recentMedical = 0;
     $healthyTortoises = 0;
@@ -122,6 +110,8 @@ try {
     $todaySchedules = [];
     $recentAlerts = [];
     $feedingProgress = 0;
+    $totalTodayFeedings = 0;
+    $completedTodayFeedings = 0;
 }
 ?>
 <!DOCTYPE html>
@@ -247,11 +237,11 @@ try {
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Pending Feedings</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $pendingFeedings; ?></div>
+                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Feedings</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $totalFeedings; ?></div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-clock fa-2x text-warning"></i>
+                      <i class="fas fa-clock fa-2x text-info"></i>
                     </div>
                   </div>
                 </div>
@@ -316,9 +306,7 @@ try {
                           <?php echo htmlspecialchars($schedule['feeding_time']); ?> - 
                           <?php echo htmlspecialchars($schedule['cdietnotes'] ?: 'Feeding'); ?> 
                           (<?php echo htmlspecialchars($schedule['cenclosureid']); ?>)
-                          <span class="badge badge-<?php echo $schedule['status'] === 'Done' ? 'success' : 'warning'; ?> badge-pill">
-                            <?php echo htmlspecialchars($schedule['status']); ?>
-                          </span>
+                          <span class="badge badge-secondary badge-pill">Scheduled</span>
                         </li>
                       <?php endforeach; ?>
                     </ul>
@@ -364,41 +352,41 @@ try {
             <div class="col-lg-12 mb-4">
               <div class="card shadow">
                 <div class="card-header py-3 bg-success text-white">
-                  <h6 class="m-0 font-weight-bold">Today's Feeding Progress</h6>
+                  <h6 class="m-0 font-weight-bold">Feeding Schedule Overview</h6>
                 </div>
                 <div class="card-body">
                   <div class="row">
                     <div class="col-md-6">
-                      <h6>Overall Progress</h6>
+                      <h6>Today's Feedings</h6>
                       <div class="progress mb-3">
-                        <div class="progress-bar bg-<?php echo $feedingProgress >= 80 ? 'success' : ($feedingProgress >= 50 ? 'warning' : 'danger'); ?>" 
+                        <div class="progress-bar bg-info" 
                              role="progressbar" 
-                             style="width: <?php echo $feedingProgress; ?>%" 
-                             aria-valuenow="<?php echo $feedingProgress; ?>"
+                             style="width: 100%" 
+                             aria-valuenow="100"
                              aria-valuemin="0" 
                              aria-valuemax="100">
-                          <?php echo $feedingProgress; ?>%
+                          <?php echo $totalTodayFeedings; ?> Scheduled
                         </div>
                       </div>
                       <small class="text-muted">
-                        <?php echo $completedTodayFeedings; ?> of <?php echo $totalTodayFeedings; ?> feedings completed
+                        <?php echo $totalTodayFeedings; ?> feeding(s) scheduled for today
                       </small>
                     </div>
                     <div class="col-md-6">
-                      <h6>Quick Status</h6>
+                      <h6>Quick Stats</h6>
                       <div class="row text-center">
                         <div class="col-6">
-                          <div class="text-success">
-                            <i class="fas fa-check-circle fa-2x"></i>
-                            <div class="mt-2"><?php echo $completedFeedings; ?></div>
-                            <small>Completed</small>
+                          <div class="text-info">
+                            <i class="fas fa-calendar fa-2x"></i>
+                            <div class="mt-2"><?php echo $totalFeedings; ?></div>
+                            <small>Total Feedings</small>
                           </div>
                         </div>
                         <div class="col-6">
-                          <div class="text-warning">
-                            <i class="fas fa-clock fa-2x"></i>
-                            <div class="mt-2"><?php echo $pendingFeedings; ?></div>
-                            <small>Pending</small>
+                          <div class="text-success">
+                            <i class="fas fa-seedling fa-2x"></i>
+                            <div class="mt-2"><?php echo $todayFeedings; ?></div>
+                            <small>Today</small>
                           </div>
                         </div>
                       </div>

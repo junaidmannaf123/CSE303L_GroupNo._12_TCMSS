@@ -1,68 +1,33 @@
 <?php
 header("Content-Type: application/json");
-include '../config/database.php'; // Include your database connection file
+include '../config/database.php';
 
-// Check if the request method is PUT
 if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
     http_response_code(405);
-    echo json_encode(["status" => "error", "message" => "Method Not Allowed"]);
+    echo json_encode(["status" => "error", "message" => "Method Not Allowed."]);
     exit();
 }
 
-// Read the raw input from the PUT request
 $input = file_get_contents('php://input');
 $data = json_decode($input, true);
 
-// Check if data is valid
 if ($data === null) {
     http_response_code(400);
     echo json_encode(["status" => "error", "message" => "Invalid JSON input."]);
     exit();
 }
 
-$required_fields = ['cenvironmentaldataid', 'ntemperature', 'nhumidity', 'cstatus', 'cwaterquality', 'dtimestamp', 'cincubatorid', 'cenclosureid', 'cstaffid'];
-foreach ($required_fields as $field) {
-    if (!isset($data[$field])) {
-        http_response_code(400);
-        echo json_encode(["status" => "error", "message" => "Missing required field: " . $field]);
-        exit();
-    }
-}
-
-// Extract data
-$cenvironmentaldataid = $data['cenvironmentaldataid'];
-$ntemperature = $data['ntemperature'];
-$nhumidity = $data['nhumidity'];
-$cstatus = $data['cstatus'];
-$cwaterquality = $data['cwaterquality'];
-$dtimestamp = $data['dtimestamp'];
-$cincubatorid = $data['cincubatorid'];
-$cenclosureid = $data['cenclosureid'];
-$cstaffid = $data['cstaffid'];
-
-// SQL to update the record
-$sql = "UPDATE environmental_monitor SET 
-            ntemperature = ?,
-            nhumidity = ?,
-            cstatus = ?,
-            cwaterquality = ?,
-            dtimestamp = ?,
-            cincubatorid = ?,
-            cenclosureid = ?,
-            cstaffid = ?
-        WHERE cenvironmentaldataid = ?";
-
-$stmt = $conn->prepare($sql);
+$stmt = $conn->prepare("UPDATE environmental_monitor SET ntemperature=?, nhumidity=?, cstatus=?, cwaterquality=?, dtimestamp=?, cincubatorid=?, cenclosureid=?, cstaffid=? WHERE cenvironmentaldataid=?");
 $stmt->bind_param("sssssssss", 
-    $ntemperature, 
-    $nhumidity, 
-    $cstatus, 
-    $cwaterquality, 
-    $dtimestamp, 
-    $cincubatorid, 
-    $cenclosureid, 
-    $cstaffid, 
-    $cenvironmentaldataid
+    $data['ntemperature'], 
+    $data['nhumidity'], 
+    $data['cstatus'], 
+    $data['cwaterquality'], 
+    $data['dtimestamp'], 
+    $data['cincubatorid'], 
+    $data['cenclosureid'], 
+    $data['cstaffid'],
+    $data['cenvironmentaldataid']
 );
 
 if ($stmt->execute()) {
@@ -73,7 +38,7 @@ if ($stmt->execute()) {
     }
 } else {
     http_response_code(500);
-    echo json_encode(["status" => "error", "message" => "Execute failed: " . $stmt->error]);
+    echo json_encode(["status" => "error", "message" => "Failed to update record: " . $stmt->error]);
 }
 
 $stmt->close();
