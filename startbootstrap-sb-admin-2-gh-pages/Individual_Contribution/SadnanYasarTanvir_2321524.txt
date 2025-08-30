@@ -1,0 +1,23 @@
+Sadnan Yasar Tanvir-2321524 (GroupNo._12_TCCMS)
+
+Role: Breeding Specialist
+
+Breeding Specialist Dashboard:
+
+BSDashboard.php
+BSDashboard_matrices.php
+
+Mating Pair:
+
+mating_pair.php
+breeding_add.php
+breeding_delete.php
+breeding_get.php
+breeding_update.php
+
+Egg Data:
+
+egg_data.php
+egg_add.php
+egg_delete.php
+egg_update.php

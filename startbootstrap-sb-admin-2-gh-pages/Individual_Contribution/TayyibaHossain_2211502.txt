@@ -1,0 +1,20 @@
+Tayyiba-2211502 (GroupNo._12_TCCMS)
+
+Role: Tortoise Caretaker
+
+Feeding Schedule:
+
+add_feeding_schedule.php
+delete_feeding_schedule.php
+get_feeding_schedule.php
+update_feeding_schedule.php
+update_feeding_status.php
+
+Tortoise Caretaker:
+
+caretaker_dashboard.php
+caretaker_tasks.php
+
+Tortoise Feeding:
+
+feeding.php

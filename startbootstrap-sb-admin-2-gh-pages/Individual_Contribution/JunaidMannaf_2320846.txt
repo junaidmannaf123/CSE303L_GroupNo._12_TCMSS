@@ -1,0 +1,23 @@
+Junaid Mannaf-2320846 (GroupNo._12_TCCMS)
+
+Role: Vaterian
+
+Veterinarian Dashboard:
+vetdashboard.php
+
+Veterinarian Assigned Tasks:
+assigned_tasks.php
+
+Tortoise Health Records:
+health-records.php
+update_medical_record.php
+delete_medical_record.php
+add medical_record.php
+get_medical_records.php
+
+Tortoise List:
+tortoise-list.php
+add tortoise.php
+delete_tortoise.php
+update_tortoise.php
+get_tortoises.php
