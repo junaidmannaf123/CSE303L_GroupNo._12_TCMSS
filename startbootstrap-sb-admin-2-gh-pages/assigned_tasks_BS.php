@@ -16,7 +16,7 @@
     <div id="wrapper">
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="BSDashboard.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="BSDashboard.php">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-turtle"></i>
                 </div>
@@ -24,24 +24,24 @@
             </a>
             <hr class="sidebar-divider my-0">
             <li class="nav-item">
-                <a class="nav-link" href="BSDashboard.html">
+                <a class="nav-link" href="BSDashboard.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
             <hr class="sidebar-divider">
             <div class="sidebar-heading">Breeding Tools</div>
             <li class="nav-item">
-                <a class="nav-link" href="mating_pair.html">
+                <a class="nav-link" href="mating_pair.php">
                     <i class="fas fa-heart"></i>
                     <span>Mating Pairs</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="egg_data.html">
+                <a class="nav-link" href="egg_data.php">
                     <i class="fas fa-egg"></i>
                     <span>Egg Data</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="assigned_tasks_BS.html">
+                <a class="nav-link" href="assigned_tasks_BS.php">
                     <i class="fas fa-tasks"></i>
                     <span>Assigned Tasks</span></a>
             </li>
@@ -77,7 +77,7 @@
                 <!-- End of Topbar -->
                 <div class="container-fluid">
                     <div class="row mb-4">
-                      <div class="col-md-3">
+                      <div class="col-md-6">
                         <div class="card border-left-primary shadow h-100 py-2">
                           <div class="card-body">
                             <div class="d-flex align-items-center">
@@ -85,13 +85,13 @@
                               <div>
                                 <h6 class="font-weight-bold mb-1">Mating Pairs</h6>
                                 <div class="small">1 new pair added this week.</div>
-                                <a href="mating_pair.html" class="small">View details</a>
+                                <a href="mating_pair.php" class="small">View details</a>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-6">
                         <div class="card border-left-success shadow h-100 py-2">
                           <div class="card-body">
                             <div class="d-flex align-items-center">
@@ -99,35 +99,7 @@
                               <div>
                                 <h6 class="font-weight-bold mb-1">Egg Data</h6>
                                 <div class="small">2 new egg batches recorded.</div>
-                                <a href="egg_data.html" class="small">View details</a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <div class="card border-left-warning shadow h-100 py-2">
-                          <div class="card-body">
-                            <div class="d-flex align-items-center">
-                              <div class="mr-3"><i class="fas fa-baby fa-2x text-warning"></i></div>
-                              <div>
-                                <h6 class="font-weight-bold mb-1">Hatch Tracking</h6>
-                                <div class="small">1 batch expected to hatch soon.</div>
-                                <a href="hatch_tracking.html" class="small">Track progress</a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <div class="card border-left-info shadow h-100 py-2">
-                          <div class="card-body">
-                            <div class="d-flex align-items-center">
-                              <div class="mr-3"><i class="fas fa-tasks fa-2x text-info"></i></div>
-                              <div>
-                                <h6 class="font-weight-bold mb-1">Assigned Tasks</h6>
-                                <div class="small">3 tasks due this week.</div>
-                                <a href="#assignedTasksTable" class="small">See tasks</a>
+                                <a href="egg_data.php" class="small">View details</a>
                               </div>
                             </div>
                           </div>

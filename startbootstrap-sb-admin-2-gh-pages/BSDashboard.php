@@ -1,3 +1,81 @@
+<?php
+require_once __DIR__ . '/config/database.php';
+
+// Fetch data directly in PHP
+try {
+    // Get total eggs from breeding records
+    $stmt = $mysqli->prepare("SELECT SUM(neggscount) as total_eggs FROM tblbreedingrecord WHERE neggscount IS NOT NULL AND neggscount > 0");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $total_eggs = $result->fetch_assoc()['total_eggs'] ?? 0;
+
+    // Get average hatching service rate from breeding records
+    $stmt = $mysqli->prepare("SELECT AVG(nhatchingservicerate) as avg_hatch_rate FROM tblbreedingrecord WHERE nhatchingservicerate IS NOT NULL AND nhatchingservicerate > 0");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $avg_hatch_rate = $result->fetch_assoc()['avg_hatch_rate'] ?? 0;
+
+    // Get egg condition vs average weight data
+    $stmt = $mysqli->prepare("
+        SELECT 
+            ceggcondition,
+            AVG(nweight) as avg_weight,
+            COUNT(*) as count
+        FROM tbleggdetails 
+        WHERE ceggcondition IS NOT NULL AND ceggcondition != '' AND nweight IS NOT NULL AND nweight > 0
+        GROUP BY ceggcondition 
+        ORDER BY avg_weight DESC
+    ");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $condition_weights = [];
+    while ($row = $result->fetch_assoc()) {
+        $condition_weights[] = [
+            'condition' => $row['ceggcondition'],
+            'avgWeight' => round($row['avg_weight'], 1),
+            'count' => $row['count']
+        ];
+    }
+
+    // Get hatching service rate distribution for pie chart
+    $stmt = $mysqli->prepare("
+        SELECT 
+            CASE 
+                WHEN nhatchingservicerate >= 80 THEN 'Excellent (80-100%)'
+                WHEN nhatchingservicerate >= 70 THEN 'Good (70-79%)'
+                WHEN nhatchingservicerate >= 60 THEN 'Fair (60-69%)'
+                WHEN nhatchingservicerate >= 50 THEN 'Poor (50-59%)'
+                ELSE 'Very Poor (<50%)'
+            END as rate_category,
+            COUNT(*) as count
+        FROM tblbreedingrecord 
+        WHERE nhatchingservicerate IS NOT NULL AND nhatchingservicerate > 0
+        GROUP BY rate_category
+        ORDER BY 
+            CASE rate_category
+                WHEN 'Excellent (80-100%)' THEN 1
+                WHEN 'Good (70-79%)' THEN 2
+                WHEN 'Fair (60-69%)' THEN 3
+                WHEN 'Poor (50-59%)' THEN 4
+                WHEN 'Very Poor (<50%)' THEN 5
+            END
+    ");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $hatch_rate_distribution = [];
+    while ($row = $result->fetch_assoc()) {
+        $hatch_rate_distribution[] = [
+            'category' => $row['rate_category'],
+            'count' => $row['count']
+        ];
+    }
+
+} catch (Exception $e) {
+    $error_message = 'Database error: ' . $e->getMessage();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,18 +108,18 @@
             <hr class="sidebar-divider">
             <div class="sidebar-heading">Breeding Tools</div>
             <li class="nav-item">
-                <a class="nav-link" href="mating_pair.html">
+                <a class="nav-link" href="mating_pair.php">
                     <i class="fas fa-heart"></i>
                     <span>Mating Pairs</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="egg_data.html">
+                <a class="nav-link" href="egg_data.php">
                     <i class="fas fa-egg"></i>
                     <span>Egg Data</span></a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="assigned_tasks_BS.html">
+                <a class="nav-link" href="assigned_tasks_BS.php">
                     <i class="fas fa-tasks"></i>
                     <span>Assigned Tasks</span></a>
             </li>
@@ -65,7 +143,7 @@
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Specialist Name</span>
                                 <i class="fas fa-user fa-2x text-success img-profile rounded-circle"></i>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelle/config/database.phpy="userDropdown">
                                 <a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Profile</a>
                                 <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>Settings</a>
                                 <div class="dropdown-divider"></div>
@@ -76,40 +154,78 @@
                 </nav>
                 <!-- End of Topbar -->
                 <div class="container-fluid">
-                    <!-- Welcome Section -->
+                    <!-- Header -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Welcome, <span class="text-success font-weight-bold">Dr. Sakura Chan Aurpy</span></h1>
-                        <button class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" data-toggle="modal" data-target="#addRecordModal"><i class="fas fa-plus fa-sm text-white-50"></i> Add Record</button>
+                        <h1 class="h3 mb-0 text-gray-800">Breeding Specialist Dashboard</h1>
                     </div>
 
-                    <!-- Mating Pair Summary Section -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-heart"></i> Mating Pair Summary Status</h6>
-                            <a href="mating_pair.html" class="btn btn-sm btn-primary">View Details</a>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <canvas id="matingPairChart" width="400" height="200"></canvas>
+                    <!-- Error Display -->
+                    <?php if (isset($error_message)): ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-triangle"></i> <?php echo htmlspecialchars($error_message); ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <?php endif; ?>
+
+                    <!-- Top Row: Cards -->
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Eggs (from Mating Pairs)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $total_eggs; ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-egg fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <div class="text-center">
-                                        <div class="mb-3">
-                                            <h4 class="text-success font-weight-bold">4</h4>
-                                            <p class="text-success">Active Pairs</p>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Average Hatching Rate</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo round($avg_hatch_rate, 1); ?>%</div>
                                         </div>
-                                        <div class="mb-3">
-                                            <h4 class="text-warning font-weight-bold">2</h4>
-                                            <p class="text-warning">Pending</p>
+                                        <div class="col-auto">
+                                            <i class="fas fa-percentage fa-2x text-gray-300"></i>
                                         </div>
-                                        <div class="mb-3">
-                                            <h4 class="text-danger font-weight-bold">1</h4>
-                                            <p class="text-danger">Unsuccessful</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Breeding Records</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo count($hatch_rate_distribution) > 0 ? array_sum(array_column($hatch_rate_distribution, 'count')) : 0; ?></div>
                                         </div>
-                                        <div class="mb-3">
-                                            <h4 class="text-primary font-weight-bold">66.7%</h4>
-                                            <p class="text-primary">Success Rate</p>
+                                        <div class="col-auto">
+                                            <i class="fas fa-heart fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Egg Conditions</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo count($condition_weights); ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -117,129 +233,114 @@
                         </div>
                     </div>
 
-                    <!-- Egg Data Summary Section -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-success"><i class="fas fa-egg"></i> Egg Data Summary</h6>
-                            <a href="egg_data.html" class="btn btn-sm btn-success">View Details</a>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="text-center mb-3">
-                                        <h5 class="text-success">Recent Batches</h5>
-                                        <div class="progress mb-2" style="height: 25px;">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 85%">85%</div>
-                                        </div>
-                                        <small class="text-muted">Success Rate</small>
-                                    </div>
+                    <!-- Charts Row: Side by Side -->
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-chart-pie"></i> Hatching Service Rate Distribution</h6>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="text-center mb-3">
-                                        <h5 class="text-info">Total Eggs</h5>
-                                        <div class="progress mb-2" style="height: 25px;">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: 78%">127 Eggs</div>
-                                        </div>
-                                        <small class="text-muted">Across 15 Batches</small>
+                                <div class="card-body">
+                                    <div class="chart-pie pt-4 pb-2">
+                                        <canvas id="hatchRateDistributionPie"></canvas>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="text-center mb-3">
-                                        <h5 class="text-warning">Fertility Rate</h5>
-                                        <div class="progress mb-2" style="height: 25px;">
-                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 78.5%">78.5%</div>
-                                        </div>
-                                        <small class="text-muted">Average Fertility</small>
+                                    <div class="mt-4 text-center small">
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-success"></i> Excellent (80-100%)
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-info"></i> Good (70-79%)
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-warning"></i> Fair (60-69%)
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-danger"></i> Poor (50-59%)
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-secondary"></i> Very Poor (<50%)
+                                        </span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mt-3">
-                                <div class="col-12">
+                        </div>
+                        <div class="col-xl-6 col-lg-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-success"><i class="fas fa-chart-bar"></i> Egg Condition vs Average Weight</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-bar">
+                                        <canvas id="conditionWeightBar"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Tables Row -->
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-table"></i> Hatching Rate Distribution</h6>
+                                </div>
+                                <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table table-sm">
+                                        <table class="table table-bordered table-hover" width="100%" cellspacing="0">
                                             <thead class="thead-light">
                                                 <tr>
-                                                    <th>Date Laid</th>
-                                                    <th>Total Eggs</th>
-                                                    <th>Fertility</th>
-                                                    <th>Status</th>
+                                                    <th>Rate Category</th>
+                                                    <th>Count</th>
+                                                    <th>Percentage</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <?php 
+                                                $total_records = array_sum(array_column($hatch_rate_distribution, 'count'));
+                                                foreach ($hatch_rate_distribution as $rate): 
+                                                    $percentage = $total_records > 0 ? round(($rate['count'] / $total_records) * 100, 1) : 0;
+                                                ?>
                                                 <tr>
-                                                    <td>2024-06-01</td>
-                                                    <td>8</td>
-                                                    <td><span class="badge badge-success">85%</span></td>
-                                                    <td><span class="badge badge-info">Incubating</span></td>
+                                                    <td><?php echo htmlspecialchars($rate['category']); ?></td>
+                                                    <td><?php echo $rate['count']; ?></td>
+                                                    <td><?php echo $percentage; ?>%</td>
                                                 </tr>
-                                                <tr>
-                                                    <td>2024-05-28</td>
-                                                    <td>6</td>
-                                                    <td><span class="badge badge-success">83%</span></td>
-                                                    <td><span class="badge badge-info">Incubating</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2024-05-25</td>
-                                                    <td>10</td>
-                                                    <td><span class="badge badge-warning">70%</span></td>
-                                                    <td><span class="badge badge-success">Hatched</span></td>
-                                                </tr>
+                                                <?php endforeach; ?>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    
-
-                    <!-- Assigned Tasks Summary Section -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-tasks"></i> Assigned Tasks Summary</h6>
-                            <a href="assigned_tasks_BS.html" class="btn btn-sm btn-info">View Details</a>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="text-center mb-3">
-                                        <h5 class="text-success">Completed</h5>
-                                        <div class="progress mb-2" style="height: 25px;">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 67%">8 Tasks</div>
-                                        </div>
-                                        <small class="text-muted">67% Completion Rate</small>
-                                    </div>
+                        <div class="col-xl-6 col-lg-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-success"><i class="fas fa-table"></i> Egg Condition vs Weight</h6>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="text-center mb-3">
-                                        <h5 class="text-warning">Pending</h5>
-                                        <div class="progress mb-2" style="height: 25px;">
-                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 25%">3 Tasks</div>
-                                        </div>
-                                        <small class="text-muted">25% of Total</small>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="text-center mb-3">
-                                        <h5 class="text-danger">Due Tomorrow</h5>
-                                        <div class="progress mb-2" style="height: 25px;">
-                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 8%">1 Task</div>
-                                        </div>
-                                        <small class="text-muted">Urgent Priority</small>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="text-center mb-3">
-                                        <h5 class="text-info">In Progress</h5>
-                                        <div class="progress mb-2" style="height: 25px;">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: 25%">3 Tasks</div>
-                                        </div>
-                                        <small class="text-muted">Currently Working</small>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>Condition</th>
+                                                    <th>Average Weight (g)</th>
+                                                    <th>Count</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($condition_weights as $condition): ?>
+                                                <tr>
+                                                    <td><?php echo htmlspecialchars($condition['condition']); ?></td>
+                                                    <td><?php echo $condition['avgWeight']; ?>g</td>
+                                                    <td><?php echo $condition['count']; ?></td>
+                                                </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -248,7 +349,7 @@
     </div>
 
     <!-- Add Record Modal -->
-    <div class="modal fade" id="addRecordModal" tabindex="-1" role="dialog" aria-labelledby="addRecordModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addRecordModal" tabindex="-1" role="dialog" aria-labelle/config/database.phpy="addRecordModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -403,7 +504,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-success" id="saveRecordBtn">Save Record</button>
+                    <button type="button" class="btn btn-success" id="saveRecor/config/database.phptn">Save Record</button>
                 </div>
             </div>
         </div>
@@ -421,46 +522,106 @@
     
     <!-- Dashboard Charts -->
     <script>
-        // Mating Pair Status Chart
-        var matingPairCtx = document.getElementById('matingPairChart').getContext('2d');
-        var matingPairChart = new Chart(matingPairCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Active', 'Pending', 'Unsuccessful'],
-                datasets: [{
-                    data: [4, 2, 1],
-                    backgroundColor: [
-                        'rgba(40, 167, 69, 0.8)',
-                        'rgba(255, 193, 7, 0.8)',
-                        'rgba(220, 53, 69, 0.8)'
-                    ],
-                    borderColor: [
-                        'rgba(40, 167, 69, 1)',
-                        'rgba(255, 193, 7, 1)',
-                        'rgba(220, 53, 69, 1)'
-                    ],
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            usePointStyle: true,
-                            padding: 20
+        // Dashboard charts rendering
+        $(document).ready(function() {
+            // Pie chart: hatching service rate distribution
+            var hatchRateData = <?php echo json_encode($hatch_rate_distribution); ?>;
+            var pieLabels = hatchRateData.map(function(item) { return item.category; });
+            var pieValues = hatchRateData.map(function(item) { return item.count; });
+            
+            // Define colors for different rate categories
+            var pieColors = [
+                'rgba(40, 167, 69, 0.85)',   // Excellent - Green
+                'rgba(23, 162, 184, 0.85)',  // Good - Info
+                'rgba(255, 193, 7, 0.85)',   // Fair - Warning
+                'rgba(220, 53, 69, 0.85)',   // Poor - Danger
+                'rgba(108, 117, 125, 0.85)'  // Very Poor - Secondary
+            ];
+            
+            var pieCtx = document.getElementById('hatchRateDistributionPie').getContext('2d');
+            new Chart(pieCtx, {
+                type: 'pie',
+                data: {
+                    labels: pieLabels,
+                    datasets: [{
+                        data: pieValues,
+                        backgroundColor: pieColors.slice(0, pieLabels.length),
+                        borderColor: pieColors.slice(0, pieLabels.length).map(color => color.replace('0.85', '1')),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { 
+                            position: 'bottom',
+                            labels: {
+                                padding: 10,
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    var label = context.label || '';
+                                    var value = context.parsed || 0;
+                                    var total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    var percentage = ((value / total) * 100).toFixed(1);
+                                    return label + ': ' + value + ' (' + percentage + '%)';
+                                }
+                            }
                         }
                     }
                 }
-            }
-        });
+            });
 
-        
+            // Bar chart: egg condition vs average weight
+            var conditionData = <?php echo json_encode($condition_weights); ?>;
+            var barLabels = conditionData.map(function(item) { return item.condition; });
+            var barWeights = conditionData.map(function(item) { return item.avgWeight; });
+            var barCounts = conditionData.map(function(item) { return item.count; });
+            
+            var barCtx = document.getElementById('conditionWeightBar').getContext('2d');
+            new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: barLabels,
+                    datasets: [{
+                        label: 'Average Weight (g)',
+                        data: barWeights,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                afterLabel: function(context) {
+                                    var index = context.dataIndex;
+                                    var count = barCounts[index];
+                                    return 'Count: ' + count + ' eggs';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true, 
+                            title: { 
+                                display: true, 
+                                text: 'Average Weight (g)' 
+                            } 
+                        }
+                    }
+                }
+            });
 
         // Add Record Modal Functionality
-        $(document).ready(function() {
             // Set default date to today
             $('#recordDate').val(new Date().toISOString().split('T')[0]);
 
@@ -486,7 +647,7 @@
             });
 
             // Save Record functionality
-            $('#saveRecordBtn').click(function() {
+            $('#saveRecor/config/database.phptn').click(function() {
                 var recordType = $('#recordType').val();
                 var recordDate = $('#recordDate').val();
                 
