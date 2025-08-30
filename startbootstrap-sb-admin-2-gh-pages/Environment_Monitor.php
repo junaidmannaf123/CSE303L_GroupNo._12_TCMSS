@@ -37,7 +37,6 @@
 </head>
 <body id="page-top">
     <div id="wrapper">
-        <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="vetdashboard.html">
                 <div class="sidebar-brand-icon rotate-n-15">
@@ -46,37 +45,38 @@
                 <div class="sidebar-brand-text mx-3">TCMSS</div>
             </a>
             <hr class="sidebar-divider my-0">
-            <li class="nav-item active">
-                <a class="nav-link" href="#dashboard-section">
+            <li class="nav-item">
+                <a class="nav-link" href="vetdashboard.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Dashboard</span>
+                </a>
             </li>
             <hr class="sidebar-divider">
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="Egg_Incubator.php">
                     <i class="fas fa-fw fa-egg"></i>
-                    <span>Egg Incubator</span></a>
+                    <span>Egg Incubator</span>
+                </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="environment_monitor.php">
                     <i class="fas fa-fw fa-leaf"></i>
-                    <span>Environment Monitor</span></a>
+                    <span>Environment Monitor</span>
+                </a>
             </li>
-
             <li class="nav-item">
                 <a class="nav-link" href="#assigned-tasks-section">
                     <i class="fas fa-fw fa-tasks"></i>
-                    <span>Assigned Tasks</span></a>
+                    <span>Assigned Tasks</span>
+                </a>
             </li>
             <hr class="sidebar-divider d-none d-md-block">
             <div class="text-center d-none d-md-inline">
-
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
         </ul>
-        <!-- End of Sidebar -->
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
@@ -97,13 +97,11 @@
                         </li>
                     </ul>
                 </nav>
-                <!-- End of Topbar -->
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Environment Monitoring Dashboard</h1>
                     </div>
 
-                    <!-- Add New Record Button -->
                     <div class="row mb-3">
                         <div class="col-12">
                             <button class="btn btn-success" data-toggle="modal" data-target="#addRecordModal">
@@ -112,7 +110,6 @@
                         </div>
                     </div>
 
-                    <!-- Dashboard Section (Environmental Data) -->
                     <div class="row" id="dashboard-section">
                         <div class="col-xl-12 mb-4">
                             <div class="card shadow mb-4">
@@ -137,8 +134,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody id="environmentTableBody">
-                                                <!-- Data will be populated by JavaScript -->
-                                            </tbody>
+                                                </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -146,7 +142,6 @@
                         </div>
                     </div>
 
-                    <!-- Assigned Tasks Section -->
                     <div class="row" id="assigned-tasks-section">
                         <div class="col-xl-12 mb-4">
                             <div class="card shadow mb-4">
@@ -173,7 +168,7 @@
                                                     <td>TASK-001</td>
                                                     <td>Monitor Temperature Sensors</td>
                                                     <td>Check all temperature sensors in enclosures 1-5 and report any anomalies</td>
-                                                    <td>Manager </td>
+                                                    <td>Manager</td>
                                                     <td>2025-08-02</td>
                                                     <td><span class="badge badge-warning">Medium</span></td>
                                                     <td><span class="badge badge-info">In Progress</span></td>
@@ -186,7 +181,7 @@
                                                     <td>TASK-002</td>
                                                     <td>Water Quality Check</td>
                                                     <td>Test water quality parameters in all enclosures and update records</td>
-                                                    <td>Manager </td>
+                                                    <td>Manager</td>
                                                     <td>2025-08-01</td>
                                                     <td><span class="badge badge-danger">High</span></td>
                                                     <td><span class="badge badge-warning">Pending</span></td>
@@ -199,7 +194,7 @@
                                                     <td>TASK-003</td>
                                                     <td>Humidity Monitoring</td>
                                                     <td>Daily humidity readings for incubator rooms and report to supervisor</td>
-                                                    <td>Manager </td>
+                                                    <td>Manager</td>
                                                     <td>2025-08-03</td>
                                                     <td><span class="badge badge-success">Low</span></td>
                                                     <td><span class="badge badge-secondary">Not Started</span></td>
@@ -216,7 +211,6 @@
                         </div>
                     </div>
 
-                    <!-- Add/Edit Record Modal -->
                     <div class="modal fade" id="addRecordModal" tabindex="-1" role="dialog" aria-labelledby="recordModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
@@ -228,7 +222,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <form id="environmentRecordForm">
-                                        <input type="hidden" id="editIndex" value="">
+                                        <input type="hidden" id="editDataId" value="">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -239,7 +233,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="temperature">Temperature (°C)</label>
-                                                    <input type="number" class="form-control" id="temperature" min="-10" max="50" required>
+                                                    <input type="number" class="form-control" id="temperature" min="-10" max="50" step="0.1" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -247,7 +241,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="humidity">Humidity (%)</label>
-                                                    <input type="number" class="form-control" id="humidity" min="0" max="100" required>
+                                                    <input type="number" class="form-control" id="humidity" min="0" max="100" step="0.1" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -291,7 +285,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="incubatorId">Enclosure ID</label>
+                                                    <label for="enclosureId">Enclosure ID</label>
                                                     <input type="text" class="form-control" id="enclosureId" placeholder="e.g., ENC-01">
                                                 </div>
                                             </div>
@@ -312,9 +306,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- /.container-fluid -->
-            </div>
-            <!-- End of Main Content -->
+                </div>
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
@@ -349,74 +341,41 @@
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="js/sb-admin-2.min.js"></script>
     <script>
-        
-        // Environment Monitor CRUD functionality
-        let environmentData = [
-            {
-                id: 'EVD-001',
-                temperature: 28,
-                humidity: 65,
-                status: 'Normal',
-                waterQuality: 'Good',
-                timeStamp: '2025-07-31T09:00',
-                incubatorId: 'INC-01',
-                enclosureId: 'ENC-01',
-                staffId: 'ST-100'
-            },
-            {
-                id: 'EVD-002',
-                temperature: 32,
-                humidity: 55,
-                status: 'Warning',
-                waterQuality: 'Fair',
-                timeStamp: '2025-07-31T09:00',
-                incubatorId: 'INC-01',
-                enclosureId: 'ENC-NA',
-                staffId: 'ST-101'
-            },
-            {
-                id: 'EVD-003',
-                temperature: 31,
-                humidity: 60,
-                status: 'Critical',
-                waterQuality: 'Poor',
-                timeStamp: '2025-07-31T08:00',
-                incubatorId: 'INC-NA',
-                enclosureId: 'ENC-02',
-                staffId: 'ST-102'
-            }
-        ];
+        // Environment Monitor CRUD functionality using AJAX
+        let environmentData = [];
 
         // Render table
         function renderTable() {
             const tbody = document.getElementById('environmentTableBody');
             tbody.innerHTML = '';
-            
-            environmentData.forEach((record, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${record.id}</td>
-                    <td>${record.temperature}</td>
-                    <td>${record.humidity}</td>
-                    <td>${getStatusBadge(record.status)}</td>
-                    <td>${record.waterQuality}</td>
-                    <td>${formatDateTime(record.timeStamp)}</td>
-                    <td>${record.incubatorId}</td>
-                    <td>${record.enclosureId}</td>
-                    <td>${record.staffId}</td>
-                    <td>
-                        <button class="btn btn-sm btn-info mr-1" onclick="editRecord(${index})">
-                            <i class="fas fa-edit"></i> Edit
-                        </button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteRecord(${index})">
-                            <i class="fas fa-trash"></i> Delete
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
 
-
+            if (Array.isArray(environmentData) && environmentData.length > 0) {
+                environmentData.forEach((record, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${record.cenvironmentaldataid}</td>
+                        <td>${record.ntemperature}</td>
+                        <td>${record.nhumidity}</td>
+                        <td>${getStatusBadge(record.cstatus)}</td>
+                        <td>${record.cwaterquality}</td>
+                        <td>${formatDateTime(record.dtimestamp)}</td>
+                        <td>${record.cincubatorid || 'N/A'}</td>
+                        <td>${record.cenclosureid || 'N/A'}</td>
+                        <td>${record.cstaffid}</td>
+                        <td>
+                            <button class="btn btn-sm btn-info mr-1" onclick="editRecord('${record.cenvironmentaldataid}')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteRecord('${record.cenvironmentaldataid}')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } else {
+                tbody.innerHTML = '<tr><td colspan="10" class="text-center">No environmental records found.</td></tr>';
+            }
         }
 
         // Get status badge
@@ -431,93 +390,126 @@
 
         // Format datetime
         function formatDateTime(dateTimeStr) {
+            if (!dateTimeStr) return '';
             const date = new Date(dateTimeStr);
             return date.toLocaleString();
         }
 
-        // Add new record
-        function addRecord() {
-            document.getElementById('editIndex').value = '';
-            document.getElementById('environmentRecordForm').reset();
-            document.getElementById('recordModalLabel').textContent = 'Add New Environmental Record';
-            $('#addRecordModal').modal('show');
+        // Fetch data from backend
+        function fetchEnvironmentData() {
+            $.get('api/get_environment_monitor.php', function(response) {
+                if (response.status === 'success') {
+                    environmentData = response.data;
+                    renderTable();
+                } else {
+                    console.error("API Error:", response.message);
+                    environmentData = [];
+                    renderTable();
+                }
+            })
+            .fail(function(xhr, status, error) {
+                console.error("Failed to fetch data:", error);
+                environmentData = [];
+                renderTable();
+            });
         }
 
-        // Edit record
-        function editRecord(index) {
-            const record = environmentData[index];
-            document.getElementById('editIndex').value = index;
-            document.getElementById('envDataId').value = record.id;
-            document.getElementById('temperature').value = record.temperature;
-            document.getElementById('humidity').value = record.humidity;
-            document.getElementById('status').value = record.status;
-            document.getElementById('waterQuality').value = record.waterQuality;
-            document.getElementById('timeStamp').value = record.timeStamp;
-            document.getElementById('incubatorId').value = record.incubatorId;
-            document.getElementById('enclosureId').value = record.enclosureId;
-            document.getElementById('staffId').value = record.staffId;
-            
+        // Add new record modal
+        function openAddModal() {
+            document.getElementById('editDataId').value = '';
+            document.getElementById('environmentRecordForm').reset();
+            document.getElementById('recordModalLabel').textContent = 'Add New Environmental Record';
+            document.getElementById('envDataId').disabled = false;
+        }
+
+        // Edit record modal
+        function editRecord(envDataId) {
+            const record = environmentData.find(rec => rec.cenvironmentaldataid === envDataId);
+            if (!record) {
+                alert('Record not found.');
+                return;
+            }
+
+            document.getElementById('editDataId').value = record.cenvironmentaldataid;
+            document.getElementById('envDataId').value = record.cenvironmentaldataid;
+            document.getElementById('envDataId').disabled = true; // Prevent changing ID on edit
+            document.getElementById('temperature').value = record.ntemperature;
+            document.getElementById('humidity').value = record.nhumidity;
+            document.getElementById('status').value = record.cstatus;
+            document.getElementById('waterQuality').value = record.cwaterquality;
+            document.getElementById('timeStamp').value = record.dtimestamp ? record.dtimestamp.replace(' ', 'T') : '';
+            document.getElementById('incubatorId').value = record.cincubatorid;
+            document.getElementById('enclosureId').value = record.cenclosureid;
+            document.getElementById('staffId').value = record.cstaffid;
+
             document.getElementById('recordModalLabel').textContent = 'Edit Environmental Record';
             $('#addRecordModal').modal('show');
         }
 
         // Delete record
-        function deleteRecord(index) {
+        function deleteRecord(envDataId) {
             if (confirm('Are you sure you want to delete this record?')) {
-                environmentData.splice(index, 1);
-                renderTable();
+                $.ajax({
+                    url: 'api/delete_environment_monitor.php',
+                    method: 'POST', 
+                    contentType: 'application/json',
+                    data: JSON.stringify({ cenvironmentaldataid: envDataId }),
+                    success: function(response) {
+                        alert(response.message || 'Record deleted successfully');
+                        fetchEnvironmentData();
+                    },
+                    error: function(xhr) {
+                        alert('Error: ' + (xhr.responseJSON ? xhr.responseJSON.message : 'Delete failed'));
+                    }
+                });
             }
         }
 
-        // Save record
+        // Save record (add or update)
         function saveRecord() {
-            const editIndex = document.getElementById('editIndex').value;
+            const editDataId = document.getElementById('editDataId').value;
             const formData = {
-                id: document.getElementById('envDataId').value,
-                temperature: parseInt(document.getElementById('temperature').value),
-                humidity: parseInt(document.getElementById('humidity').value),
-                status: document.getElementById('status').value,
-                waterQuality: document.getElementById('waterQuality').value,
-                timeStamp: document.getElementById('timeStamp').value,
-                incubatorId: document.getElementById('incubatorId').value,
-                enclosureId: document.getElementById('enclosureId').value,
-                staffId: document.getElementById('staffId').value
+                cenvironmentaldataid: document.getElementById('envDataId').value,
+                ntemperature: parseFloat(document.getElementById('temperature').value),
+                nhumidity: parseFloat(document.getElementById('humidity').value),
+                cstatus: document.getElementById('status').value,
+                cwaterquality: document.getElementById('waterQuality').value,
+                dtimestamp: document.getElementById('timeStamp').value.replace('T', ' '),
+                cincubatorid: document.getElementById('incubatorId').value,
+                cenclosureid: document.getElementById('enclosureId').value,
+                cstaffid: document.getElementById('staffId').value
             };
 
-            if (editIndex === '') {
-                // Add new record
-                environmentData.push(formData);
+            let url, method;
+            if (editDataId) {
+                url = 'api/update_environment_monitor.php';
+                method = 'PUT';
             } else {
-                // Update existing record
-                environmentData[editIndex] = formData;
+                url = 'api/add_environment_monitor.php';
+                method = 'POST';
             }
 
-            renderTable();
-            $('#addRecordModal').modal('hide');
+            $.ajax({
+                url: url,
+                method: method,
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function(response) {
+                    alert(response.message || 'Saved successfully');
+                    fetchEnvironmentData();
+                    $('#addRecordModal').modal('hide');
+                },
+                error: function(xhr) {
+                    alert('Error: ' + (xhr.responseJSON ? xhr.responseJSON.message : 'Save failed'));
+                }
+            });
         }
 
         // Event listeners
         document.addEventListener('DOMContentLoaded', function() {
-            renderTable();
-            
-            // Save button click
+            fetchEnvironmentData();
             document.getElementById('saveRecordBtn').addEventListener('click', saveRecord);
-            
-            // Modal close - reset form
-            $('#addRecordModal').on('hidden.bs.modal', function() {
-                document.getElementById('environmentRecordForm').reset();
-                document.getElementById('editIndex').value = '';
-            });
-
-
         });
-
-
-
-
-            
-
-
     </script>
 </body>
 </html>

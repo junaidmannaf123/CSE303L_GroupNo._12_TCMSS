@@ -1,7 +1,7 @@
 <?php
-<?php
 header('Content-Type: application/json');
-$conn = new mysqli('localhost', 'root', '', 'tccms');
+include '../config/database.php';
+
 $data = json_decode(file_get_contents('php://input'), true);
 
 // Assumes fields: clogid, cincubatorid, caction, dtimestamp, cnotes, cstaffid
@@ -20,4 +20,5 @@ $success = $stmt->execute();
 echo json_encode(['success' => $success]);
 
 $stmt->close();
-$conn
+$conn->close();
+?>
