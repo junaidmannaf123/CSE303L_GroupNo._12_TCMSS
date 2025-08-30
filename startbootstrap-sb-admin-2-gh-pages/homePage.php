@@ -282,9 +282,6 @@ $speciesIdToName = [
         <!-- Welcome Message -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
           <h1 class="h3 mb-0 text-gray-800">Welcome, <?php echo htmlspecialchars($_SESSION['staff_name']); ?>!</h1>
-          <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
-          </a>
         </div>
 
         <!-- Info Cards Row -->
@@ -653,27 +650,6 @@ $speciesIdToName = [
         .dashboard-card:nth-child(4) { animation-delay: 0.4s; }
         .dashboard-card:nth-child(5) { animation-delay: 0.5s; }
         .dashboard-card:nth-child(6) { animation-delay: 0.6s; }
-
-        /* Compact chart styling */
-        .chart-area {
-          height: 300px;
-          position: relative;
-        }
-
-        .chart-pie {
-          height: 300px;
-          position: relative;
-        }
-
-        .chart-bar {
-          height: 300px;
-          position: relative;
-        }
-
-        .chart-line {
-          height: 300px;
-          position: relative;
-        }
         </style>
 
         <script>
@@ -690,22 +666,6 @@ $speciesIdToName = [
           });
         });
         </script>
-
-        <!-- Interactive Charts Section -->
-        <div class="row mb-3">
-          <div class="col-12">
-            <div class="card shadow-lg border-0">
-              <div class="card-header py-3 bg-gradient-primary text-white">
-                <h6 class="m-0 font-weight-bold">Tortoise Population Trends</h6>
-              </div>
-              <div class="card-body">
-                <div class="chart-area">
-                  <canvas id="tortoiseTrendChart"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
         <!-- Tortoise Status Table -->
         <div class="card shadow mb-4">
@@ -818,75 +778,6 @@ $speciesIdToName = [
       document.getElementById('weather-details').textContent = '';
     });
    
-</script>
-
-<!-- Interactive Charts Script -->
-<script>
-// Tortoise Population Trends Chart
-const tortoiseTrendCtx = document.getElementById('tortoiseTrendChart').getContext('2d');
-const tortoiseTrendChart = new Chart(tortoiseTrendCtx, {
-  type: 'line',
-  data: {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    datasets: [{
-      label: 'Total Tortoises',
-      data: [3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9],
-      borderColor: '#4e73df',
-      backgroundColor: 'rgba(78, 115, 223, 0.1)',
-      borderWidth: 3,
-      fill: true,
-      tension: 0.4
-    }, {
-      label: 'New Arrivals',
-      data: [1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-      borderColor: '#1cc88a',
-      backgroundColor: 'rgba(28, 200, 138, 0.1)',
-      borderWidth: 2,
-      fill: false,
-      tension: 0.4
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      tooltip: {
-        mode: 'index',
-        intersect: false,
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        grid: {
-          color: 'rgba(0,0,0,0.1)'
-        }
-      },
-      x: {
-        grid: {
-          display: false
-        }
-      }
-    },
-    interaction: {
-      mode: 'nearest',
-      axis: 'x',
-      intersect: false
-    }
-  }
-});
-
-// Add hover effects to charts
-document.querySelectorAll('canvas').forEach(canvas => {
-  canvas.style.cursor = 'pointer';
-  canvas.addEventListener('click', function() {
-    // Add click functionality for chart interactions
-    console.log('Chart clicked:', this.id);
-  });
-});
 </script> 
 
 </body>
