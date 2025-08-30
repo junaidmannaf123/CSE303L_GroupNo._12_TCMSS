@@ -515,7 +515,7 @@ foreach ($tortoises as $t) {
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="veterinarian" class="font-weight-bold text-gray-800">Veterinarian</label>
-                                    <input type="text" class="form-control" id="veterinarian" name="veterinarian" value="Dr. Atika Humayra" readonly>
+                                    <input type="text" class="form-control" id="veterinarian" name="veterinarian" value="Farhana Rahman" readonly>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -549,7 +549,7 @@ foreach ($tortoises as $t) {
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-success" href="login.html">Logout</a>
+                    <a class="btn btn-success" href="login.php">Logout</a>
                 </div>
             </div>
         </div>
@@ -862,7 +862,7 @@ foreach ($tortoises as $t) {
             // Reset form
             form.reset();
             document.getElementById('recordDate').value = new Date().toISOString().split('T')[0];
-            document.getElementById('veterinarian').value = 'Dr. Atika Humayra';
+            document.getElementById('veterinarian').value = 'Farhana Rahman';
             
             // Close modal
             $('#addHealthRecordModal').modal('hide');
@@ -875,7 +875,7 @@ foreach ($tortoises as $t) {
         $('#addHealthRecordModal').on('hidden.bs.modal', function () {
             document.getElementById('addHealthRecordForm').reset();
             document.getElementById('recordDate').value = new Date().toISOString().split('T')[0];
-            document.getElementById('veterinarian').value = 'Dr. Atika Humayra';
+            document.getElementById('veterinarian').value = 'Farhana Rahman';
         });
     </script>
 </body>

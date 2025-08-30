@@ -1,5 +1,21 @@
 <?php
+session_start();
 require_once __DIR__ . '/config/database.php';
+
+// Check if user is logged in and has appropriate role
+if (!isset($_SESSION['staff_id']) || !in_array($_SESSION['role'], ['Breeding Specialist', 'Manager'])) {
+    // Clear any invalid session
+    session_destroy();
+    header('Location: login.php');
+    exit();
+}
+
+// Check if session is still valid (optional: add timeout check)
+if (isset($_SESSION['login_time']) && (time() - $_SESSION['login_time']) > 3600) { // 1 hour timeout
+    session_destroy();
+    header('Location: login.php?timeout=1');
+    exit();
+}
 
 // Fetch data directly in PHP
 try {
@@ -140,14 +156,17 @@ try {
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Specialist Name</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                    <?php echo htmlspecialchars($_SESSION['staff_name']); ?> 
+                                    <span class="badge badge-success"><?php echo htmlspecialchars($_SESSION['role']); ?></span>
+                                </span>
                                 <i class="fas fa-user fa-2x text-success img-profile rounded-circle"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelle/config/database.phpy="userDropdown">
                                 <a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Profile</a>
                                 <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>Settings</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>
+                                <a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>
                             </div>
                         </li>
                     </ul>
@@ -156,7 +175,7 @@ try {
                 <div class="container-fluid">
                     <!-- Header -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Breeding Specialist Dashboard</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Welcome, <?php echo htmlspecialchars($_SESSION['staff_name']); ?>!</h1>
                     </div>
 
                     <!-- Error Display -->
